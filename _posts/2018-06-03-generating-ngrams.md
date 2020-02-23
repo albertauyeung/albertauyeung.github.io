@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Generating N-grams from Sentences Python"
+title:  "Generating N-grams from Sentences in Python"
 tags: [python, nlp, nltk]
 ---
 
