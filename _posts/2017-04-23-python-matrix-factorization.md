@@ -139,7 +139,7 @@ Hence, in the equal of predicting a rating, we can also add these biases in orde
 $\hat{r}_{ij} = b + bu_i + bd_j + \sum_{k=1}^k{p_{ik} q_{kj}}$
 </center><br/>
 
-where $b$ is the global bias (which can be easily estimated by using the mean of all ratings), $bu_i$ is the bias of user $i$, and $bd_j$ is te bias of item $j$.
+where $b$ is the global bias (which can be easily estimated by using the mean of all ratings), $bu_i$ is the bias of user $i$, and $bd_j$ is the bias of item $j$.
 
 Using the same steps mentioned above, we can derive the update rules for the user biases and item biases easily:
 
