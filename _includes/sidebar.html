@@ -10,12 +10,15 @@
     </div>
 
     <nav class="sidebar-nav">
+      <a class="sidebar-nav-item{% if page.url == site.baseurl %} active{% endif %}" href="/">Home</a>
+      <a class="sidebar-nav-item{% if page.url == site.baseurl %} active{% endif %}" href="/tags">Tags</a>
+      <br/>
       <a class="sidebar-nav-item{% if page.url == site.baseurl %} active{% endif %}" href="/about">About</a>
       <a class="sidebar-nav-item{% if page.url == site.baseurl %} active{% endif %}" href="/cv">CV</a>
       <a class="sidebar-nav-item{% if page.url == site.baseurl %} active{% endif %}" href="/publications">Publications</a>
       <br/>
-      <a class="sidebar-nav-item mini{% if page.url == site.baseurl %} active{% endif %}" href="https://github.com/albertauyeung">Github</a>
-      <a class="sidebar-nav-item mini{% if page.url == site.baseurl %} active{% endif %}" href="https://www.linkedin.com/in/albert-au-yeung/">LinkedIn</a>
+      <a class="sidebar-nav-item mini{% if page.url == site.baseurl %} active{% endif %}" target="_blank" href="https://github.com/albertauyeung">Github</a>
+      <a class="sidebar-nav-item mini{% if page.url == site.baseurl %} active{% endif %}" target="_blank" href="https://www.linkedin.com/in/albert-au-yeung/">LinkedIn</a>
     </nav>
 
     <p>&copy; {{ site.time | date: '%Y' }}. All rights reserved.</p>
