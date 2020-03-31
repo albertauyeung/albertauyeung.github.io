@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: article
 title:  "Deep Learning and Its Applications - Research Seminar at HSMC"
 tags: [deep learning, talk]
 ---

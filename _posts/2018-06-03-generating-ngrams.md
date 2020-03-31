@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: article
 title:  "Generating N-grams from Sentences in Python"
 tags: [python, nlp, nltk]
 ---

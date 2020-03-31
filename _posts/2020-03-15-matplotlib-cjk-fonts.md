@@ -1,10 +1,10 @@
 ---
-layout: post
+layout: article
 title:  "Displaying CJK Characters in Matplotlib Plots"
 tags: [python, matplotlib, visualization, jupyter]
 ---
 
-Matplotlib by default does not support displaying Unicode characters such as Chinese, Japanese and Korean characters. This post introduces two different methods to allow these characters can be shown in the graphs.
+Matplotlib by default does not support displaying Unicode characters such as Chinese, Japanese and Korean characters. This post introduces two different methods to allow these characters to be shown in the graphs.
 
 The issue here is that we need to configure Matplotlib to use fonts that support the characters that we want to display. To configure the font used by Matplotlib, there are two ways.
 
@@ -39,7 +39,7 @@ plt.show()
 
 The effect will be as follows:
 
-![Graph 1](/public/images/20200315_graph1.png)
+![Graph 1](/assets/images/20200315_graph1.png)
 
 
 ## Using Fonts in the Font Folder
@@ -106,7 +106,7 @@ plt.show()
 
 which will produce the same graph as above:
 
-![Graph 1](/public/images/20200315_graph1.png)
+![Graph 1](/assets/images/20200315_graph1.png)
 
 
 ## Using Custom Fonts in Seaborn
@@ -126,4 +126,4 @@ ax.grid()
 
 And the following graph will be produced:
 
-![Graph 2](/public/images/20200315_graph2.png)
+![Graph 2](/assets/images/20200315_graph2.png)

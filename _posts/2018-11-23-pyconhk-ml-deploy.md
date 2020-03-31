@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: article
 title:  "Talk on Deploying ML Models in Python @ PyCon HK 2018"
 tags: [pycon, machine learning, python, talk]
 ---
