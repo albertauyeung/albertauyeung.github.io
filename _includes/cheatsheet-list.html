@@ -1,5 +1,4 @@
 {%- assign _excerpt_truncate = include.excerpt_truncate | default: 350 -%}
-{%- assign is_show_all = include.is_archive | default: false -%}
 
 {%- assign _excerpt_type = include.excerpt_type -%}
 
@@ -27,10 +26,6 @@
 {%- endif -%}
 
   {%- for _article in _sorted_list -%}
-
-    {% if (_article.categories contains "cheatsheets") and (is_show_all == false) %}
-      {% continue %}
-    {% endif %}
 
     {%- include snippets/prepend-baseurl.html path=_article.url -%}
     {%- assign _article_url = __return -%}

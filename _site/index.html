@@ -303,7 +303,7 @@ fill="#000000" stroke="none">
 </svg>
 <a title="Notes on AI & ML
 " href="/">Albert Au Yeung</a></div><button class="button button--secondary button--circle search-button js-search-toggle"><i class="fas fa-search"></i></button></div><nav class="navigation">
-        <ul><li class="navigation__item"><a href="/archive.html">Archive</a></li><li class="navigation__item"><a href="/about.html">About</a></li><li class="navigation__item"><a href="/cv.html">CV</a></li><li class="navigation__item"><a href="/publications.html">Publications</a></li><li><button class="button button--secondary button--circle search-button js-search-toggle"><i class="fas fa-search"></i></button></li></ul>
+        <ul><li class="navigation__item"><a href="/archive.html">Archive</a></li><li class="navigation__item"><a href="/cheatsheet.html">Cheatsheets</a></li><li class="navigation__item"><a href="/about.html">About</a></li><li class="navigation__item"><a href="/cv.html">CV</a></li><li class="navigation__item"><a href="/publications.html">Publications</a></li><li><button class="button button--secondary button--circle search-button js-search-toggle"><i class="fas fa-search"></i></button></li></ul>
       </nav></div>
   </header>
 </div><div class="page__content"><div class ="main"><div class="grid grid--reverse">
@@ -314,6 +314,40 @@ fill="#000000" stroke="none">
 
 <!-- end custom main top snippet -->
 <article itemscope itemtype="http://schema.org/WebPage"><header style="display:none;"><h1>Home</h1></header><meta itemprop="headline" content="Home"><meta itemprop="author" content="Albert Au Yeung"/><div class="js-article-content"><div class="layout--articles"><div class="article-list items items--divided"><article class="item" itemscope itemtype="http://schema.org/BlogPosting"><div class="item__content">
+          <header><a href="/cheatsheets/2020/04/02/git-store-credentials.html"><h2 itemprop="headline" class="item__header">Storing Username and Password in GIT</h2></a></header>
+          <div class="item__description"><div class="article__content" itemprop="description articleBody">git config --global credential.helper store</div><p><a href="/cheatsheets/2020/04/02/git-store-credentials.html">Read more</a></p></div><div class="article__info clearfix"><ul class="left-col menu"><li>
+              <a class="button button--secondary button--pill button--sm"
+                href="/archive.html?tag=git">git</a>
+            </li></ul><ul class="right-col menu"><li><i class="far fa-calendar-alt"></i> <span>Apr 02, 2020</span>
+            </li></ul></div><meta itemprop="author" content="Albert Au Yeung"/><meta itemprop="datePublished" content="2020-04-02T00:00:00+08:00">
+    <meta itemprop="keywords" content="git"></div>
+      </article><article class="item" itemscope itemtype="http://schema.org/BlogPosting"><div class="item__content">
+          <header><a href="/cheatsheets/2020/04/01/python-mysql-connector.html"><h2 itemprop="headline" class="item__header">Connecting to MySQL Database in Python</h2></a></header>
+          <div class="item__description"><div class="article__content" itemprop="description articleBody">$ pip install mysql-connector-python
+
+
+from __future__ import print_function
+from datetime import date, datetime, timedelta
+import mysql.connector
+
+cnx = mysql.connector.connect(
+    user='metabase',
+    password="metabase",
+    database='personal',
+    auth_plugin='mysql_native_password')
+cursor = cnx.cursor()
+
+add_item = ("""
+    INSERT INTO i...</div><p><a href="/cheatsheets/2020/04/01/python-mysql-connector.html">Read more</a></p></div><div class="article__info clearfix"><ul class="left-col menu"><li>
+              <a class="button button--secondary button--pill button--sm"
+                href="/archive.html?tag=python">python</a>
+            </li><li>
+              <a class="button button--secondary button--pill button--sm"
+                href="/archive.html?tag=mysql">mysql</a>
+            </li></ul><ul class="right-col menu"><li><i class="far fa-calendar-alt"></i> <span>Apr 01, 2020</span>
+            </li></ul></div><meta itemprop="author" content="Albert Au Yeung"/><meta itemprop="datePublished" content="2020-04-01T00:00:00+08:00">
+    <meta itemprop="keywords" content="python,mysql"></div>
+      </article><article class="item" itemscope itemtype="http://schema.org/BlogPosting"><div class="item__content">
           <header><a href="/2020/03/15/matplotlib-cjk-fonts.html"><h2 itemprop="headline" class="item__header">Displaying CJK Characters in Matplotlib Plots</h2></a></header>
           <div class="item__description"><div class="article__content" itemprop="description articleBody">Matplotlib by default does not support displaying Unicode characters such as Chinese, Japanese and Korean characters. This post introduces two different methods to allow these characters to be shown in the graphs.
 
