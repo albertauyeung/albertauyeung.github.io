@@ -1883,7 +1883,7 @@ a > .item__header.disabled, a > .item__header:disabled, a.item__header.disabled,
 
 .article__content pre { overflow: auto; -webkit-overflow-scrolling: touch; }
 
-.article__content pre > code { padding: 0; word-wrap: normal; background-color: transparent; }
+.article__content pre > code { font-size: 0.8em; padding: 0; word-wrap: normal; background-color: transparent; }
 
 .article__content pre > code.language-mermaid, .article__content pre > code.language-chart { display: none; }
 
