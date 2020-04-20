@@ -1,10 +1,10 @@
 <!DOCTYPE html><html lang="en">
   <head><meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"><title>Connect to MongoDB in Python - Albert Au Yeung</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"><title>Making pandas Operations Faster - Albert Au Yeung</title>
 
-<meta name="description" content="$ python -m pip install pymongofrom pymongo import MongoClientMONGO_HOST = 'localhost'MONGO_PORT = 30000MONGO_DATABASE = 'db'MONGO_USERNAME = 'username'MONGO...">
-<link rel="canonical" href="http://www.albertauyeung.com//cheatsheets/2020/04/14/python-mongo-connection.html"><link rel="alternate" type="application/rss+xml" title="Albert Au Yeung" href="/feed.xml"><!-- start favicons snippet, use https://realfavicongenerator.net/ --><link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png"><link rel="manifest" href="/assets/site.webmanifest"><link rel="mask-icon" href="/assets/safari-pinned-tab.svg" color="#fc4d50"><link rel="shortcut icon" href="/assets/favicon.ico">
+<meta name="description" content="pandas is one of the most commonly used Python library in data analysis and machine learning. It is versatile and can be used to handle many different types ...">
+<link rel="canonical" href="http://www.albertauyeung.com//2017/07/08/fast-pandas-operation.html"><link rel="alternate" type="application/rss+xml" title="Albert Au Yeung" href="/feed.xml"><!-- start favicons snippet, use https://realfavicongenerator.net/ --><link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png"><link rel="manifest" href="/assets/site.webmanifest"><link rel="mask-icon" href="/assets/safari-pinned-tab.svg" color="#fc4d50"><link rel="shortcut icon" href="/assets/favicon.ico">
 
 <meta name="msapplication-TileColor" content="#ffc40d"><meta name="msapplication-config" content="/assets/browserconfig.xml">
 
@@ -313,46 +313,76 @@ fill="#000000" stroke="none">
               <div class="col-main cell cell--auto"><!-- start custom main top snippet -->
 
 <!-- end custom main top snippet -->
-<article itemscope itemtype="http://schema.org/Article"><div class="article__header"><header><h1>Connect to MongoDB in Python</h1></header></div><meta itemprop="headline" content="Connect to MongoDB in Python"><div class="article__info clearfix"><ul class="left-col menu"><li>
+<article itemscope itemtype="http://schema.org/Article"><div class="article__header"><header><h1>Making pandas Operations Faster</h1></header></div><meta itemprop="headline" content="Making pandas Operations Faster"><div class="article__info clearfix"><ul class="left-col menu"><li>
               <a class="button button--secondary button--pill button--sm"
                 href="/archive.html?tag=python">python</a>
             </li><li>
               <a class="button button--secondary button--pill button--sm"
-                href="/archive.html?tag=mongodb">mongodb</a>
-            </li></ul><ul class="right-col menu"><li><i class="far fa-calendar-alt"></i> <span>Apr 14, 2020</span>
-            </li></ul></div><meta itemprop="author" content="Albert Au Yeung"/><meta itemprop="datePublished" content="2020-04-14T00:00:00+08:00">
-    <meta itemprop="keywords" content="python,mongodb"><div class="js-article-content"><div class="layout--article"><!-- start custom article top snippet -->
+                href="/archive.html?tag=pandas">pandas</a>
+            </li></ul><ul class="right-col menu"><li><i class="far fa-calendar-alt"></i> <span>Jul 08, 2017</span>
+            </li></ul></div><meta itemprop="author" content="Albert Au Yeung"/><meta itemprop="datePublished" content="2017-07-08T00:00:00+08:00">
+    <meta itemprop="keywords" content="python,pandas"><div class="js-article-content"><div class="layout--article"><!-- start custom article top snippet -->
 
 <!-- end custom article top snippet -->
-<div class="article__content" itemprop="articleBody"><div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>python <span class="nt">-m</span> pip <span class="nb">install </span>pymongo
+<div class="article__content" itemprop="articleBody"><p><a href="http://pandas.pydata.org/">pandas</a> is one of the most commonly used Python library in data analysis and machine learning. It is versatile and can be used to handle many different types of data. Before feeding a model with training data, one would most probably pre-process the data and perform feature extraction on data stored as pandas <code class="highlighter-rouge">DataFrame</code>. I have been using pandas extensively in my work, and have recently discovered that the time required to manipulate data stored in a <code class="highlighter-rouge">DataFrame</code> can vary hugely depending on the method you used.</p>
+
+<h2 id="numerical-operations">Numerical Operations</h2>
+
+<p>To demonstrate the differences, let’s generate some random data first. The following block of code will generate a <code class="highlighter-rouge">DataFrame</code> with 5,000 rows and 3 columns (<code class="highlighter-rouge">A</code>, <code class="highlighter-rouge">B</code> and <code class="highlighter-rouge">C</code>) with values ranging from -10 to 10.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">In</span> <span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="n">pd</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">2</span><span class="p">]:</span> <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">3</span><span class="p">]:</span> <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="p">(</span><span class="mi">5000</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">4</span><span class="p">]:</span> <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s">"A"</span><span class="p">,</span> <span class="s">"B"</span><span class="p">,</span> <span class="s">"C"</span><span class="p">],</span> <span class="n">index</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
 </code></pre></div></div>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">pymongo</span> <span class="kn">import</span> <span class="n">MongoClient</span>
+<p>To track the time required to finish an operation, we can make use of the IPython magic function <a href="https://ipython.org/ipython-doc/3/interactive/magics.html#magic-timeit"><code class="highlighter-rouge">%timeit</code></a> to measure the time required to execute a line in Python.</p>
 
-<span class="n">MONGO_HOST</span> <span class="o">=</span> <span class="s">'localhost'</span>
-<span class="n">MONGO_PORT</span> <span class="o">=</span> <span class="mi">30000</span>
-<span class="n">MONGO_DATABASE</span> <span class="o">=</span> <span class="s">'db'</span>
-<span class="n">MONGO_USERNAME</span> <span class="o">=</span> <span class="s">'username'</span>
-<span class="n">MONGO_PASSWORD</span><span class="o">=</span> <span class="s">'password'</span>
+<p>To start with, let’s consider a simple task of creating a new column in the DataFrame, whose values depend on whether the sum of the values in other columns are greater than zero. First, let’s try using the <code class="highlighter-rouge">apply</code> function of the DataFrame:</p>
 
-<span class="n">client</span> <span class="o">=</span> <span class="n">MongoClient</span><span class="p">(</span>
-    <span class="n">MONGO_HOST</span><span class="p">,</span> <span class="n">MONGO_PORT</span><span class="p">,</span>
-    <span class="n">username</span><span class="o">=</span><span class="n">MONGO_USERNAME</span><span class="p">,</span>
-    <span class="n">password</span><span class="o">=</span><span class="n">MONGO_PASSWORD</span><span class="p">,</span>
-    <span class="n">authSource</span><span class="o">=</span><span class="n">MONGO_DATABASE</span><span class="p">,</span>
-    <span class="n">authMechanism</span><span class="o">=</span><span class="s">'SCRAM-SHA-256'</span>
-<span class="p">)</span>
-<span class="n">db</span> <span class="o">=</span> <span class="n">client</span><span class="p">[</span><span class="n">MONGO_DATABASE</span><span class="p">]</span>
-
-<span class="n">results</span> <span class="o">=</span> <span class="n">db</span><span class="p">[</span><span class="s">"my_collection"</span><span class="p">]</span><span class="o">.</span><span class="n">find</span><span class="p">()</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">In</span> <span class="p">[</span><span class="mi">5</span><span class="p">]:</span> <span class="o">%</span><span class="n">timeit</span> <span class="n">df</span><span class="p">[</span><span class="s">"D"</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="nb">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">x</span><span class="p">[</span><span class="s">"A"</span><span class="p">]</span> <span class="o">+</span> <span class="n">x</span><span class="p">[</span><span class="s">"B"</span><span class="p">]</span> <span class="o">+</span> <span class="n">x</span><span class="p">[</span><span class="s">"C"</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="mi">134</span> <span class="n">ms</span> <span class="err">±</span> <span class="mf">1.59</span> <span class="n">ms</span> <span class="n">per</span> <span class="n">loop</span> <span class="p">(</span><span class="n">mean</span> <span class="err">±</span> <span class="n">std</span><span class="o">.</span> <span class="n">dev</span><span class="o">.</span> <span class="n">of</span> <span class="mi">7</span> <span class="n">runs</span><span class="p">,</span> <span class="mi">10</span> <span class="n">loops</span> <span class="n">each</span><span class="p">)</span>
 </code></pre></div></div>
 
-<p>Reference: <a href="https://api.mongodb.com/python/current/tutorial.html">https://api.mongodb.com/python/current/tutorial.html</a></p>
-</div><section class="article__sharing d-print-none"></section><div class="d-print-none"><footer class="article__footer"><meta itemprop="dateModified" content="2020-04-14T00:00:00+08:00"><!-- start custom article footer snippet -->
+<p>It takes about 134ms to finish the operation, which seems quite fast. However, if we take another approach by using numpy’s <code class="highlighter-rouge">where()</code> function, we can actually be much faster:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">In</span> <span class="p">[</span><span class="mi">6</span><span class="p">]:</span> <span class="o">%</span><span class="n">timeit</span> <span class="n">df</span><span class="p">[</span><span class="s">"E"</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s">"A"</span><span class="p">]</span> <span class="o">+</span> <span class="n">df</span><span class="p">[</span><span class="s">"B"</span><span class="p">]</span> <span class="o">+</span> <span class="n">df</span><span class="p">[</span><span class="s">"C"</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="mi">757</span> <span class="err">µ</span><span class="n">s</span> <span class="err">±</span> <span class="mf">38.8</span> <span class="err">µ</span><span class="n">s</span> <span class="n">per</span> <span class="n">loop</span> <span class="p">(</span><span class="n">mean</span> <span class="err">±</span> <span class="n">std</span><span class="o">.</span> <span class="n">dev</span><span class="o">.</span> <span class="n">of</span> <span class="mi">7</span> <span class="n">runs</span><span class="p">,</span> <span class="mi">1000</span> <span class="n">loops</span> <span class="n">each</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>This is ~170 times faster! We can verified that the two methods actually give the same results as follows. (<code class="highlighter-rouge">np.any</code> checks if any of the values in a list is <code class="highlighter-rouge">True</code>).</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">In</span> <span class="p">[</span><span class="mi">7</span><span class="p">]:</span> <span class="n">np</span><span class="o">.</span><span class="nb">any</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s">"D"</span><span class="p">]</span> <span class="o">!=</span> <span class="n">df</span><span class="p">[</span><span class="s">"E"</span><span class="p">])</span>
+<span class="bp">False</span>
+</code></pre></div></div>
+
+<h2 id="string-operations">String Operations</h2>
+
+<p>As another example, let’s try searching substrings in a column. Firstly, let’s generate some random text data in a new column:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">In</span> <span class="p">[</span><span class="mi">8</span><span class="p">]:</span> <span class="n">df</span><span class="p">[</span><span class="s">"F"</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="s">"apple"</span><span class="p">,</span> <span class="s">"banana"</span><span class="p">,</span> <span class="s">"orange"</span><span class="p">,</span> <span class="s">"pear"</span><span class="p">],</span> <span class="mi">5000</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Let’s say we want to create a new column, whose values depend on whether Column <code class="highlighter-rouge">F</code> contains the substring <strong>an</strong>. Firstly, let’s try the <code class="highlighter-rouge">apply</code> function:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">In</span> <span class="p">[</span><span class="mi">9</span><span class="p">]:</span> <span class="o">%</span><span class="n">timeit</span> <span class="n">df</span><span class="p">[</span><span class="s">"G"</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="nb">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="mi">1</span> <span class="k">if</span> <span class="s">"an"</span> <span class="ow">in</span> <span class="n">x</span><span class="p">[</span><span class="s">"F"</span><span class="p">]</span> <span class="k">else</span> <span class="mi">0</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="mf">61.1</span> <span class="n">ms</span> <span class="err">±</span> <span class="mi">685</span> <span class="err">µ</span><span class="n">s</span> <span class="n">per</span> <span class="n">loop</span> <span class="p">(</span><span class="n">mean</span> <span class="err">±</span> <span class="n">std</span><span class="o">.</span> <span class="n">dev</span><span class="o">.</span> <span class="n">of</span> <span class="mi">7</span> <span class="n">runs</span><span class="p">,</span> <span class="mi">10</span> <span class="n">loops</span> <span class="n">each</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Now, if we use the second approach:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">In</span> <span class="p">[</span><span class="mi">10</span><span class="p">]:</span> <span class="o">%</span><span class="n">timeit</span> <span class="n">df</span><span class="p">[</span><span class="s">"H"</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s">"F"</span><span class="p">]</span><span class="o">.</span><span class="nb">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s">"an"</span><span class="p">),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="mf">2.65</span> <span class="n">ms</span> <span class="err">±</span> <span class="mf">40.9</span> <span class="err">µ</span><span class="n">s</span> <span class="n">per</span> <span class="n">loop</span> <span class="p">(</span><span class="n">mean</span> <span class="err">±</span> <span class="n">std</span><span class="o">.</span> <span class="n">dev</span><span class="o">.</span> <span class="n">of</span> <span class="mi">7</span> <span class="n">runs</span><span class="p">,</span> <span class="mi">100</span> <span class="n">loops</span> <span class="n">each</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>which is ~30 times faster.</p>
+
+<p>The conclusion is that whenever we can operate on the whole column, we should avoid using <code class="highlighter-rouge">apply</code>, which is looping over every row of the DataFrame, and is not able to take advantage of numpy vectorization when performing the calculation.</p>
+</div><section class="article__sharing d-print-none"></section><div class="d-print-none"><footer class="article__footer"><meta itemprop="dateModified" content="2017-07-08T00:00:00+08:00"><!-- start custom article footer snippet -->
 
 <!-- end custom article footer snippet -->
 <div class="article__license"></div></footer>
-<div class="article__section-navigator clearfix"><div class="previous"><span>PREVIOUS</span><a href="/cheatsheets/2020/04/02/jupyter-autoreload.html">Enabling auto-reload in Jupyter</a></div></div></div>
+<div class="article__section-navigator clearfix"><div class="previous"><span>PREVIOUS</span><a href="/2017/04/23/python-matrix-factorization.html">Matrix Factorization: A Simple Tutorial and Implementation in Python</a></div><div class="next"><span>NEXT</span><a href="/2017/07/21/hsmc-deep-learning-talk.html">Deep Learning and Its Applications - Research Seminar at HSMC</a></div></div></div>
 
 </div>
 

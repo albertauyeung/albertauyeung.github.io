@@ -1,10 +1,10 @@
 <!DOCTYPE html><html lang="en">
   <head><meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"><title>Connect to MongoDB in Python - Albert Au Yeung</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"><title>Generating N-grams from Sentences in Python - Albert Au Yeung</title>
 
-<meta name="description" content="$ python -m pip install pymongofrom pymongo import MongoClientMONGO_HOST = 'localhost'MONGO_PORT = 30000MONGO_DATABASE = 'db'MONGO_USERNAME = 'username'MONGO...">
-<link rel="canonical" href="http://www.albertauyeung.com//cheatsheets/2020/04/14/python-mongo-connection.html"><link rel="alternate" type="application/rss+xml" title="Albert Au Yeung" href="/feed.xml"><!-- start favicons snippet, use https://realfavicongenerator.net/ --><link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png"><link rel="manifest" href="/assets/site.webmanifest"><link rel="mask-icon" href="/assets/safari-pinned-tab.svg" color="#fc4d50"><link rel="shortcut icon" href="/assets/favicon.ico">
+<meta name="description" content="N-grams are contiguous sequences of n-items in a sentence. N can be 1, 2 or any other positive integers, although usually we do not consider very large N bec...">
+<link rel="canonical" href="http://www.albertauyeung.com//2018/06/03/generating-ngrams.html"><link rel="alternate" type="application/rss+xml" title="Albert Au Yeung" href="/feed.xml"><!-- start favicons snippet, use https://realfavicongenerator.net/ --><link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png"><link rel="manifest" href="/assets/site.webmanifest"><link rel="mask-icon" href="/assets/safari-pinned-tab.svg" color="#fc4d50"><link rel="shortcut icon" href="/assets/favicon.ico">
 
 <meta name="msapplication-TileColor" content="#ffc40d"><meta name="msapplication-config" content="/assets/browserconfig.xml">
 
@@ -313,46 +313,156 @@ fill="#000000" stroke="none">
               <div class="col-main cell cell--auto"><!-- start custom main top snippet -->
 
 <!-- end custom main top snippet -->
-<article itemscope itemtype="http://schema.org/Article"><div class="article__header"><header><h1>Connect to MongoDB in Python</h1></header></div><meta itemprop="headline" content="Connect to MongoDB in Python"><div class="article__info clearfix"><ul class="left-col menu"><li>
+<article itemscope itemtype="http://schema.org/Article"><div class="article__header"><header><h1>Generating N-grams from Sentences in Python</h1></header></div><meta itemprop="headline" content="Generating N-grams from Sentences in Python"><div class="article__info clearfix"><ul class="left-col menu"><li>
               <a class="button button--secondary button--pill button--sm"
                 href="/archive.html?tag=python">python</a>
             </li><li>
               <a class="button button--secondary button--pill button--sm"
-                href="/archive.html?tag=mongodb">mongodb</a>
-            </li></ul><ul class="right-col menu"><li><i class="far fa-calendar-alt"></i> <span>Apr 14, 2020</span>
-            </li></ul></div><meta itemprop="author" content="Albert Au Yeung"/><meta itemprop="datePublished" content="2020-04-14T00:00:00+08:00">
-    <meta itemprop="keywords" content="python,mongodb"><div class="js-article-content"><div class="layout--article"><!-- start custom article top snippet -->
+                href="/archive.html?tag=nlp">nlp</a>
+            </li><li>
+              <a class="button button--secondary button--pill button--sm"
+                href="/archive.html?tag=nltk">nltk</a>
+            </li></ul><ul class="right-col menu"><li><i class="far fa-calendar-alt"></i> <span>Jun 03, 2018</span>
+            </li></ul></div><meta itemprop="author" content="Albert Au Yeung"/><meta itemprop="datePublished" content="2018-06-03T00:00:00+08:00">
+    <meta itemprop="keywords" content="python,nlp,nltk"><div class="js-article-content"><div class="layout--article"><!-- start custom article top snippet -->
 
 <!-- end custom article top snippet -->
-<div class="article__content" itemprop="articleBody"><div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>python <span class="nt">-m</span> pip <span class="nb">install </span>pymongo
+<div class="article__content" itemprop="articleBody"><p><a href="https://en.wikipedia.org/wiki/N-gram">N-grams</a> are contiguous sequences of n-items in a sentence. N can be 1, 2 or any other positive integers, although usually we do not consider very large N because those n-grams rarely appears in many different places.</p>
+
+<p>When performing machine learning tasks related to natural language processing, we usually need to generate n-grams from input sentences. For example, in text classification tasks, in addition to using each individual token found in the corpus, we may want to add bi-grams or tri-grams as features to represent our documents. This post describes several different ways to generate n-grams quickly from input sentences in Python.</p>
+
+<h2 id="the-pure-python-way">The Pure Python Way</h2>
+
+<p>In general, an input sentence is just a string of characters in Python. We can use build in functions in Python to generate n-grams quickly. Let’s take the following sentence as a sample input:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">s</span> <span class="o">=</span> <span class="s">"""
+    Natural-language processing (NLP) is an area of
+    computer science and artificial intelligence
+    concerned with the interactions between computers
+    and human (natural) languages.
+"""</span>
 </code></pre></div></div>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">pymongo</span> <span class="kn">import</span> <span class="n">MongoClient</span>
+<p>If we want to generate a list of bi-grams from the above sentence, the expected output would be something like below (depending on how do we want to treat the punctuations, the desired output can be different):</p>
 
-<span class="n">MONGO_HOST</span> <span class="o">=</span> <span class="s">'localhost'</span>
-<span class="n">MONGO_PORT</span> <span class="o">=</span> <span class="mi">30000</span>
-<span class="n">MONGO_DATABASE</span> <span class="o">=</span> <span class="s">'db'</span>
-<span class="n">MONGO_USERNAME</span> <span class="o">=</span> <span class="s">'username'</span>
-<span class="n">MONGO_PASSWORD</span><span class="o">=</span> <span class="s">'password'</span>
-
-<span class="n">client</span> <span class="o">=</span> <span class="n">MongoClient</span><span class="p">(</span>
-    <span class="n">MONGO_HOST</span><span class="p">,</span> <span class="n">MONGO_PORT</span><span class="p">,</span>
-    <span class="n">username</span><span class="o">=</span><span class="n">MONGO_USERNAME</span><span class="p">,</span>
-    <span class="n">password</span><span class="o">=</span><span class="n">MONGO_PASSWORD</span><span class="p">,</span>
-    <span class="n">authSource</span><span class="o">=</span><span class="n">MONGO_DATABASE</span><span class="p">,</span>
-    <span class="n">authMechanism</span><span class="o">=</span><span class="s">'SCRAM-SHA-256'</span>
-<span class="p">)</span>
-<span class="n">db</span> <span class="o">=</span> <span class="n">client</span><span class="p">[</span><span class="n">MONGO_DATABASE</span><span class="p">]</span>
-
-<span class="n">results</span> <span class="o">=</span> <span class="n">db</span><span class="p">[</span><span class="s">"my_collection"</span><span class="p">]</span><span class="o">.</span><span class="n">find</span><span class="p">()</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[</span>
+    <span class="s">"natural language"</span><span class="p">,</span>
+    <span class="s">"language processing"</span><span class="p">,</span>
+    <span class="s">"processing nlp"</span><span class="p">,</span>
+    <span class="s">"nlp is"</span><span class="p">,</span>
+    <span class="s">"is an"</span><span class="p">,</span>
+    <span class="s">"an area"</span><span class="p">,</span>
+    <span class="o">...</span>
+<span class="p">]</span>
 </code></pre></div></div>
 
-<p>Reference: <a href="https://api.mongodb.com/python/current/tutorial.html">https://api.mongodb.com/python/current/tutorial.html</a></p>
-</div><section class="article__sharing d-print-none"></section><div class="d-print-none"><footer class="article__footer"><meta itemprop="dateModified" content="2020-04-14T00:00:00+08:00"><!-- start custom article footer snippet -->
+<p>The following function can be used to achieve this:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">re</span>
+
+<span class="k">def</span> <span class="nf">generate_ngrams</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+    <span class="c1"># Convert to lowercases
+</span>    <span class="n">s</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    
+    <span class="c1"># Replace all none alphanumeric characters with spaces
+</span>    <span class="n">s</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s">r'[^a-zA-Z0-9\s]'</span><span class="p">,</span> <span class="s">' '</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
+    
+    <span class="c1"># Break sentence in the token, remove empty tokens
+</span>    <span class="n">tokens</span> <span class="o">=</span> <span class="p">[</span><span class="n">token</span> <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">s</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">" "</span><span class="p">)</span> <span class="k">if</span> <span class="n">token</span> <span class="o">!=</span> <span class="s">""</span><span class="p">]</span>
+    
+    <span class="c1"># Use the zip function to help us generate n-grams
+</span>    <span class="c1"># Concatentate the tokens into ngrams and return
+</span>    <span class="n">ngrams</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="n">token</span><span class="p">[</span><span class="n">i</span><span class="p">:]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)])</span>
+    <span class="k">return</span> <span class="p">[</span><span class="s">" "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ngram</span><span class="p">)</span> <span class="k">for</span> <span class="n">ngram</span> <span class="ow">in</span> <span class="n">ngrams</span><span class="p">]</span>
+</code></pre></div></div>
+
+<p>Applying the above function to the sentence, with <code class="highlighter-rouge">n=5</code>, gives the following output:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">generate_ngrams</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="p">[</span><span class="s">'natural language processing nlp is'</span><span class="p">,</span>
+ <span class="s">'language processing nlp is an'</span><span class="p">,</span>
+ <span class="s">'processing nlp is an area'</span><span class="p">,</span>
+ <span class="s">'nlp is an area of'</span><span class="p">,</span>
+ <span class="s">'is an area of computer'</span><span class="p">,</span>
+ <span class="s">'an area of computer science'</span><span class="p">,</span>
+ <span class="s">'area of computer science and'</span><span class="p">,</span>
+ <span class="s">'of computer science and artificial'</span><span class="p">,</span>
+ <span class="s">'computer science and artificial intelligence'</span><span class="p">,</span>
+ <span class="s">'science and artificial intelligence concerned'</span><span class="p">,</span>
+ <span class="s">'and artificial intelligence concerned with'</span><span class="p">,</span>
+ <span class="s">'artificial intelligence concerned with the'</span><span class="p">,</span>
+ <span class="s">'intelligence concerned with the interactions'</span><span class="p">,</span>
+ <span class="s">'concerned with the interactions between'</span><span class="p">,</span>
+ <span class="s">'with the interactions between computers'</span><span class="p">,</span>
+ <span class="s">'the interactions between computers and'</span><span class="p">,</span>
+ <span class="s">'interactions between computers and human'</span><span class="p">,</span>
+ <span class="s">'between computers and human natural'</span><span class="p">,</span>
+ <span class="s">'computers and human natural languages'</span><span class="p">]</span>
+</code></pre></div></div>
+
+<p>The above function makes use of the <code class="highlighter-rouge">zip</code> function, which creates a generator that aggregates elements from multiple lists (or iterables in genera). The blocks of codes and comments below offer some more explanation of the usage:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Sample sentence
+</span><span class="n">s</span> <span class="o">=</span> <span class="s">"one two three four five"</span>
+
+<span class="n">tokens</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">" "</span><span class="p">)</span>
+<span class="c1"># tokens = ["one", "two", "three", "four", "five"]
+</span>
+<span class="n">sequences</span> <span class="o">=</span> <span class="p">[</span><span class="n">tokens</span><span class="p">[</span><span class="n">i</span><span class="p">:]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)]</span>
+<span class="c1"># The above will generate sequences of tokens starting
+# from different elements of the list of tokens.
+# The parameter in the range() function controls
+# how many sequences to generate.
+#
+# sequences = [
+#   ['one', 'two', 'three', 'four', 'five'],
+#   ['two', 'three', 'four', 'five'],
+#   ['three', 'four', 'five']]
+</span>
+<span class="n">bigrams</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">sequences</span><span class="p">)</span>
+<span class="c1"># The zip function takes the sequences as a list of inputs
+# (using the * operator, this is equivalent to
+# zip(sequences[0], sequences[1], sequences[2]).
+# Each tuple it returns will contain one element from
+# each of the sequences.
+# 
+# To inspect the content of bigrams, try:
+# print(list(bigrams))
+# which will give the following:
+#
+# [
+#   ('one', 'two', 'three'),
+#   ('two', 'three', 'four'),
+#   ('three', 'four', 'five')
+# ]
+#
+# Note: even though the first sequence has 5 elements,
+# zip will stop after returning 3 tuples, because the
+# last sequence only has 3 elements. In other words,
+# the zip function automatically handles the ending of
+# the n-gram generation.
+</span></code></pre></div></div>
+
+<h2 id="using-nltk">Using NLTK</h2>
+
+<p>Instead of using pure Python functions, we can also get help from some natural language processing libraries such as the <a href="https://www.nltk.org/">Natural Language Toolkit (NLTK)</a>. In particular, nltk has the <code class="highlighter-rouge">ngrams</code> function that returns a generator of n-grams given a tokenized sentence. (See the documentaion of the function <a href="http://www.nltk.org/api/nltk.html#nltk.util.ngrams">here</a>)</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">from</span> <span class="nn">nltk.util</span> <span class="kn">import</span> <span class="n">ngrams</span>
+
+<span class="n">s</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s">r'[^a-zA-Z0-9\s]'</span><span class="p">,</span> <span class="s">' '</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
+<span class="n">tokens</span> <span class="o">=</span> <span class="p">[</span><span class="n">token</span> <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">s</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">" "</span><span class="p">)</span> <span class="k">if</span> <span class="n">token</span> <span class="o">!=</span> <span class="s">""</span><span class="p">]</span>
+<span class="n">output</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">ngrams</span><span class="p">(</span><span class="n">tokens</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+</code></pre></div></div>
+
+<p>The above block of code will generate the same output as the function <code class="highlighter-rouge">generate_ngrams()</code> as shown above.</p>
+
+</div><section class="article__sharing d-print-none"></section><div class="d-print-none"><footer class="article__footer"><meta itemprop="dateModified" content="2018-06-03T00:00:00+08:00"><!-- start custom article footer snippet -->
 
 <!-- end custom article footer snippet -->
 <div class="article__license"></div></footer>
-<div class="article__section-navigator clearfix"><div class="previous"><span>PREVIOUS</span><a href="/cheatsheets/2020/04/02/jupyter-autoreload.html">Enabling auto-reload in Jupyter</a></div></div></div>
+<div class="article__section-navigator clearfix"><div class="previous"><span>PREVIOUS</span><a href="/2017/07/21/hsmc-deep-learning-talk.html">Deep Learning and Its Applications - Research Seminar at HSMC</a></div><div class="next"><span>NEXT</span><a href="/2018/11/23/pyconhk-ml-deploy.html">Talk on Deploying ML Models in Python @ PyCon HK 2018</a></div></div></div>
 
 </div>
 

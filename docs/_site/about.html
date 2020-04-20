@@ -1,10 +1,11 @@
 <!DOCTYPE html><html lang="en">
   <head><meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"><title>Connect to MongoDB in Python - Albert Au Yeung</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"><title>About Me - Albert Au Yeung</title>
 
-<meta name="description" content="$ python -m pip install pymongofrom pymongo import MongoClientMONGO_HOST = 'localhost'MONGO_PORT = 30000MONGO_DATABASE = 'db'MONGO_USERNAME = 'username'MONGO...">
-<link rel="canonical" href="http://www.albertauyeung.com//cheatsheets/2020/04/14/python-mongo-connection.html"><link rel="alternate" type="application/rss+xml" title="Albert Au Yeung" href="/feed.xml"><!-- start favicons snippet, use https://realfavicongenerator.net/ --><link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png"><link rel="manifest" href="/assets/site.webmanifest"><link rel="mask-icon" href="/assets/safari-pinned-tab.svg" color="#fc4d50"><link rel="shortcut icon" href="/assets/favicon.ico">
+<meta name="description" content="Notes on AI & ML
+">
+<link rel="canonical" href="http://www.albertauyeung.com//about.html"><link rel="alternate" type="application/rss+xml" title="Albert Au Yeung" href="/feed.xml"><!-- start favicons snippet, use https://realfavicongenerator.net/ --><link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png"><link rel="manifest" href="/assets/site.webmanifest"><link rel="mask-icon" href="/assets/safari-pinned-tab.svg" color="#fc4d50"><link rel="shortcut icon" href="/assets/favicon.ico">
 
 <meta name="msapplication-TileColor" content="#ffc40d"><meta name="msapplication-config" content="/assets/browserconfig.xml">
 
@@ -254,7 +255,7 @@
 </head>
   <body>
     <div class="root" data-is-touch="false">
-      <div class="layout--page js-page-root"><div class="page__main js-page-main page__viewport has-aside cell cell--auto">
+      <div class="layout--page js-page-root"><div class="page__main js-page-main page__viewport cell cell--auto">
 
       <div class="page__main-inner"><div class="page__header d-print-none"><header class="header"><div class="main">
       <div class="header__title">
@@ -302,57 +303,31 @@ fill="#000000" stroke="none">
 </svg>
 <a title="Notes on AI & ML
 " href="/">Albert Au Yeung</a></div><button class="button button--secondary button--circle search-button js-search-toggle"><i class="fas fa-search"></i></button></div><nav class="navigation">
-        <ul><li class="navigation__item"><a href="/archive.html">Archive</a></li><li class="navigation__item"><a href="/cheatsheet.html">Cheatsheets</a></li><li class="navigation__item"><a href="/about.html">About</a></li><li class="navigation__item"><a href="/cv.html">CV</a></li><li class="navigation__item"><a href="/publications.html">Publications</a></li><li><button class="button button--secondary button--circle search-button js-search-toggle"><i class="fas fa-search"></i></button></li></ul>
+        <ul><li class="navigation__item"><a href="/archive.html">Archive</a></li><li class="navigation__item"><a href="/cheatsheet.html">Cheatsheets</a></li><li class="navigation__item navigation__item--active"><a href="/about.html">About</a></li><li class="navigation__item"><a href="/cv.html">CV</a></li><li class="navigation__item"><a href="/publications.html">Publications</a></li><li><button class="button button--secondary button--circle search-button js-search-toggle"><i class="fas fa-search"></i></button></li></ul>
       </nav></div>
   </header>
 </div><div class="page__content"><div class ="main"><div class="grid grid--reverse">
 
-              <div class="col-aside d-print-none js-col-aside"><aside class="page__aside js-page-aside"><div class="toc-aside js-toc-root"></div>
-</aside></div>
+              <div class="col-aside d-print-none js-col-aside"></div>
 
               <div class="col-main cell cell--auto"><!-- start custom main top snippet -->
 
 <!-- end custom main top snippet -->
-<article itemscope itemtype="http://schema.org/Article"><div class="article__header"><header><h1>Connect to MongoDB in Python</h1></header></div><meta itemprop="headline" content="Connect to MongoDB in Python"><div class="article__info clearfix"><ul class="left-col menu"><li>
-              <a class="button button--secondary button--pill button--sm"
-                href="/archive.html?tag=python">python</a>
-            </li><li>
-              <a class="button button--secondary button--pill button--sm"
-                href="/archive.html?tag=mongodb">mongodb</a>
-            </li></ul><ul class="right-col menu"><li><i class="far fa-calendar-alt"></i> <span>Apr 14, 2020</span>
-            </li></ul></div><meta itemprop="author" content="Albert Au Yeung"/><meta itemprop="datePublished" content="2020-04-14T00:00:00+08:00">
-    <meta itemprop="keywords" content="python,mongodb"><div class="js-article-content"><div class="layout--article"><!-- start custom article top snippet -->
+<article itemscope itemtype="http://schema.org/Article"><div class="article__header"><header><h1>About Me</h1></header></div><meta itemprop="headline" content="About Me"><meta itemprop="author" content="Albert Au Yeung"/><div class="js-article-content"><div class="layout--article"><!-- start custom article top snippet -->
 
 <!-- end custom article top snippet -->
-<div class="article__content" itemprop="articleBody"><div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>python <span class="nt">-m</span> pip <span class="nb">install </span>pymongo
-</code></pre></div></div>
+<div class="article__content" itemprop="articleBody"><p>I am currently an AI Technical Manager at <a href="https://www.wisers.ai">Wisers AI Lab</a>. My interests in computer science lies in machine learning, natural language processing, social network analysis, data mining and other general A.I. problems.</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">pymongo</span> <span class="kn">import</span> <span class="n">MongoClient</span>
+<p>Before joining Wisers, I was a machine learning lead engineer at Zwoop, a e-commerce startup in Hong Kong. I was the co-founder and CTO of Axon Labs Limited. My previous positions included researcher at Huawei’s <a href="http://www.noahlab.com.hk/">Noah’s Ark Lab</a>, senior engineer at the Hong Kong Applied Science and Technology Research Institute (<a href="http://www.astri.org/">ASTRI</a>), and research associate (post-doctoral researcher) at the <a href="http://www.kecl.ntt.co.jp/rps/english/index_e.html">NTT Communication Science Laboratories</a> in Kyoto, Japan.</p>
 
-<span class="n">MONGO_HOST</span> <span class="o">=</span> <span class="s">'localhost'</span>
-<span class="n">MONGO_PORT</span> <span class="o">=</span> <span class="mi">30000</span>
-<span class="n">MONGO_DATABASE</span> <span class="o">=</span> <span class="s">'db'</span>
-<span class="n">MONGO_USERNAME</span> <span class="o">=</span> <span class="s">'username'</span>
-<span class="n">MONGO_PASSWORD</span><span class="o">=</span> <span class="s">'password'</span>
+<p>I received my PhD in Computer Science in the School of Electronics and Computer Science at the <a href="http://www.soton.ac.uk">University of Southampton</a> in the U.K., under the supervision of <a href="http://www.jesus.ox.ac.uk/people/professor-sir-nigel-shadbolt">Prof. Nigel Shadbolt</a> and <a href="http://users.ecs.soton.ac.uk/nmg/">Dr. Nicholas Gibbins</a>. My study was generously supported by the R C Lee Centenary Scholarship of Drs Richard Charles and Esther Yewpick Lee Charitable Foundation. My thesis studies ‘collective semantics’, which is about how implicit semantics and relationship can be extracted from social sharing activites, with a focus on user behaviours.</p>
 
-<span class="n">client</span> <span class="o">=</span> <span class="n">MongoClient</span><span class="p">(</span>
-    <span class="n">MONGO_HOST</span><span class="p">,</span> <span class="n">MONGO_PORT</span><span class="p">,</span>
-    <span class="n">username</span><span class="o">=</span><span class="n">MONGO_USERNAME</span><span class="p">,</span>
-    <span class="n">password</span><span class="o">=</span><span class="n">MONGO_PASSWORD</span><span class="p">,</span>
-    <span class="n">authSource</span><span class="o">=</span><span class="n">MONGO_DATABASE</span><span class="p">,</span>
-    <span class="n">authMechanism</span><span class="o">=</span><span class="s">'SCRAM-SHA-256'</span>
-<span class="p">)</span>
-<span class="n">db</span> <span class="o">=</span> <span class="n">client</span><span class="p">[</span><span class="n">MONGO_DATABASE</span><span class="p">]</span>
-
-<span class="n">results</span> <span class="o">=</span> <span class="n">db</span><span class="p">[</span><span class="s">"my_collection"</span><span class="p">]</span><span class="o">.</span><span class="n">find</span><span class="p">()</span>
-</code></pre></div></div>
-
-<p>Reference: <a href="https://api.mongodb.com/python/current/tutorial.html">https://api.mongodb.com/python/current/tutorial.html</a></p>
-</div><section class="article__sharing d-print-none"></section><div class="d-print-none"><footer class="article__footer"><meta itemprop="dateModified" content="2020-04-14T00:00:00+08:00"><!-- start custom article footer snippet -->
+<p>I obtained my M.Phil degree in the Department of Computer Science and Engineering at the <a href="http://www.cuhk.edu.hk">Chinese University of Hong Kong</a>. I finished my thesis on fuzzy ontologies under the supervision of <a href="http://www.cse.cuhk.edu.hk/~lhf/">Prof. Leung Ho Fung</a>. I obtained my B.Eng degree in Information Engineering in the same university.</p>
+</div><div class="d-print-none"><footer class="article__footer"><!-- start custom article footer snippet -->
 
 <!-- end custom article footer snippet -->
-<div class="article__license"></div></footer>
-<div class="article__section-navigator clearfix"><div class="previous"><span>PREVIOUS</span><a href="/cheatsheets/2020/04/02/jupyter-autoreload.html">Enabling auto-reload in Jupyter</a></div></div></div>
+</footer>
+</div>
 
 </div>
 
@@ -939,33 +914,6 @@ window.Lazyload.js([SOURCES.jquery, PAHTS.search_js], function() {
 /*(function () {
 
 })();*/
-</script><script>
-  /* toc must before affix, since affix need to konw toc' height. */(function() {
-  var SOURCES = window.TEXT_VARIABLES.sources;
-  window.Lazyload.js(SOURCES.jquery, function() {
-    var $window = $(window), $pageFooter = $('.js-page-footer');
-    var $pageAside = $('.js-page-aside');
-    var affix;
-    var tocDisabled = false;
-    var hasSidebar = $('.js-page-root').hasClass('layout--page--sidebar');
-
-    affix = $pageAside.affix({
-      offsetBottom: $pageFooter.outerHeight(),
-      scrollTarget: hasSidebar ? '.js-page-main' : null,
-      scroller: hasSidebar ? '.js-page-main' : null,
-      scroll: hasSidebar ? $('.js-page-main').children() : null,
-      disabled: tocDisabled
-    });
-
-    $window.on('resize', window.throttle(function() {
-      affix && affix.setOptions({
-        disabled: tocDisabled
-      });
-    }, 100));
-
-    window.pageAsideAffix = affix;
-  });
-})();
 </script><script type="text/x-mathjax-config">
 	var _config = { tex2jax: {
 		inlineMath: [['$','$'], ['\\(','\\)']]

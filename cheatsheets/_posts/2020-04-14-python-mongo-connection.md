@@ -22,7 +22,7 @@ client = MongoClient(
     MONGO_HOST, MONGO_PORT,
     username=MONGO_USERNAME,
     password=MONGO_PASSWORD,
-    authSource=MONGO_DATABASE
+    authSource=MONGO_DATABASE,
     authMechanism='SCRAM-SHA-256'
 )
 db = client[MONGO_DATABASE]

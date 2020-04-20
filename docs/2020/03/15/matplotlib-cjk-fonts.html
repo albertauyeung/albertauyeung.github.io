@@ -1,10 +1,10 @@
 <!DOCTYPE html><html lang="en">
   <head><meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"><title>Connect to MongoDB in Python - Albert Au Yeung</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"><title>Displaying CJK Characters in Matplotlib Plots - Albert Au Yeung</title>
 
-<meta name="description" content="$ python -m pip install pymongofrom pymongo import MongoClientMONGO_HOST = 'localhost'MONGO_PORT = 30000MONGO_DATABASE = 'db'MONGO_USERNAME = 'username'MONGO...">
-<link rel="canonical" href="http://www.albertauyeung.com//cheatsheets/2020/04/14/python-mongo-connection.html"><link rel="alternate" type="application/rss+xml" title="Albert Au Yeung" href="/feed.xml"><!-- start favicons snippet, use https://realfavicongenerator.net/ --><link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png"><link rel="manifest" href="/assets/site.webmanifest"><link rel="mask-icon" href="/assets/safari-pinned-tab.svg" color="#fc4d50"><link rel="shortcut icon" href="/assets/favicon.ico">
+<meta name="description" content="Matplotlib by default does not support displaying Unicode characters such as Chinese, Japanese and Korean characters. This post introduces two different meth...">
+<link rel="canonical" href="http://www.albertauyeung.com//2020/03/15/matplotlib-cjk-fonts.html"><link rel="alternate" type="application/rss+xml" title="Albert Au Yeung" href="/feed.xml"><!-- start favicons snippet, use https://realfavicongenerator.net/ --><link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png"><link rel="manifest" href="/assets/site.webmanifest"><link rel="mask-icon" href="/assets/safari-pinned-tab.svg" color="#fc4d50"><link rel="shortcut icon" href="/assets/favicon.ico">
 
 <meta name="msapplication-TileColor" content="#ffc40d"><meta name="msapplication-config" content="/assets/browserconfig.xml">
 
@@ -313,46 +313,138 @@ fill="#000000" stroke="none">
               <div class="col-main cell cell--auto"><!-- start custom main top snippet -->
 
 <!-- end custom main top snippet -->
-<article itemscope itemtype="http://schema.org/Article"><div class="article__header"><header><h1>Connect to MongoDB in Python</h1></header></div><meta itemprop="headline" content="Connect to MongoDB in Python"><div class="article__info clearfix"><ul class="left-col menu"><li>
+<article itemscope itemtype="http://schema.org/Article"><div class="article__header"><header><h1>Displaying CJK Characters in Matplotlib Plots</h1></header></div><meta itemprop="headline" content="Displaying CJK Characters in Matplotlib Plots"><div class="article__info clearfix"><ul class="left-col menu"><li>
               <a class="button button--secondary button--pill button--sm"
                 href="/archive.html?tag=python">python</a>
             </li><li>
               <a class="button button--secondary button--pill button--sm"
-                href="/archive.html?tag=mongodb">mongodb</a>
-            </li></ul><ul class="right-col menu"><li><i class="far fa-calendar-alt"></i> <span>Apr 14, 2020</span>
-            </li></ul></div><meta itemprop="author" content="Albert Au Yeung"/><meta itemprop="datePublished" content="2020-04-14T00:00:00+08:00">
-    <meta itemprop="keywords" content="python,mongodb"><div class="js-article-content"><div class="layout--article"><!-- start custom article top snippet -->
+                href="/archive.html?tag=matplotlib">matplotlib</a>
+            </li><li>
+              <a class="button button--secondary button--pill button--sm"
+                href="/archive.html?tag=visualization">visualization</a>
+            </li><li>
+              <a class="button button--secondary button--pill button--sm"
+                href="/archive.html?tag=jupyter">jupyter</a>
+            </li></ul><ul class="right-col menu"><li><i class="far fa-calendar-alt"></i> <span>Mar 15, 2020</span>
+            </li></ul></div><meta itemprop="author" content="Albert Au Yeung"/><meta itemprop="datePublished" content="2020-03-15T00:00:00+08:00">
+    <meta itemprop="keywords" content="python,matplotlib,visualization,jupyter"><div class="js-article-content"><div class="layout--article"><!-- start custom article top snippet -->
 
 <!-- end custom article top snippet -->
-<div class="article__content" itemprop="articleBody"><div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>python <span class="nt">-m</span> pip <span class="nb">install </span>pymongo
+<div class="article__content" itemprop="articleBody"><p>Matplotlib by default does not support displaying Unicode characters such as Chinese, Japanese and Korean characters. This post introduces two different methods to allow these characters to be shown in the graphs.</p>
+
+<p>The issue here is that we need to configure Matplotlib to use fonts that support the characters that we want to display. To configure the font used by Matplotlib, there are two ways.</p>
+
+<h2 id="specifying-the-path-to-the-font-file">Specifying the Path to the Font File</h2>
+
+<p>If you have a font file that support displaying CJK characters, you can directly provide the path to the font file using the <code class="highlighter-rouge">FontProperties</code> class in Matplotlib. This font file can be a <code class="highlighter-rouge">.ttf</code> file (TrueType Font) or a <code class="highlighter-rouge">.otf</code> file (OpenType Font). For example, you can download a OTF font that supports displaying CJK characters from <a href="https://fonts.google.com/">Google Fonts</a>.</p>
+
+<p>Once we have the font file, we can create a <code class="highlighter-rouge">FontProperties</code> instance as follows:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">matplotlib.font_manager</span> <span class="k">as</span> <span class="n">fm</span>
+<span class="n">fprop</span> <span class="o">=</span> <span class="n">fm</span><span class="o">.</span><span class="n">FontProperties</span><span class="p">(</span><span class="n">fname</span><span class="o">=</span><span class="s">'NotoSansCJKtc-Regular.otf'</span><span class="p">)</span>
 </code></pre></div></div>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">pymongo</span> <span class="kn">import</span> <span class="n">MongoClient</span>
+<p>When plotting a graph, we can provide this <code class="highlighter-rouge">FonProperties</code> instance as an argument to functions that control what words are displayed in the graph. The example below shows how to set the font for the title and the labels on the X-axis.</p>
 
-<span class="n">MONGO_HOST</span> <span class="o">=</span> <span class="s">'localhost'</span>
-<span class="n">MONGO_PORT</span> <span class="o">=</span> <span class="mi">30000</span>
-<span class="n">MONGO_DATABASE</span> <span class="o">=</span> <span class="s">'db'</span>
-<span class="n">MONGO_USERNAME</span> <span class="o">=</span> <span class="s">'username'</span>
-<span class="n">MONGO_PASSWORD</span><span class="o">=</span> <span class="s">'password'</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
 
-<span class="n">client</span> <span class="o">=</span> <span class="n">MongoClient</span><span class="p">(</span>
-    <span class="n">MONGO_HOST</span><span class="p">,</span> <span class="n">MONGO_PORT</span><span class="p">,</span>
-    <span class="n">username</span><span class="o">=</span><span class="n">MONGO_USERNAME</span><span class="p">,</span>
-    <span class="n">password</span><span class="o">=</span><span class="n">MONGO_PASSWORD</span><span class="p">,</span>
-    <span class="n">authSource</span><span class="o">=</span><span class="n">MONGO_DATABASE</span><span class="p">,</span>
-    <span class="n">authMechanism</span><span class="o">=</span><span class="s">'SCRAM-SHA-256'</span>
-<span class="p">)</span>
-<span class="n">db</span> <span class="o">=</span> <span class="n">client</span><span class="p">[</span><span class="n">MONGO_DATABASE</span><span class="p">]</span>
+<span class="c1"># Prepare some data
+</span><span class="n">x</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">20</span><span class="p">))</span>
+<span class="n">xticks</span> <span class="o">=</span> <span class="p">[</span><span class="s">"類別{:d}"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">x</span><span class="p">]</span>
+<span class="n">y</span> <span class="o">=</span> <span class="p">[</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">99</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">x</span><span class="p">]</span>
 
-<span class="n">results</span> <span class="o">=</span> <span class="n">db</span><span class="p">[</span><span class="s">"my_collection"</span><span class="p">]</span><span class="o">.</span><span class="n">find</span><span class="p">()</span>
+<span class="c1"># Plot the graph
+</span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">xticks</span><span class="p">,</span> <span class="n">fontproperties</span><span class="o">=</span><span class="n">fprop</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">45</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">"圖1"</span><span class="p">,</span> <span class="n">fontproperties</span><span class="o">=</span><span class="n">fprop</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">18</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </code></pre></div></div>
 
-<p>Reference: <a href="https://api.mongodb.com/python/current/tutorial.html">https://api.mongodb.com/python/current/tutorial.html</a></p>
-</div><section class="article__sharing d-print-none"></section><div class="d-print-none"><footer class="article__footer"><meta itemprop="dateModified" content="2020-04-14T00:00:00+08:00"><!-- start custom article footer snippet -->
+<p>The effect will be as follows:</p>
+
+<p><img src="/assets/images/20200315_graph1.png" alt="Graph 1" /></p>
+
+<h2 id="using-fonts-in-the-font-folder">Using Fonts in the Font Folder</h2>
+
+<p>Another way of using a custom font is to install the font into Matplotlib’s font folder, and update the font manager.</p>
+
+<p>Firstly, we need to know the path to the font folder. We can first use the following command to check the location of the Matplotlib installation:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">print</span><span class="p">(</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">matplotlib_fname</span><span class="p">())</span>
+</code></pre></div></div>
+
+<p>On my computer the above command will print:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/usr/local/lib/python3.7/site-packages/matplotlib/mpl-data/matplotlibrc
+</code></pre></div></div>
+
+<p>The full path to the font folder can be obtained by replacing <code class="highlighter-rouge">/mpl-data/matplotlibrc</code> with <code class="highlighter-rouge">/mpl-data/fonts/ttf</code>:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/usr/local/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf
+</code></pre></div></div>
+
+<p>Next, you can put the font file you would like to use into the font folder, and then update Matplotlib’s font manager:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">matplotlib.font_manager</span> <span class="k">as</span> <span class="n">fm</span>
+<span class="n">fm</span><span class="o">.</span><span class="n">_rebuild</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>Once this is done, you can check the name of the font you have installed using the following statement. In this example, I have downloaded the font <code class="highlighter-rouge">NotoSansCJKtc-Regular.otf</code> from Google Font, and placed it in the file folder.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[</span><span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">fm</span><span class="o">.</span><span class="n">fontManager</span><span class="o">.</span><span class="n">ttflist</span> <span class="k">if</span> <span class="s">'Noto'</span> <span class="ow">in</span> <span class="n">f</span><span class="o">.</span><span class="n">name</span><span class="p">]</span>
+</code></pre></div></div>
+
+<p>And the following is the output:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[</span><span class="o">&lt;</span><span class="n">Font</span> <span class="s">'Noto Sans CJK TC'</span> <span class="p">(</span><span class="n">NotoSansCJKtc</span><span class="o">-</span><span class="n">Regular</span><span class="o">.</span><span class="n">otf</span><span class="p">)</span> <span class="n">normal</span> <span class="n">normal</span> <span class="mi">400</span> <span class="n">normal</span><span class="o">&gt;</span><span class="p">,</span>
+ <span class="o">&lt;</span><span class="n">Font</span> <span class="s">'Noto Sans Tagalog'</span> <span class="p">(</span><span class="n">NotoSansTagalog</span><span class="o">-</span><span class="n">Regular</span><span class="o">.</span><span class="n">ttf</span><span class="p">)</span> <span class="n">normal</span> <span class="n">normal</span> <span class="mi">400</span> <span class="n">normal</span><span class="o">&gt;</span><span class="p">,</span>
+ <span class="o">&lt;</span><span class="n">Font</span> <span class="s">'Noto Sans Kayah Li'</span> <span class="p">(</span><span class="n">NotoSansKayahLi</span><span class="o">-</span><span class="n">Regular</span><span class="o">.</span><span class="n">ttf</span><span class="p">)</span> <span class="n">normal</span> <span class="n">normal</span> <span class="mi">400</span> <span class="n">normal</span><span class="o">&gt;</span><span class="p">,</span>
+ <span class="o">&lt;</span><span class="n">Font</span> <span class="s">'Noto Sans Tai Tham'</span> <span class="p">(</span><span class="n">NotoSansTaiTham</span><span class="o">-</span><span class="n">Regular</span><span class="o">.</span><span class="n">ttf</span><span class="p">)</span> <span class="n">normal</span> <span class="n">normal</span> <span class="mi">400</span> <span class="n">normal</span><span class="o">&gt;</span><span class="p">,</span>
+ <span class="o">&lt;</span><span class="n">Font</span> <span class="s">'Noto Sans Ol Chiki'</span> <span class="p">(</span><span class="n">NotoSansOlChiki</span><span class="o">-</span><span class="n">Regular</span><span class="o">.</span><span class="n">ttf</span><span class="p">)</span> <span class="n">normal</span> <span class="n">normal</span> <span class="mi">400</span> <span class="n">normal</span><span class="o">&gt;</span><span class="p">,</span>
+ <span class="o">...</span>
+</code></pre></div></div>
+
+<p>Here, the name of the font is “<code class="highlighter-rouge">Noto Sans CJK TC</code>”. We can then configure Matplotlib to use this font in our graphs:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">matplotlib</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s">'font.family'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s">'Noto Sans CJK TC'</span><span class="p">]</span>
+</code></pre></div></div>
+
+<p>Below is an example:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">xticks</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">45</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">"圖1"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">18</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>which will produce the same graph as above:</p>
+
+<p><img src="/assets/images/20200315_graph1.png" alt="Graph 1" /></p>
+
+<h2 id="using-custom-fonts-in-seaborn">Using Custom Fonts in Seaborn</h2>
+
+<p>Choosing the second method described above allowing you to use the font in Seaborn too. Below is an example that shows how you can configure the font to be used in Seaborn.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="n">sns</span>
+<span class="n">colour</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">(</span><span class="s">"GnBu_d"</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="nb">set</span><span class="p">(</span><span class="n">rc</span><span class="o">=</span><span class="p">{</span><span class="s">'figure.figsize'</span><span class="p">:(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="s">'figure.dpi'</span><span class="p">:</span><span class="mi">120</span><span class="p">})</span>
+<span class="n">sns</span><span class="o">.</span><span class="nb">set</span><span class="p">(</span><span class="n">font</span><span class="o">=</span><span class="s">'Noto Sans CJK TC'</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="n">xticks</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">palette</span><span class="o">=</span><span class="n">colour</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">xticks</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">45</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s">"圖表1"</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>And the following graph will be produced:</p>
+
+<p><img src="/assets/images/20200315_graph2.png" alt="Graph 2" /></p>
+</div><section class="article__sharing d-print-none"></section><div class="d-print-none"><footer class="article__footer"><meta itemprop="dateModified" content="2020-03-15T00:00:00+08:00"><!-- start custom article footer snippet -->
 
 <!-- end custom article footer snippet -->
 <div class="article__license"></div></footer>
-<div class="article__section-navigator clearfix"><div class="previous"><span>PREVIOUS</span><a href="/cheatsheets/2020/04/02/jupyter-autoreload.html">Enabling auto-reload in Jupyter</a></div></div></div>
+<div class="article__section-navigator clearfix"><div class="previous"><span>PREVIOUS</span><a href="/2018/11/23/pyconhk-ml-deploy.html">Talk on Deploying ML Models in Python @ PyCon HK 2018</a></div><div class="next"><span>NEXT</span><a href="/cheatsheets/2020/04/01/python-mysql-connector.html">Connecting to MySQL Database in Python</a></div></div></div>
 
 </div>
 
