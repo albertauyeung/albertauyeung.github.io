@@ -4,7 +4,7 @@ title:  "Creating a Website with Vue.js backed by Google Sheets"
 tags: [vuejs, javascript, frontend, bootstrap, googlesheets]
 ---
 
-It has been quite a long time since I have developed a Website. The last one I made was probably the Website that I designed and developed for my brother ([http://www.simusic.hk/](http://www.simusic.hk/)) many years agao. At that time, the Website was developed using [PHP](https://www.php.net/), [JQuery](https://jquery.com/) and [Bootstrap](https://getbootstrap.com/). Since then, I have been mainly working in the areas of machine learning, data mining and natural language processing, and have left frontend development behind.
+It has been quite a long time since I have developed a Website. The last one I made was probably the Website that I designed and developed for my brother ([http://www.simusic.hk/](http://www.simusic.hk/)) many years ago. At that time, the Website was developed using [PHP](https://www.php.net/), [JQuery](https://jquery.com/) and [Bootstrap](https://getbootstrap.com/). Since then, I have been mainly working in the areas of machine learning, data mining and natural language processing, and have left frontend development behind.
 
 Frontend technologies, like many other areas in software development, have changed a lot in the past years. I know about Angular, React and Vue.js, but have never really gone back to learn the basics until now. Recently, I would like to explore the idea of quickly building a Website that shows dynamic content stored in a database. After some exploration, I found that the following combination seems a quick and convenient way to achieve something similar:
 - Use [Vue.js](https://vuejs.org/) to build the frontend Web app
