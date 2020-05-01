@@ -2,6 +2,7 @@
 layout: article
 title:  "Generating N-grams from Sentences in Python"
 tags: [python, nlp, nltk]
+key: '20180603ngrams'
 ---
 
 [N-grams](https://en.wikipedia.org/wiki/N-gram) are contiguous sequences of n-items in a sentence. N can be 1, 2 or any other positive integers, although usually we do not consider very large N because those n-grams rarely appears in many different places.

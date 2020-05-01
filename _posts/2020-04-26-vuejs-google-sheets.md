@@ -2,6 +2,7 @@
 layout: article
 title:  "Creating a Website with Vue.js backed by Google Sheets"
 tags: [vuejs, javascript, frontend, bootstrap, googlesheets]
+key: 'p20200426vuejs'
 ---
 
 It has been quite a long time since I have developed a Website. The last one I made was probably the Website that I designed and developed for my brother ([http://www.simusic.hk/](http://www.simusic.hk/)) many years ago. At that time, the Website was developed using [PHP](https://www.php.net/), [JQuery](https://jquery.com/) and [Bootstrap](https://getbootstrap.com/). Since then, I have been mainly working in the areas of machine learning, data mining and natural language processing, and have left frontend development behind.

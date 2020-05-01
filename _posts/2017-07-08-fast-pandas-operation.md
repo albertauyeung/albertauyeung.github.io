@@ -2,6 +2,7 @@
 layout: article
 title:  "Making pandas Operations Faster"
 tags: [python, pandas]
+key: 'p20170708pandas'
 ---
 
 [pandas](http://pandas.pydata.org/) is one of the most commonly used Python library in data analysis and machine learning. It is versatile and can be used to handle many different types of data. Before feeding a model with training data, one would most probably pre-process the data and perform feature extraction on data stored as pandas `DataFrame`. I have been using pandas extensively in my work, and have recently discovered that the time required to manipulate data stored in a `DataFrame` can vary hugely depending on the method you used.

@@ -2,6 +2,7 @@
 layout: article
 title:  "Matrix Factorization: A Simple Tutorial and Implementation in Python"
 tags: [python, machine learning, matrix factorization]
+key: 'p20170423mf'
 ---
 
 There is probably no need to say that there is too much information on the Web nowadays. Search engines help us a little bit. What is better is to have something interesting recommended to us automatically without asking. Indeed, from as simple as a list of the most popular questions and answers on [Quora](https://www.quora.com/) to some more personalized recommendations we received on [Amazon](https://www.amazon.com), we are usually offered recommendations on the Web.
