@@ -1,6 +1,6 @@
 ---
 layout: article
-title:  "AWK Cookbook"
+title:  "Using Awk"
 tags: [awk, data processing]
 ---
 
