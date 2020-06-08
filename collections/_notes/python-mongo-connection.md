@@ -1,7 +1,6 @@
 ---
 layout: article
 title:  "Connect to MongoDB in Python"
-categories: [cheatsheets]
 tags: [python, mongodb]
 ---
 

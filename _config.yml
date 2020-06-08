@@ -71,8 +71,6 @@ paths:
 ## => Collections
 ##############################
 collections:
-  cheatsheets:
-    output: true
   notes:
     output: true
 

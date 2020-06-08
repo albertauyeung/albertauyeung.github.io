@@ -2,9 +2,7 @@
 {%- assign _tag_min_size = 1 -%}
 {%- assign _tag_cur_size = 1 -%}
 
-{%- if include.selected_collection == "cheatsheets" -%}
-  {%- assign data_source = site.cheatsheets -%}
-{%- elsif include.selected_collection == "notes" -%}
+{%- if include.selected_collection == "notes" -%}
   {%- assign data_source = site.notes -%}
 {%- else -%}
   {%- assign data_source = site.posts -%}

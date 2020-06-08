@@ -1,7 +1,6 @@
 ---
 layout: article
 title:  "Enabling auto-reload in Jupyter"
-categories: [cheatsheets]
 tags: [python, jupyter]
 ---
 

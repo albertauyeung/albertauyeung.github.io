@@ -1,7 +1,6 @@
 ---
 layout: article
 title:  "Connecting to MySQL Database in Python"
-categories: [cheatsheets]
 tags: [python, mysql]
 ---
 
