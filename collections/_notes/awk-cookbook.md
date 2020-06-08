@@ -1,6 +1,6 @@
 ---
 layout: article
-title:  "Using Awk"
+title:  "Awk Cookbook"
 tags: [awk, data processing]
 ---
 
@@ -77,5 +77,34 @@ $ echo "I have an apple\nI have an orange" | awk '/apple/' { print $0 }'
 I have an apple
 ```
 
+Using the `match` function if we want to get the position of where the pattern starts:
 
+```awk
+BEGIN {
+    regex = "[0-9]+";
+}
+{
+    if (match($0, regex)) {
+        print RSTART, RLENGTH
+    }
+}
+```
+
+For example, given the following content `123ABC\nABC678`, the above script will print:
+
+```bash
+1 3
+4 3
+```
+
+## Creating Time Strings
+
+In GAWK, a `strftime` function is available for creating a string of the current time. For example, `strftime("%y-%m-%d %H:%M:%S")` returns something like `2020-06-01 12:30:12`.
+
+However, in AWK, this function is not available. However, we can use the `date` command in combination with the `getline` function to obtain a date/time string:
+
+```awk
+$ echo "Current date/time is" | awk 'BEGIN { "date \"+%Y-%m-%d %H:%M:%S\"" | getline a}{ print $0 " " a }'
+Current date/time is 2020-06-08 12:36:40
+```
 
