@@ -26,7 +26,11 @@ header:
 
   - titles:
       en      : &EN       Cheatsheets
-    url: /cheatsheet.html
+    url: /cheatsheets.html
+
+  - titles:
+      en      : &EN       Notes
+    url: /notes.html
 
   - titles:
       # @start locale config
@@ -52,14 +56,6 @@ header:
       fr-LU   : *FR
       # @end locale config
     url: /about.html
-
-  - titles:
-      en      : &EN       CV
-    url: /cv.html
-
-  - titles:
-      en      : &EN       Publications
-    url: /publications.html
 
 tags:
   - title: Tags

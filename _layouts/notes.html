@@ -1,0 +1,18 @@
+---
+layout: page
+title: Cheatsheets
+---
+
+<div class="layout--archive js-all">
+  {%- include tags_collections.html selected_collection='notes' -%}
+
+  <div class="js-result layout--archive__result d-none">
+    {%- include collections-list.html articles=site.notes type='brief' show_info=true -%}
+  </div>
+</div>
+
+<script>
+  {%- include scripts/notes.js -%}
+</script>
+
+{{ content }}

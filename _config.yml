@@ -68,6 +68,16 @@ paths:
   rss     : # "/feed.xml" (default)
 
 
+## => Collections
+##############################
+collections:
+  cheatsheets:
+    output: true
+  notes:
+    output: true
+
+collections_dir: collections
+
 ## => Post
 ##############################
 ## excerpt

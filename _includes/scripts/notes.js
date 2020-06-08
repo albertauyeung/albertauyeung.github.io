@@ -44,8 +44,8 @@
     var sectionTopArticleIndex = [];
     var hasInit = false;
 
-    $sections.each(function() {
-      sectionArticles.push($(this).find('.item'));
+    $(this).find('.item').each(function(item) {
+      sectionArticles.push(item);
     });
 
     function init() {
@@ -76,41 +76,34 @@
     }
 
     function tagSelect (tag/*raw tag*/, target) {
+      $articles = $('.js-result').find('.item');
       var result = {}, $articles;
       var i, j, k, _tag;
-      
-      for (i = 0; i < sectionArticles.length; i++) {
-        $articles = sectionArticles[i];
-        for (j = 0; j < $articles.length; j++) {
-          if (tag === '' || tag === undefined) {
-            result[i] || (result[i] = {});
-            result[i][j] = true;
-          } else {
-            var tags = $articles.eq(j).data('tags').split(',');
-            for (k = 0; k < tags.length; k++) {
-              if (tags[k] === tag) {
-                result[i] || (result[i] = {});
-                result[i][j] = true; break;
-              }
+
+      for (j = 0; j < $articles.length; j++) {
+        if (tag === '' || tag === undefined) {
+          result || (result = {});
+          result[j] = true;
+        } else {
+          var tags = $articles.eq(j).data('tags').split(',');
+          for (k = 0; k < tags.length; k++) {
+            if (tags[k] === tag) {
+              result || (result = {});
+              result[j] = true; break;
             }
           }
         }
       }
 
-      for (i = 0; i < sectionArticles.length; i++) {
-        result[i] && $sections.eq(i).removeClass('d-none');
-        result[i] || $sections.eq(i).addClass('d-none');
-        for (j = 0; j < sectionArticles[i].length; j++) {
-          if (result[i] && result[i][j]) {
-            sectionArticles[i].eq(j).removeClass('d-none');
-          } else {
-            sectionArticles[i].eq(j).addClass('d-none');
-          }
+      for (i = 0; i < $articles.length; i++) {
+        if (result[i]) {
+          $articles.eq(i).removeClass('d-none');
+        } else {
+          $articles.eq(i).addClass('d-none');
         }
       }
 
       hasInit || ($result.removeClass('d-none'), hasInit = true);
-
 
       if (target) {
         buttonFocus(target);
