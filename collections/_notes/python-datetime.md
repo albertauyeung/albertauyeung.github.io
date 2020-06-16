@@ -6,6 +6,8 @@ tags: [python]
 
 ## The `datetime` Module
 
+- [https://docs.python.org/3/library/datetime.html](https://docs.python.org/3/library/datetime.html)
+
 With the help of the `pytz` module:
 
 ```python
@@ -25,11 +27,12 @@ timestamp = datetime.strptime(timestamp, "%Y-%m-%d %H:%M:%S")
 epoch_time = 1580092848  # seconds since epoch
 o = datetime.fromtimestamp(epoch_time)
 print(o.strftime("%Y-%m-%d %H:%M:%S"))  # prints "2020-01-27 10:40:48"
-
 ```
 
 
 ## The `Arrow` Module
+
+- [https://arrow.readthedocs.io/en/latest/](https://arrow.readthedocs.io/en/latest/)
 
 ```bash
 $ pip3 install -U arrow
