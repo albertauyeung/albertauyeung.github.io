@@ -4,6 +4,10 @@ title:  "Graph Emebeddings"
 tags: [machine learning, graphs, embeddings]
 ---
 
+Notes on graph embeddings, major references are:
+- Hamilton et al. 2018. [Representation Learning on Networks](http://snap.stanford.edu/proj/embeddings-www/) WWW 2018 Tutorial
+- Primož Godec. 2018. [Graph Embeddings — The Summary](https://towardsdatascience.com/graph-embeddings-the-summary-cc6075aba007)
+
 ## What is Graph Embeddings?
 
 - Graph embeddings are the transformation of property graphs to a vector or a set of vectors.
@@ -42,9 +46,23 @@ There are many different machine learning tasks that are related to graphs and n
 
 #### Adjacency-based Similarity
 
+- References:
+    - [Ahmed et al. 2013](https://static.googleusercontent.com/media/research.google.com/en//pubs/archive/40839.pdf)
+- Similarity function is just the edge weight between two nodes $u$ and $v$ in the original network
+- We want to minimize the following loss function: $\mathcal{L} = \sum_{(u,v)\in V \times V} || z_u^{\top}z_v - A_{u,v}||^2$, where $A_{u,v}$ is the corresponding cell in the adjacency matrix
+- Limitations:
+    - $O(|V|^2)$ runtime (it must consider all node pairs)
+    - It only considers direct and location connections
+
+#### Multi-hop Similarity
 
 
-### DeepWalk
+#### Random Walk Approaches
+
+
+### Methods
+
+#### DeepWalk
 
 - [DeepWalk: Online Learning of Social Representations](https://arxiv.org/abs/1403.6652)
 - Implementation: [https://github.com/phanein/deepwalk](https://github.com/phanein/deepwalk)
@@ -53,10 +71,8 @@ There are many different machine learning tasks that are related to graphs and n
     1. Sampling with random walks: about 32 to 64 random walks from each node will be performed
     2. Training skip-gram model: accept a vector representing one random walk of a node, predict the neighbour nodes (e.g. 20)
     3. Computing the embedding of each node
-- Limitations:
-    - 
 
-### node2vec
+#### node2vec
 
 - [node2vec: Scalable Feature Learning for Networks](https://cs.stanford.edu/~jure/pubs/node2vec-kdd16.pdf)
 - A generalization of DeepWalk
@@ -72,7 +88,7 @@ There are many different machine learning tasks that are related to graphs and n
 
 ![](/assets/images/node2vec_01.png)
 
-### Structural Deep Network Embedding (SDNE)
+#### Structural Deep Network Embedding (SDNE)
 
 - [Structural Deep Network Embedding](https://www.kdd.org/kdd2016/papers/files/rfp0191-wangAemb.pdf)
 - Implementation: [https://github.com/suanrong/SDNE](https://github.com/suanrong/SDNE)
@@ -117,8 +133,9 @@ Applications: classification of webpages
 
 ## References
 
-### Papers and Articles
+### Research Papers
 
+- William L. Hamilton, Rex Ying, Jure Leskovec. 2017. [Representation Learning on Graphs: Methods and Applications](https://arxiv.org/abs/1709.05584). IEEE Data Engineering Bulletin, September 2017.
 - Amr Ahmed et al. 2013. [Distributed Large-scale Natural Graph Factorization](https://static.googleusercontent.com/media/research.google.com/en//pubs/archive/40839.pdf). WWW 2013.
 - Bryan Perozzi, Rami Al-Rfou, Steven Skiena. [DeepWalk: Online Learning of Social Representations](https://arxiv.org/abs/1403.6652)
 - Aditya Grover, Jure Leskovec. 2016. [node2vec: Scalable Feature Learning for Networks](https://cs.stanford.edu/~jure/pubs/node2vec-kdd16.pdf). KDD 2016.
@@ -133,7 +150,7 @@ Applications: classification of webpages
 
 ### Tutorials
 
-- Hamilton et al. 2018. [Representation Learning on Networks](http://snap.stanford.edu/proj/embeddings-www/) WWW 2018 Tutorial
+- Hamilton et al. 2018. [Representation Learning on Networks](http://snap.stanford.edu/proj/embeddings-www/) WWW 2018 Tutorial.
 
 
 ### Source Codes
