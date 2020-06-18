@@ -56,7 +56,7 @@ To measure IR effectivenes in a standard way, we need a test collection consists
 
 - **Weakness of accuracy**: It is not appropriate because in almost all circumstances, the data is extremely skewed: over 99.9% of the documents are in the non-relevant category. A system aims at maximising accuracy can appear to perform well by simply deeming all documents as irrelevant. However, it is totally unsatisfying for the system to label everything as non-relevant because users always want to see some documents, and can be assumed to have a certain tolerance for seeing some false positive. (Manning et al., p.155)
 - **Generality**: The proportion of relevant documents per query: $G = \frac{TP + FN}{TP + FP + TN + FN}$
-- **F-measure****: A combined measure which assesses the tradeoff between precision and recall. It is a weighted harmonic mean. In its general form, it is defined as: $F = \frac{1}{\alpha \frac{1}{P} + (1 - \alpha) \frac{1}{R}} = \frac{(\beta^2 + 1)PR}{\beta^2 P + R}$, where $\beta = \frac{1 - \alpha}{\alpha}$, $\alpha \in [0,1]$. A balanced measure with equal weights on precision and recall is called an $F_1$ measure: $F_1 = \frac{2 \times P \times R}{P + R}$
+- **F-measure**: A combined measure which assesses the tradeoff between precision and recall. It is a weighted harmonic mean. In its general form, it is defined as: $F = \frac{1}{\alpha \frac{1}{P} + (1 - \alpha) \frac{1}{R}} = \frac{(\beta^2 + 1)PR}{\beta^2 P + R}$, where $\beta = \frac{1 - \alpha}{\alpha}$, $\alpha \in [0,1]$. A balanced measure with equal weights on precision and recall is called an $F_1$ measure: $F_1 = \frac{2 \times P \times R}{P + R}$
 
 ### Why harmonic mean is used?
 
