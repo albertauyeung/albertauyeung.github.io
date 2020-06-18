@@ -135,3 +135,10 @@ Below is an example of how this `Trie` class can be used:
 >>> t.query("wh")
 [('what', 1), ('where', 1)]
 ```
+
+## References
+
+- [Trie](https://en.wikipedia.org/wiki/Trie), Wikipedia
+- [Tries](https://brilliant.org/wiki/tries/), Brilliant.org
+- [Trie (Prefix Tree)](https://www.cs.usfca.edu/~galles/visualization/Trie.html) - Visualizing the operations on a trie
+
