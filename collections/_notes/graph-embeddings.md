@@ -49,9 +49,9 @@ There are many different machine learning tasks that are related to graphs and n
 - References:
     - [Ahmed et al. 2013](https://static.googleusercontent.com/media/research.google.com/en//pubs/archive/40839.pdf)
 - Similarity function is just the edge weight between two nodes $u$ and $v$ in the original network
-- We want to minimize the following loss function: $\mathcal{L} = \sum_{(u,v)\in V \times V} || z_u^{\top}z_v - A_{u,v}||^2$, where $A_{u,v}$ is the corresponding cell in the adjacency matrix
+- We want to minimize the following loss function: $\mathcal{L} = \sum_{(u,v)\in V \times V}\|\|z_u^{\top}z_v - A_{u,v}\|\|^2$, where $A_{u,v}$ is the corresponding cell in the adjacency matrix
 - Limitations:
-    - $O(|V|^2)$ runtime (it must consider all node pairs)
+    - $O(\|V\|^2)$ runtime (it must consider all node pairs)
     - It only considers direct and location connections
 
 #### Multi-hop Similarity
