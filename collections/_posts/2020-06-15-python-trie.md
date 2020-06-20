@@ -1,6 +1,6 @@
 ---
 layout: article
-title:  "Implementing a Trie in Python"
+title:  "Implementing Trie in Python"
 tags: [python, data structure]
 ---
 
@@ -23,7 +23,48 @@ The follow example illustrates why a special data structure is necessary to look
 
 ![](/assets/images/trie_example.png)
 
-## Implementing a Trie in Python
+
+## How does a Trie Work?
+
+There are two major operations that can be performed on a trie, namely:
+
+1. Inserting a word into the trie
+2. Searching for words using a prefix
+
+Both operations involves traversing the trie by starting from the root node. We take a look at each of these operations in more detail.
+
+### Inserting Words into the Trie
+
+In order to insert a new word into the trie, we need to first check whether any prefix of the word is already in the trie. Therefore, we will start traverse the trie from the root node, and follow the algorithm below:
+
+1. Set the current node to be the root node
+2. Set the current character as the first character of the input word
+3. Check if the current character is a child of the current node
+    - If **yes**, set the current node to be this child node, set the current character to the next character in the input word, and perform this step again
+    - If **no**, it means from this character onwards, we will need to create new nodes and insert them into the trie
+
+Below is an illustration of what will happen when we want to add the word `won` into the trie above.
+
+![](/assets/images/trie_example_insert.png)
+
+Following the steps in the algorithm mentioned above, we will arrive at the node `o` under `w`, at which point we discover that `n` is not a child of `o`, and therefore we create a new node for the character `n`, and insert it under `o`.
+
+### Searching in the Trie
+
+A common application scenario of the trie data structure is to search for words with a certain prefix, just like the auto-complete or query suggestion function in a search bar.
+
+When given a prefix, we can traverse the trie to check if any word in the trie starts with that prefix. If the prefix is found in the trie, we can then use **depth-first** traversal to retrieve all the words with that prefix.
+
+For example, given the trie illustrated above, which contains the words `was`, `wax`, `what`, `word`, `work` and `won`, let's see what will happen if we want to search for words with the prefix `wa`:
+
+![](/assets/images/trie_example_query.png)
+
+1. Starting from the root node, we are able to find the node `w` and `a`
+2. From the node `a`, we can go on to traverse the trie to retrieve all words starting with the prefix `wa`
+3. When we arrive at the node `s`, we check whether it is **the end of a word** (yes), and the word `was` was output
+4. Similarity, when we arrive at the node `x`, the word `wax` is output
+
+## Implementing Trie in Python
 
 To implement a trie, we can first create a `TrieNode` class, which can be used to represent a node in the trie. Below is how this class can be implemented.
 
