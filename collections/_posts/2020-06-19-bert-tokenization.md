@@ -134,7 +134,7 @@ input_ids = encoded['input_ids']
 attn_mask = encoded['attention_mask']
 ```
 
-If we run the following codes, we will have the following content for the `input_ids` and `attn_mask` variables:
+After executing the codes above, we will have the following content for the `input_ids` and `attn_mask` variables:
 
 ```python
 >>> input-ids
