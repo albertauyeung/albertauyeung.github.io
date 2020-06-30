@@ -2,6 +2,7 @@
 layout: article
 title:  "Implementing Trie in Python"
 tags: [python, data structure]
+key: 'p20200615pythontrie'
 ---
 
 ## What is a Trie?

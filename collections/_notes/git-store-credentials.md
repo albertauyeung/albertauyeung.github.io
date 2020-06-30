@@ -9,4 +9,3 @@ git config --global credential.helper store
 ```
 
 Reference: [https://git-scm.com/docs/gitcredentials](https://git-scm.com/docs/gitcredentials)
-

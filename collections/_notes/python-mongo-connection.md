@@ -1,6 +1,6 @@
 ---
 layout: article
-title:  "Connect to MongoDB in Python"
+title:  "Connecting to MongoDB in Python"
 tags: [python, mongodb]
 ---
 
