@@ -1,0 +1,199 @@
+<html>
+
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<head>
+	<title>Link Analysis</title>
+	<link rel="stylesheet" href="main.css" type="text/css" media="screen" />
+	<script src="js/jquery.js" language="javascript"></script>
+	<script src="js/script.js" language="javascript"></script>
+	<script src="js/LaTeXMathML.js" language="javascript"></script>
+	<script language="javascript">
+	// Generate Menu at the Top
+	$(document).ready(function() {
+		GenerateMenu();
+	});
+	</script>
+</head>
+ 
+<body>
+
+<div id="title">
+<a href="index.html">Repository</a> :: Link Analysis
+</div>
+
+<table class="content">
+	<tr>
+		<td class="left" width="100%">
+			
+			<div class="hmenu">
+			</div>
+			
+			<h1>Introduction</h1>
+			<ul>
+			<li>Basic assumption: hyperlinks contain information about the human judgment of a document: the more incoming links that exist for a document, the more likely it is that the document was judged to be important by the authors of other documents linking to it.
+			<li>Examples in other domains:
+				<ul>
+				<li>Popularity or prestige of a person/organization in a network of interactions (social network)
+				<li>Importance of publications in a scientific citation network: Impact Factor proposed by Garfield (1972)
+				</ul>
+			<li>Bray's (1996) attempt to apply social network concepts to the Web: <i>visibility</i> as measured by the number of other sites that have pointers to it; <i>luminosity</i> as measured by the number of pointers with which it casts navigation light off-site. (directly related to the indegree and outdegree of Web sites.
+			</ul>
+			<br>
+			
+			<h1>Notations</h1>
+			<ul>
+			<li><i>q</i>: a query; <i>v</i>: a vertex in the hypertext graph; <i>d(v)</i>: the contents of the document at vertex <i>v</i>; <i>q</i>: a query.
+			<li><i>s(v | d(v), q)</i>: The score of the document with respect to a query (the textual information)
+			<li><i>S(v | d(v), q, G)</i>: The score of the document in its hypertext context (depending on the link structure of the graph)
+			</ul>
+			<br>
+			
+			<h1>Mathematical Background</h1>
+			<ul>
+			<li>A non-negative $n \times n$ matrix $\mathbf{A}$ is said to be irreducible if, for each pair of indices i and j, there exists a corresponding integer t such that $(\mathbf{A}^t)_{ij} > 0$. This implies that the graph is <b>(strongly) connected</b> (with only one (strong) component, or there is a path from between each pair of vertices). A reducible matrix represents a graph which has more than one components.
+			<li>A primitive matrix is a matrix for which there exists a positive integer t such that $\mathbf{A}^t > 0$. This implies that every vertex in the graph represented by the matrix can reach every vertex by t steps. A primitive matrix is also irreducible, but the converse is not true.
+			<li>The <b>Perron-Frobenius theorem</b>: For a nonnegative irreducible primitive matrix $\mathbf{A}$, there exists an eigenvalue $\lambda$ of $\mathbf{A}$ such that:
+				<ol>
+				<li>$\lambda$ is real and positive, and $\lambda \geq |\lambda'|$ for every other eigenvalue $\lambda' \neq \lambda$.
+				<li>$\lambda$ corresponds to a strictly positive eignevector.
+				<li>$\lambda$ is a simple root of the characteristic equation $(\mathbf{A} - \lambda \mathbf{I}_n) = 0$.
+				</ol>
+			<li>For primitive matrices,	condition 1 of the Perron-Frobenius theorem holds with strict inequality. There is a simple iterative algorithm for computing the dominant eigenvalue and the associated eigenvector. Let $\mathbf{x} \in \mathbb{R}^n$ and let $(a_1,a_2,...,a_n)$ denote the coordinates of $\mathbf{x}$ in the basis formed by the eigenvectors $(\mathbf{v}_1,...,\mathbf{v}_n)$. If we expand the product $\mathbf{A}^t\mathbf{x}$, remembering that $\mathbf{A}\mathbf{v}_i = \lambda_i\mathbf{v}_i$, we obtain:
+				<blockquote>
+				$\displaystyle{
+				\mathbf{A}^t\mathbf{x} = \sum_{i}{a_i\lambda_i^t\mathbf{v}_i
+				}$
+				</blockquote>
+				Since $|\lambda_1| > |\lambdai_i|$ for $i > 1$, the first term dominates the above sum as $t$ gets large. This gives us a vector proportional to the dominant eigenvector. As $\mathbf{v}_1$ is strictly positive (given by the Perron-Frobenius theorem), any random positive vector will yield the correct solution, for example, $\mathbf{x} = \mathbf{1} = (1,1,...,1)^T$. Also, $\mathbf{A}^t$ converges at an exponential rate and it can be shown that
+				<blockquote>
+				$\displaystyle{
+				\lim_{t \rightarrow \inf}{\mathbf{A}^t} = \mathbf{1}^T\mathbf{r}
+				}$
+				</blockquote>
+				$\mathbf{r}$ is known as the <i>stationary distribution</i> of the Markov chain.
+			</ul>
+			<br>
+			
+			<h1>Early Approaches</h1>
+			<ul>
+			<li>Mark (1988) was concerned with retrieving hypertext cards in a medical domain.
+			<blockquote>
+			$\displaystyle{
+			S(v) = s(v) + \frac{1}{|ch[v]|}\sum_{w \in |ch[v]|}{S(w)}
+			}$
+			</blockquote>
+			Global score of <i>v</i> depends on the scores of its children. However, a fundamental problem is that if an irrelevant page <i>v</i> has a single link to a relevant page <i>w</i>, it implies that <i>S(v) >= S(w)</i>.
+			<li>Marchiori (1997) was the first one to discuss the use of hyper information to complement textual information in order to obtain the overall information cotained in a Web document. He suggested that hyper information should be computed by:
+			<blockquote>
+			$\displaystyle{
+			h(v) = \sum_{w \in ch[v]}{F^{r(v,w)}S(w)}
+			}$
+			</blockquote>
+			where <i>F</i> is a fading constrant and r(v,w) is the rank of w after soring according to the value of S(w). It implies that the influence of vertices down the chain becomes weaker and weaker.
+			</ul>
+			<br>
+		
+			
+			<h1>Hubs and Authorities: HITS</h1>
+			
+			<ul>
+			<li><b>HITS</b> (Hypertext Induced Topic Selection) simulataneously computes a pair of scoring values asscoiated with hypertext documents (Kleinberg 1998, 1999).
+			<li>HITS is assumed to work on a small graph, such as a focused portion of the Web that is expected to be related to a given topic of interest. A <b>base subgrah</b> is obtained by selecting the neighbours of a root set $R$ of Web pages.
+			<li><b>Authority</b> $a(v)$: a document is authoritive if it receives many citations from good hubs
+			<blockquote>
+			$\displaystyle{a(v) \leftarrow \sum_{w \in pa[v]}{h(w)}}$
+			</blockquote>
+			<li><b>Hubness</b> $h(v)$: a document is a good hub if it links to many authoritive documents
+			<blockquote>
+			$\displaystyle{h(v) \leftarrow \sum_{w \in pa[v]}{a(w)}}$
+			</blockquote>
+			<li>In vector notation:<br>
+			<blockquote>
+			$\displaystyle{
+			\mathbf{a}_t = \mathbf{A}^T \mathbf{h}_{t-1}
+			}</blockquote>
+			<blockquote>
+			$\displaystyle{
+			\mathbf{h}_t = \mathbf{A} \mathbf{a}_{t-1}
+			}</blockquote>
+			<li>Problems: (1) mutual reinforcement effect when the same document contains many links to another document. (2) topic drift: some nodes may be irrelevant with respect to the user query, and some documents with high authority or hubness weights could be about different topics.
+			<li>Solutions: see (Bharat and Henzinger 1998).
+			</ul>
+			
+			<br>
+			
+			<h1>PageRank</h1>
+			<ul>
+			<li>Unlike HITS, only one kind of weight is assigned to Web documents.
+			<li>The basic idea is that the rank of a document should be high if the sum of its parents' ranks is high.
+			<li><blockquote>
+			$\displaystyle{
+			r(v) = \alpha \sum_{w \in pa[v]}{\frac{r(w)}{|ch[w]|}}
+			}</blockquote>
+			where $r(v)$ is the rank assigned to page $v$ and $\alpha$ is a normalisation constant.
+			<li>The equation can be written in matrix notation as:
+			<blockquote>
+			$\displaystyle{
+			\mathbf{r} = \alpha\mathbf{B}\mathbf{r} = \mathbf{M}\mathbf{r}
+			}</blockquote>
+			where the matrix $\mathbf{B}$ is obtained from the adjacency matrix \mathbf{A} by dividing each element by the corresponding row sum (normailisation). This implies that $\mathbf{r}$ is a right eigenvector of $\mathbf{B}$ with an associated eigenvalue $\alpha$.
+			<li><b>Probabilistic interpretation</b>: it can be seen as the description of a random walk through the Web graph. The rank of a page can be considered as the asymptotic probability that a random surfer is currently browsing the page, i.e. $P(S_t = v)$, where $S_t$ is a random variable modelling the position of the surfer at time $t$. $\mathbf{M}$ is then interpreted as the transition matrix for a Markov Chain:
+			<blockquote>
+			$\displaystyle{
+			r_t(v) = P(S_t = v) = \sum_{w}{P(S_t = v | S_{t-1} = w)P(S_{t-1} = w)} = \sum_{w}{m_{wv}r_{t-1}(w)}
+			}</blockquote>
+			The probability that the surfer is browsing page $v$ at time $t$ depends on what he was browsing at time $t-1$. This can also be written in matrix notation as:
+			<blockquote>
+			$\displaystyle{
+			\mathbf{r}_t = \mathbf{M}^T\mathbf{r}_{t-1}
+			}</blockquote>
+			<li><b>Problem 1 - Rank sink</b>
+			<ul><li>When there is a page which is without out-going links, such a page will continue to acculmuate scores contributed by its parents but will not distribute score to other pages. As its parents eventually have zero ranks, this page will also have a zero rank. Mathematically, this is because $\mathbf{M}^t$ converges to the zero matrix. (This also violates the basic hypothesis of the random walk model: sum of probabilities of the available actions should be one in each node, but once in the sink nodes the surfer is left with no choices.)
+			<li><b>Solution</b>: Introduce an escape matrix $\mathbf{E}$ defined as $e_{vw} = 0$ if $|ch[v]| > 0$ and $e_{vw} = 1/n$ otherwise, which allows the surfer to jump to other vertices with equal probabilities when it enters a sink node.
+			</ul>
+			<li><b>Problem 2 - Irreducible but not Primitive</b>
+			<ul><li>There is no gaurantee that the matrix is primitive, and periodic components will avoid the markov chain to arrive at a steady state (cannot terminate).
+			<li><b>Solution</b>: Page et al. (1998) propose to introduce a 'static' stochastic process that models the 'distribution of Web pages that a random surfer periodically jumps to'. Thus a mixture model is resulted from combining the Markovian random walk distribution $\mathbf{x}$ and the static rank source distribution:
+			<blockquote>
+			$\displaystyle{
+			\mathbf{r} = \epsilon \mathbf{e} + (1-\epsilon)\mathbf{x}
+			}</blockquote>
+			The simplest choice for $\mathbf{e}$ is a uniform distribution, i.e. $\mathbf{e} = (1/n)\mathbf{1}$. In practice $\epsilon$ is typically chosen to be between 0.1 and 0.2 (Brin and Page 1998).
+			</ul>
+			
+			</ul>
+			
+			<br>
+			
+			<h1>Probabilistic Link Analysis</h1>
+						
+			<br>
+			
+			<h1>Limitations of Link Analysis</h1>
+						
+			<br>
+			
+			<h1>References</h1>
+			
+			<ul>
+			<li>Bharat, K. and Henzinger, M. R. (1998) Improved algorithms for topic distillation in a hyperlinked environment. In Proceedings of the 21st Annual International ACM SIGIR Conference on Research and Development in Information Retrieval, pp.104-111. New York: ACM Press.
+			<li>Brin, S. and Page, L. (1998) The anatomy of a large-scale hypertextual (Web) search engine. In: Proceedings of the 7th International World Wide Web Conference (WWW7). Computer Networks 30, 107-117.
+			<li>Bray, T. (1996) Measuring the Web. In: Proceedings of the 5th International Conference on the World Wide Web, 6-10 May 1996, Paris, France. Computer Networks 28, 993-1005.
+			<li>Garfield, E.. (1972) Citation analysis as a tool in journal evaluation. Science 178, 471-479.
+			<li>Kleinberg, J. (1998) Authoritive sources in a hyperlinked environment. In: Proceedings of the 9th Annual ACM-SIAM Symposium on Discrete Algorithms, pp.668-677. New York: ACM Press.
+			<li>Kleinberg, J. (1999) Hubs, authorities, and communities. ACM Computing Survey 31, 5.
+			<li>Marchiori, M. (1997) The quest for correct information on the Web: hyper search engines. In: Proceedings of the 6th Inernational World Wide Web Conference, Santa Clara, CA. Computer Networks 29, 1225-1235.
+			<li>Mark, E. F. (1988) Searching for information in a hypertext medical handbook. Communication ACM 31, 880-886.
+			<li>Page, L., Brin, S., Motwani, R. and Winograd, T. (1998) The PageRank citation ranking: bringing order to the Web. Technical Report, Standford University.
+			<li>Baldi, P., Frasconi, P. and Smyth, P.. (2003) Modeling the Internet and the Web: Probabilistic Methods and Algorithms. John Wiley &amp; Sons Ltd, England.	
+			</ul>
+			<br>
+			
+		</td>
+	</tr>
+</table>
+
+
+</body>
+
+</html>

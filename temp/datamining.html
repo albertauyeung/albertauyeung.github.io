@@ -1,0 +1,376 @@
+<html>
+
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<head>
+	<title>Data Mining</title>
+	<link rel="stylesheet" href="main.css" type="text/css" media="screen" />
+	<script src="js/jquery.js" language="javascript"></script>
+	<script src="js/script.js" language="javascript"></script>
+	<script src="js/LaTeXMathML.js" language="javascript"></script>
+	<script language="javascript">
+	// Generate Menu at the Top
+	$(document).ready(function() {
+		AddSectionNumber();
+		GenerateMenu();
+	});
+	</script>
+</head>
+ 
+<body>
+
+<div id="title">
+<a href="index.html">Repository</a> :: Data Mining and Web Mining
+</div>
+
+<table class="content">
+	<tr>
+		<td class="left" width="100%">
+			
+			<div class="hmenu">
+			</div>
+			
+			<div class="section">
+			<h1>Mathematics</h1>
+			
+			<h2>Multinominal distribution</h2>
+			<ul>
+			<li>A generalization of the binomial distribution. In a binomial distribution is the distribution of number of successes in n independent Bernoulli trials, with the probability of success equal to $p$. In a multinomial distribution, each trial has $k$ possible outcomes with probabilities $p_1,p_2,...,p_k$, where $\sum{p_k} = 1$.
+			<li>The parameters of a multinomial distribution is $n$ and $\mathbf{p} = (p_1,p_2,...,p_k)$.
+			<li>Let $\sum{x_i} = n$ and the random variable $X_i$ represent the number of times the outcome $i$ has happened, the probability mass function of the distribution is given by:
+			<blockquote>$\displaystyle{
+			Pr(X_1 = x_1, X_2 = x_2, ... , X_k = x_k) = \frac{n!}{x_1!...x_k!}p_1^{x_1}...p_k^{x_k}
+			}$</blockquote>
+			</ul>
+			
+			<h2>Dirichlet distribution</h2>
+			<ul>
+			<li>The distribution was named after the German mathematician Johann Peter Gustav Lejeune Dirichlet (1805-1859).
+			<li>It is a family of continuous multivariate probability distributions parametrized by parameters $\alpha$ and $\mathbf{q} = (q_1,...,q_m)$.
+			<li>Formally, a Dirichlet distribution on a probability vector $\mathbf{\pi} = (\pi_1,...,\pi_m)$ has the form:
+			<blockquote>$\displaystyle{
+			D_{\alpha \mathbf{q}}(\mathbf{\pi}) = \frac{\Gamma(\alpha)}{\prod_i \Gamma(\alpha q_i)} \prod_{i=1}^{m}{\pi_i^{\alpha q_i - 1}
+			}$</blockquote>
+			where $\sum{\pi_i} = \sum{q_i} = 1$.
+			</ul>
+			
+			<h2>Bayesian Probability</h2>
+			<ul>
+			<li>A probability $P(e)$ is a number that reflects our uncertainty about whether $e$ is true or false in the real world, given whatever information we have available. This is also known as the 'degree of belief'.
+			<li>In fact, this can be think of as a conditional probability on $P(e|k)$ where $k$ is the background information on which our belief is based, although this is also omitted.
+			
+			<li><b>Bayes' Theorem</b>
+				<ul>
+				<li>If you have a event $e$ and data $D$, then:
+				<blockquote>$\displaystyle{
+				P(e|D) = \frac{P(D|e)P(e)}{P(D)}
+				}$</blockquote>
+				<li>P(e) is the independent probability of $e$, called the <b><i>prior probability</i></b>, this is our belief in the event $e$ before we see any data
+				<li>P(D) is the independent probability of $D$, called the <b><i>evidence</i></b>
+				<li>P(D|e) is the conditional probability of $D$ given $e$, i.e. the <b><i>likelihood</i></b> of such data, i.e. the probability of the data under the assumption that $e$ is true.
+				<li>P(e|D) is the conditional probability of $e$ given $D$, the <b><i>posterior probability</i></b>, this is the updated degree of belief after we see the data.
+				<li>To calculate the likelihood $P(D|e)$, we need to have a probabilistic model that connects the proposition $e$ we are interested in with the observed data $D$, hence we need to learn this probabilistic model from training data
+				</ul>
+			
+			<li><b>Parameter estimation</b>
+				<ul>
+				<li>Parameters refer to the numbers governing the behaviour of an underlying model $M$
+				<li>For example, if our model is a Gaussian distribution, then we have two parameters: namely the mean and the variance
+				<li>The general objective of parameter estimation is to find or approximate the 'best' set of parameters for a model, this is equivalent to finding the set of parameters $\mathbf{\theta}$ which maximise the posterior $P(\mathbf{\theta}|D)$ or $\log{P(\mathbf{\theta}|D)}$. This is called <b><i>maximum a posteriori (MAP)</i></b> estimation.
+				<li>Recall the Bayes' Rule:
+				<blockquote>$\displaystyle{
+				P(e|D) = \frac{P(D|e)P(e)}{P(D)}
+				}$</blockquote>
+				$P(\mathbf{\theta})$ can be considered as a regulariser, an additional penalty term that can be used to enforce additional constraints.<br>
+				$P(D)$ is a normalising constant that does not depend on the parameters, and is therefore irrelevant to the process of optimisation
+				<li>If the prior $P(\mathbf{\theta})$ is uniform over parameter space (i.e. all hypotheses are equally probable), then the problem reduces to finding the maximum of $P(D|\mathbf{\theta})$. This becomes <b><i>maximum-likelihood (ML)</i></b> estimation.
+				</ul>
+			
+			<li><b>Properties of Bayesian Classifiers</b>
+				<ul>
+				<li>Incrementality: with each training example, the prior and the likelihood can be updated dynamically: flexible and robust to errors.
+				<li>Combines prior knowledge and observed data: prior probability of a hypothesis multiplied with probability of the hypothesis given the training data.
+				<li>Probabilistic hypotheses: outputs not only a classification, but a probability distribution over all classes.
+				<li>Meta-classification: the outputs of several classifiers can be combined, e.g., by multiplying the probabilities that all classifiers predict for a given class.
+				</ul>
+			
+			<li><b>Maximum Likelihood Estimation</b>
+				<ul>
+				
+				</ul>
+			
+			<li><b>Maximum a Posteriori (MAP)</b>
+				<ul>
+				
+				</ul>
+			
+			</ul>
+			
+			
+			<h2>Probabilistic Generative Models</h2>
+			<ul>
+			</ul>
+			
+			
+			<h2>Classification</h2>
+			<ul>
+			<li>Classification consists of learning a mapping that can classify a set of measurements on an object, such as a $d$-dimensional vector of attributes, into one of a finite number $K$ of classes or categories. This mapping $g(x)$ is called a <b><i>classifier</i></b> and it is typically learned from training data.
+			<li><b><i>Training data set</i></b> consists of pairs of items and labels:
+				<blockquote>$\displaystyle{
+				D = \{ (x_1,c_1), (x_2,c_2), ..., (x_n,c_n) \}
+				}$</blockquote>
+			<li>Goal of classification learning: take a training data set $D$ and estimate the parameters of the classification function $g(x)$. Typically this means finding the best function which minimises an empirical loss function:
+				<blockquote>$\displaystyle{
+				\epsilon = \sum_{i=1}^n{l(c_i,g(x_i))}
+				}$</blockquote>
+				where $l(c_i,g(x_i))$ is defined as the loss when $x_i$ is assigned to $g(x_i)$ while its true class lable is $c_i$.
+			<li><b>Naive Bayes Classifier</b>
+				<ul>
+				<li>A simple probabilistic classifier based on applying Bayes' theorem with strong (naive) independence assumptions.
+				<li>Steps: (1) Learn the distribution $P(x|c)$ for each of the $K$ classes and the marginal probability for each class $P(c)$. (2) Divide the training data set $D$ into $K$ subsets according to the class labels. (3) Estimate the parameters of $P(x|c)$ by assuming some functional form for it.
+				<li>Finally, using the Bayes' rule the posterior probability of each of the classes for a given input $x$ can be calculated by:
+				<blockquote>$\displaystyle{
+				P(c=k|x) = \frac{ P(x|c=k)P(c=k) }{ \sum_{j=1}^K{P(x|c=j)P(c=j)} }
+				}$</blockquote>
+				<li>To classify a new input $x$, the most likely class is chosen by:
+				<blockquote>$\displaystyle{
+				\hat{c} = \arg \max_k \{ P(c=k|x) \}
+				}$</blockquote>
+				<li><b>Basic assumption</b>: each of the individual attributes in $x$ are conditionally independent given the class label:
+				<blockquote>$\displaystyle{
+				P(x|c=k) = \prod_{j=1}^m{p(x_j|c=k)}, 1 \leq  k \leq K 
+				}$</blockquote>
+				This is not true in most practical situations as, in the case of document classification for example, terms related to the same topic tend to correlate with each other. However, this is often adequate for the bag-of-words representation where word order in the document is not taken into account.
+				<li>This method provides a good approximation of $P(c|d)$, instead of a perfect model of $P(d|c)$, which is not always necessary.
+				</ul>
+			</ul>
+			
+			
+			<h2>The Expectation Maximization (EM) Algorithm</h2>
+			<ul>
+			<li><b>Convec Function</b>:
+				<ul>
+				<li>Let $f$ be a real valued function defined on an interval $I = [a,b]$. $f$ is said to be convex (concave upward) on $I$ if $\forall x_1,x_2 \in I, \lambda \in [0,1]$, $f(\lambda x_1 + (1- \lambda)x_2) \leq \lambda f(x_1) + (1-\lambda) f(x_2).$
+					<br>
+					<img src="documents/convex_function.png" class="photo">
+				<li><b>Theorem</b>: If $f(x)$ is twice differentiable on $[a,b]$ and $f''(x) \geq 0$ then $f(x)$ is convex on $[a,b]$.
+				<li>$-ln(x)$ is strictly convex on the interval $(0,\infty)$. Hence, $ln(x)$ is a concave function.
+				<li>The notion of convexity can be extended to apply to $n$ points. This result is known as <b>Jensen's inequality</b>. Let $f$ be a convex function defined on an interval $I$. If $x_1,x_2,...,x_n \in I$ and $\lambda_1,\lambda_2,...,\lambda_n \geq 0$ with $\sum_{i=1}^n{\lambda_i} = 1$
+				<blockquote>$\displaystyle{
+				f ( \sum_{i=1}^n{\lambda_i x_i} ) \leq \sum_{i=1}^n{\lambda_i f(x_i)}
+				}$</blockquote>
+				<li>The Jensen's inequality can be used to obtain the follow result which is used in he derivation of the EM algorithm:
+				<blockquote>$\displaystyle{
+				\ln ( \sum_{i=1}^n{\lambda_i x_i} ) \leq \sum_{i=1}^n{\lambda_i \ln(x_i)}
+				}$</blockquote>
+				</ul>
+			
+			<li><b>Basic Idea</b>:
+				<ul>
+				<li>It is an iterative procedure to compute the Maximum Likelihood (ML) estimate when there are missing or hidden data.
+				<li>Each iteration of the EM algorithm consists of two processes: The <b>E-step</b> (expectation), and the <b>M-step</b> (maximization).
+				<li>In the expectation step, the missing data are estimated given the observed data and the current estimate of the model parameters.
+				<li>In the maximization step, the likelihood function is maximized under the assumption that the missing data are known by using the estimate of the missing data from the E-step.
+				<li>Convergence is assured since the algorithm is guaranteed to increase the likelihood at each iteration.
+				</ul>
+			
+			<li><b>Derivation of the EM algorithm</b>:
+				<ul>
+				<li>
+				</ul>
+			
+			</ul>
+			
+			
+			<br>
+			</div>
+			
+			<div class="section">
+			<h1>Data Mining</h1>
+			
+			
+			<h2>Principal Component Analysis (PCA)</h2>
+			<ul>
+			<li>The goal of PCA is to compute the most meaningful basis to re-express a noisy data set, to filter out the noise and reveal hidden structure.
+			<li>The most basic assumption of PCA is that of linearity. PCA can then be considered as a method to re-expressing the data as a linear combination of its basis vectors.
+			</ul>
+			
+			
+			<h2>Association Rules Mining</h2>
+			<ul>
+			<li>A popular method for discovering relations between variables in large databases.
+			
+			<li><b>Association rules</b>
+				<ul>
+				<li>An example: '90% of transactions that purchase bread and butter also purchase milk'
+				<li>Antecedent: the front part of the rule (condition)
+				<li>Consequent: e.g. milk
+				<li>A confidence factor (e.g. 90%) is usually included
+				</ul>
+				
+			<li><b>References</b>
+				<ul>
+				<li>Agrawal, R., Imielinski, T., Swami, A. (1993) Mining Association Rules between Sets of Items in Large Databases. In: Proceedings of the 1993 ACM SIGMOD Conference, Washington DC, USA, May 1993. <a href="http://rakesh.agrawal-family.com/papers/sigmod93assoc.pdf">Paper</a>
+				</ul>
+			</ul>
+			
+			
+			
+			<h2>Graph Clustering</h2>
+			<ul>
+			<li><b>Spectral Clustering</b>
+				<ul>
+				<li>The technique of partitioning the rows of a matrix according to their components in the top few singular vectors of the matrix
+				<li><b>A simple algorithm:</b>(given a matrix $A$,<br>
+					1: Find the top $k$ right singular vectors<br>
+					2: Let $C$ be the matrix whose $j^{th}$ column is give by $Av_j$.<br>
+					3: Place row $i$ in cluster $j$ if $C_{ij}$ is the largest entry in the $i^{th}$ row of $C$.<br>
+					<b>Explanation</b>:<br>
+					The rows in matrix $A$ represent points in a high-dimensional space. The right singular vectors define a subspace which best approximates $A$. The spectral algorithm projects all points onto this subspace (by performing the multiplication $Av_j$). Each singular vector represents a cluster, to obtain a clustering the third step put a point into a cluster which is closest to it in angle (cosine similarity). The result is that we obtain $k$ clusters at the end.
+				
+				</ul>
+			
+			<li><b>Quality of clustering</b>
+				<ul>
+				<li>The quality of clustering can be measured by comparing the result to the optimal one. To decide which is the optimal clustering, we need to have some quality measures.
+				<li>Some quality measures include <i>minimum diameter</i>, <i>k-center</i>, <i>k-media</i>, <i>minimum sum</i>.
+				<li>However, although these measures are simple in calculation, they are easy to fool. Optimising these measures may not produce optimal clustering.
+				<li><b>Note</b>: quality of a cluster should be determined by <i>how similar the points within a cluster are</i>
+				<li>
+				</ul>
+				
+			<li><b>References</b>
+				<ul>
+				<li>R. Kannan, S. Vempala and A. Vetta. (2004) On Clusterings: Good, Bad and Spectral. Journal of the ACM, Vol. 51, No. 3, May 2004, pp.497-515. <a href="http://cs-www.cs.yale.edu/homes/kannan/Papers/specclustering.pdf">Paper</a>
+				</ul>
+			</ul>
+			
+			
+			
+			<br>
+			</div>
+			
+			<div class="section">
+			<h1>Document Classification</h1>
+			
+			<h2>Bag-of-Words (BOW) Model</h2>
+			<ul>
+			<li>A text (such as a sentence or a document) is represented as an unordered collection of words, disregarding grammar and even word order.
+			</ul>
+			
+						
+			<h2>Latent Semantic Analysis</h2>
+			
+			<h2>Support Vector Machines (SVM)</h2>
+			<ul>
+			
+			</ul>
+			
+			<h2>Multi-topic document classification</h2>
+			
+			<ul>
+			<li>In multi-topic document classification, each document is not assumed to belong to one of a number of mutually exclusive categories (Sato & Nakagawa 2007)
+			<li>A probabilistic generative model for documents with multiple topics is categorized into the following two models (Sato & Nakagawa 2007)
+				<ol>
+				<li>Latent-topic model: a topic does not indicate a concrete topic, but rather an underlying implicit topic of documents. This model usually uses an unsupervised learning algorithm.
+				<li>Explicit-topic model: a topic indicates a concrete topic such as economy or sports. A learning algorithm using such model is a supervised learning algorithm.
+				</ol>
+			</ul>
+			
+			<h2>Parametric Mixture Models (Ueda & Saito 2002)</h2>
+			<ul>
+			<li>Conventional mixture models including a mixture of naive Bayes model are inappropriate for multi-category text modeling because in distributional mixture models, a sample is assumed to be probabilistically generated from <b><i>one</i></b> of the component distributions. Hence these models are only useful for hierarchical or tree-structured category represerntation, but not for milti- or network-structured category representation.
+			<li><b>Terminologies</b>:
+				<ul>
+				<li>A document $d^n$ is represented as a word-frequency vector $\mathbf{x}^n = (x_1^n,...,x_V^n).
+				<li>A set of vocabulary $V = \{w_1,w_2,...,w_V\}$, where V is the total number of words
+				<li>$\mathbf{x}^n$ is a point in the $V$-dimensional Euclidean space.
+				<li>A multinomial distribution over the words: $p(x,\theta) \propto \prod_{i=1}^V{\theta_i^{x_i}}$, where $\mathbf{\theta} = (\theta_1,...,\theta_V)$ denotes the probabilities that $w_i$ appears.
+				<li>$\mathbf{y}^n = (y_1^n,...,y_L^n)$ is a category vector for $d^n$, where $L$ is the total number of categories (unknown). $y_i^n = 1$ if $d^n$ belongs to the $i$th category.
+				</ul>
+			<li><b>PMM-I</b>
+				<ul>
+				<li>Let $\varphi(C_1)$ be the probability distribution of the words of category $C_1$, then documents which belongs to multiple categories such as $C_1$ and $C_2$ can be generated by a linear combination of $\varphi(C_1)$ and $\varphi(C_2)$:
+				<blockquote>$\displaystyle{
+				\varphi(C_{1,2}) \sim \alpha \varphi(C_1) + (1-\alpha)\varphi(C_2)
+				}$</blockquote>
+				<li>Basic idea: the distribution of word-frequency vectors of multi-category text is a multinomial distribution with a parameter vector generated by a mixture of basis parameter vectors. Therefore it is called parameter mixture model (PMM).
+				<li>PPM-I: Each category is assigned equal weight (e.g. setting $\alpha$ in the above case)
+				<li>A given multi-category text is specified by a single category vector $\mathbf{y}$ with distribution:
+				<blockquote>$\displaystyle{
+				\varphi(\mathbf{y}) = \frac{\sum_{l=1}^L{y_l\theta_l}}{\sum_{l'=1}^L{y_{l'}}}
+				}$</blockquote>
+				Meaning: given that the text belongs to several different category, what should be the distribution of the words? For example, if $\mathbf{y} = (1,0,0,1)$ (belonging to the 1st and 4th categories), then $\varphi(\mathbf{y}) = 0.5\theta_1 + 0.5\theta_4$, mixing distribution of categories 1 and 4.
+				<li>A generative model of PMM-I is represented by:
+				<blockquote>$\displaystyle{
+				P(\mathbf{x}|\mathbf{y};\Theta) \propto \prod_{i=1}^V\varphi_i(\mathbf{y})^{x_i} = \prod_{i=1}^V \{ \frac{\sum_{l=1}^L{y_l\theta_{li}}}{\sum_{l'=1}^L{y_{l'}}}  \}^{x_i}
+				}$</blockquote>
+				Meaning: given a category vector $\mathbf{y}$, what's the probability of having the set of words in $\mathbf{x}$? Here, $\varphi_i(\mathbf{y})$ is the probability that word $i$ appears, raising it to the power of ${x_i}$ results in the probability of $i$ appearing $x_i$ times in the text. The probability of such text is then the product of all the probabilities of the words appearing the specified number of times.
+				<li>The set of unknown parameters is $\Theta = \{\theta_l; l=1,...,L\}$.
+				</ul>
+			</ul>
+					
+			
+			<br>
+			</div>
+			
+			<div class="section">
+			<h1>Web Mining</h1>
+			
+			<h2>Introduction</h2>
+			<ul>
+			<li>Web mining research is at the crossroad of research from several research communities, such as database, informaiton retrieval, and within AI, especially the sub-areas of machine learning and natural language processing.
+			<li>Problems when interacting with the Web (Kosala & Blockeel 2000):
+				<ul>
+				<li>Finding relevant information: today's search tools have several problems, including low precision and low recall.
+				<li>Creating new knowledge out of the information available on the Web: we want to extract potentially useful knowledge out of the Web data
+				<li>Personalisation of the information
+				<li>Learning about consumers or individual users: knowing what the consumers or users do and want.
+				</ul>
+			<li><b>Web mining</b>: the user of data mining techniques to automatically discover and extract information from Web documents and services (Etzioni 1996)
+			<li>Sub-tasks of Web mining (Kosala & Blockeel 2000):
+				<ul>
+				<li>Resource finding: the task of retrieving intended Web documents
+				<li>Information selection and pre-processing: automatically selecting and pre-processing specifc information from retrieved Web resources
+				<li>Generalisation: automatically discovers general patterns at individual Web sites as well as across multiple sites
+				<li>Analysis: validation and/or interpretation of the mined patterns
+				</ul>
+			<li><b>Categories of Web Mining</b> (Kosala & Blockeel 2000): (1) Web content mining, (2) Web structure mining, and (3) Web usage mining
+			</ul>
+			
+			<br>
+			</div>
+			
+			<div class="section">
+			<h1>Web Advertising</h1>
+			
+			<ul>
+			<li>Problems of Web advertising:
+				<ul>
+				<li>What ads should be shown for a particular query?
+				<li>For an advertiser, which search terms should he bid on and how much should he bid?
+				</ul>
+			<li><b>The Geico Case</b>: Google sells the keyword Geico to other companies so that whenever someone searches for Geico (an insurance company) in Google, links to other insurance companies will also come up as sponsored links. Geico sued Google of using its trademarks to direct consumers to its competitors. At the end the judge decided that Google's policy to allow ads to be triggered by trademarked keywords can continue. The issue of whether trademarks are allowed in ad texts were left to be solved by the involving parties.
+			</ul>
+			
+			<br>
+			</div>
+			
+			<div class="section">
+			<h1>References</h1>
+			<ul>
+			<li>Etzioni, O. (1996) The World Wide Web: Quagmire or gold mine. Communications of the ACM, 39(11):65-68.
+			<li>Kosala, R., Blockeel, H. (2000) Web mining research: a survey.  ACM SIGKDD Explorations Newsletter, vol. 2, Issue 1, pp.1-15.
+			<li>Sato, I., Nakagawa, Hiroshi. (2007) Knowledge discovery of multiple-topic document using parametric mixture model with Dirichlet Prior. In: Proceedings of the 13th ACM SIGKDD International Conference on Knowledge Discovery and Data Mining, August 12-15, 2007, San Jose, California, USA, pp.590-598.
+			<li>Ueda, N., Saito, K. (2002) Single-shot detection of multiple categories of text using parametric mixture model. In: Proceedings of the 8th ACM SIGKDD International Conference on Knowledge Discovery and Data Mining, pp.626-631.
+			</ul>
+			<br>
+			</div>
+			
+		</td>
+	</tr>
+</table>
+
+
+</body>
+
+</html>

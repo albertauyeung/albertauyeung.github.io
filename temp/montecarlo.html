@@ -1,0 +1,109 @@
+<html>
+
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<head>
+	<title>Monte Carlo Methods</title>
+	<link rel="stylesheet" href="main.css" type="text/css" media="screen" />
+	<script src="js/jquery.js" language="javascript"></script>
+	<script src="js/script.js" language="javascript"></script>
+	<script src="js/LaTeXMathML.js" language="javascript"></script>
+	<script language="javascript">
+	// Generate Menu at the Top
+	$(document).ready(function() {
+		AddSectionNumber();
+		GenerateMenu();
+	});
+	</script>
+</head>
+ 
+<body>
+
+<div id="title">
+<a href="index.html">Repository</a> :: Monte Carlo Methods
+</div>
+
+<table class="content">
+	<tr>
+		<td class="left" width="100%">
+			
+			<div class="hmenu">
+			</div>
+			
+			<div class="section">
+			<h1>Basic Idea</h1>
+			
+			<ul>
+			<li>Monte Carlo methods provide approximate solutions to mathematical problems based on <i>statistical sampling experiments</i>.
+			<li>They involve performing many simulations using random numbers and probability to get an approximation of the answer.
+			<li>The name is derived based on the fact that Monte Carlo, the capital of Monaco, has many casinos and casino roulette wheels are a good example of a random number generator.
+			<li>Monte Carlo methods become more widely used after advancement in computer technology. This is because computers are able to perform millions of simulations much more efficiently and quickly than before. (This is important because the answer is more accurate when more simulations are performed)
+			<li>Evaluation of answers: analysis of approximation error. (e.g. comparison of variance)
+			</ul>
+						
+			<br>
+			</div>
+			
+			
+			<div class="section">
+			<h1>Monte Carlo Techniques (Evaluating Integrals)</h1>
+						
+			<h2>Crude Monte Carlo</h2>
+			<ul>
+			<li>To evaluate the integral $I = \int_a^b f(x) dx$.
+			<li>Approach: generate N random samples $x_i$ in the interval $[a,b]$, and find the average of $f(x_i)$ and multiple it by the length of the interval to find an approximation of the area under the curve.
+			<li>This can be represented by:
+			<blockquote>$\displaystyle{
+			I = \frac{(b-a)}{N} \sum_{i=1}^N{f(x_i)}
+			}$</blockquote>
+			</ul>
+			
+			
+			<h2>Acceptance-Rejection Monte Carlo</h2>
+			<ul>
+			
+			</ul>
+			
+			
+			<h2>Stratified Sampling</h2>
+			<ul>
+			
+			</ul>	
+			
+			
+			<h2>Importance Sampling</h2>
+			<ul>
+			
+			</ul>
+						
+			
+			<br>
+			</div>
+			
+			
+			<div class="section">
+			<h1>Advantages of Monte Carlo Methods</h1>
+			
+			<ul>
+			
+			</ul>
+						
+			<br>
+			</div>
+			
+			
+			<div class="section">
+			<h1>References</h1>
+			<ul>
+			<li>Jonathan Pengelly. (2002) Monte Carlo Methods. <a href="http://www.cs.otago.ac.nz/cosc453/student_tutorials/monte_carlo.pdf">PDF File</a>
+			</ul>
+			<br>
+			</div>
+			
+		</td>
+	</tr>
+</table>
+
+
+</body>
+
+</html>
