@@ -14,7 +14,8 @@ I obtained my M.Phil degree in the Department of Computer Science and Engineerin
 
 ## Work Experience
 
-- **AI Techincal Manager**, Wisers Information Ltd. (Jan 2019 - )
+- **Staff AI Engineer**, LinkedIn (Jul 2020 - )
+- **AI Techincal Manager**, Wisers Information Ltd. (Jan 2019 - Jun 2020)
 - **Machine Learning Lead Engineer**, Zwoop Ltd. (Apr 2017 - Nov 2018)
 - **Co-founder and CTO**, Axon Labs Limited (Feb 2014 - Mar 2017)
 - **Researcher**, Noah's Ark Lab, Huawei (Nov 2012 - Jan 2014)
