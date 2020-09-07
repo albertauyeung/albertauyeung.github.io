@@ -24,7 +24,7 @@ For simplicity, this app does not allow modifying the data in the spreadsheet vi
 
 ## Google Spreadsheet for Data Storage
 
-A google spreadsheet has been created to store the data. For the purpose of my project, I have a table with the following columns:
+A google spreadsheet has been created to store the data, which can be [found here](https://docs.google.com/spreadsheets/d/1eNmGC4mZpIGx9vyL_Y0m0wEvsnlREGYoj04LH9atoTg/edit#gid=0). For the purpose of my project, I have a table with the following columns:
 
 - `quote`: the quotation
 - `author`: the person who wrote or said the text

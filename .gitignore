@@ -3,4 +3,4 @@
 _site/
 _temp/
 _backup/
-
+.python-version
