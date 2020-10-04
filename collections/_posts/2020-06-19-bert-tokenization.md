@@ -40,7 +40,7 @@ For example, the word `characteristically` does not appear in the original vocab
 ```python
 >>> from transformers import BertTokenizer
 >>> tz = BertTokenizer.from_pretrained("bert-base-cased")
->>> t.convert_tokens_to_ids(["characteristically"])
+>>> tz.convert_tokens_to_ids(["characteristically"])
 [100]
 
 >>> sent = "He remains characteristically confident and optimistic."
