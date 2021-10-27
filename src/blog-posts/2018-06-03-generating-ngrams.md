@@ -3,7 +3,7 @@ title:  "Generating N-grams from Sentences in Python"
 tags: [python, nlp, nltk]
 icon: dot
 order: 20180603
-route: /2020/06/03/generating-ngrams.html
+route: /2018/06/03/generating-ngrams.html
 date: 2018-06-03
 ---
 
