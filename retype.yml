@@ -1,4 +1,4 @@
-input: .
+input: ./src
 output: .
 url: https://albertauyeung.github.io/
 branding:
