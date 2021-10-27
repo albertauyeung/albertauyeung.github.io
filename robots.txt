@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://albertauyeung.github.io/sitemap.xml.gz
