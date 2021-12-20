@@ -1,4 +1,3 @@
-
 ---
 layout: default
 route: /2021/11/18/keras-conv2d.html
