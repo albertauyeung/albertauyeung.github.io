@@ -29,9 +29,9 @@
     
     <script>(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
-    <link href="/resources/css/retype.css?v=1.10.689764416407" rel="stylesheet" data-turbo-track="reload" />
+    <link href="/resources/css/retype.css?v=1.10.693339296789" rel="stylesheet" data-turbo-track="reload" />
 
-    <script type="text/javascript" src="/resources/js/config.js?v=1.10.689764416407" defer data-turbo-track="reload"></script>
+    <script type="text/javascript" src="/resources/js/config.js?v=1.10.693339296789" defer data-turbo-track="reload"></script>
     <script type="text/javascript" src="/resources/js/retype.js?v=1.10" defer data-turbo-track="reload"></script>
     <link href="/resources/css/katex.css?v=1.10" rel="stylesheet" />
     <script id="katex-js" type="text/javascript" src="/resources/js/katex.js?v=1.10" defer></script>
@@ -341,26 +341,144 @@
     <figcaption class="caption"></figcaption>
 </figure>
 </p>
-<p>A model can easily achieve <strong>90% accuracy</strong> by simply label <strong>everything as negatives</strong> in the test set. Obviously, such a model is useless as it won&#x27;t help us identify any positive.</p>
-<doc-anchor-target id="classification-evaluation-metrics-and-their-relations">
+<p>One can imagine that a model can easily achieve <strong>90% accuracy</strong> by simply label <strong>everything as negatives</strong> in the test set. Obviously, such a model is useless as it won&#x27;t help us identify any positive, even though the accuracy looks impressive.</p>
+<doc-anchor-target id="precision-and-recall">
+    <h3>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#precision-and-recall">#</doc-anchor-trigger>
+        <span>Precision and Recall</span>
+    </h3>
+</doc-anchor-target>
+<p>As we can see from the discussion above, accuracy alone does not give us a full picture of <strong>how good</strong> our models are. We need some other measures that would allow us to understand how good a model is in identifying true postives and avoiding false positives. This is where <strong>precision</strong> and <strong>recall</strong> come into the scene.</p>
+<p><strong>Precision</strong>, by definition, is the <strong>ratio of true positives to all the samples that are labelled positives by the model</strong>. For example, if a model labels 10 samples as positives, and out of which 8 of them are true positives, then the model&#x27;s precision would be 80%. In other words, it&#x27;s the <strong>percentage of attempts that hit the target</strong>. It can be computed by the following formula:</p>
+<div class="math"><pre>Precision = \frac{TP}{TP + FP}</pre></div>
+<p>On the other hannd, <strong>recall</strong> is defined as the percentage of all positives that are correctly identified by the model. It measures the ability of the model to pick up positives. For example, if there are 10 positives in the test set, and the model is able to correctly label 8 of them as positives, then the model has 80% recall. It&#x27;s formula is given by:</p>
+<div class="math"><pre>Recall = \frac{TP}{TP + FN}</pre></div>
+<p>In the field of <a href="https://en.wikipedia.org/wiki/Information_retrieval">information retrieval</a>, precision is used to measure how relevant the search results are, and recall is used to measure how many truly relevant results are retrieved.</p>
+<p>Given their definitions, we can now apply them to the examples we discussed above and see how they help us to better understand the performance of the models (Models B and C in particular) we discussed above:</p>
+<table class="comfortable">
+<thead>
+<tr>
+<th>Model</th>
+<th>Precision</th>
+<th>Recall</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Model B</td>
+<td>30 / (30 + 20) = 60%</td>
+<td>30 / (30 + 20) = 60%</td>
+</tr>
+<tr>
+<td>Model C</td>
+<td>20 / (20 + 10) = 67%</td>
+<td>20 / (20 + 30) = 40%</td>
+</tr>
+</tbody>
+</table>
+<p>We can see that even though the two models&#x27; accuracy scores are the same, they have different precision and recall scores. Model C is more <strong>precise</strong>, but is <strong>not able to recall</strong> as many positives as Model B. Depending on the requirements on the final output, we can then determine which model to use. For example, if we have to decide on whether to put Model B or Model C into production:</p>
+<ul>
+<li>If we want a model that <strong>makes fewer mistakes</strong> when trying to identify a positive, we would prefer <strong>Model C</strong></li>
+<li>If we want a model that is able to <strong>identify as many positives as possible</strong>, we would prefer <strong>Model B</strong></li>
+</ul>
+<p>For imbalance datasets such as the one we mentioned above (with 10 positives and 90 negatives), precision and recall are much more useful than accuracy. For example, for a model that labels everything as <strong>negatives</strong>, its performance metrics will be:</p>
+<ul>
+<li><strong>Accuracy</strong>: <strong>90%</strong></li>
+<li><strong>Precision</strong>: This is <strong>undefined</strong>, as the model does not output any positive samples (there are no true positives or false positives), and thus the denominator is zero.</li>
+<li><strong>Recall</strong>: <strong>0%</strong>, as there isn&#x27;t any sample labelled as positive.</li>
+</ul>
+<p>As a result, we can see that even though such a model achieves high accuracy, both the precision and recall scores are problematic, suggesting that something is wrong about the model.</p>
+<doc-anchor-target id="trade-off-and-the-precision-recall-curve">
     <h2>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#classification-evaluation-metrics-and-their-relations">#</doc-anchor-trigger>
-        <span>Classification Evaluation Metrics and Their Relations</span>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#trade-off-and-the-precision-recall-curve">#</doc-anchor-trigger>
+        <span>Trade-off and the Precision-Recall Curve</span>
     </h2>
 </doc-anchor-target>
+<p>For many classification models, the prediction usually comes with a score. Take <a href="https://en.wikipedia.org/wiki/Logistic_regression">logistic regression</a> as an example, the output of the model is given by the formula:</p>
+<div class="math"><pre>score = \sigma(w^TX + b)</pre></div>
+<p>where <span class="math">b</span> is the bias term, <span class="math">w</span> is the vector of parameters or weights of the features, <span class="math">X</span> is the input feature vector, and <span class="math">\sigma</span> is the sigmoid function given by</p>
+<div class="math"><pre>\sigma(x) = \frac{1}{1 + e^{-x}}</pre></div>
+<p>The output of the sigmoid function is always between 0 and 1. Usually, the final label of input <span class="math">X</span> is determined by the following rule:</p>
+<div class="math"><pre>\hat{y} = 
+\begin{cases}
+1 \quad \text{if } score &gt;= 0.5\\
+0 \quad \text{otherwise}
+\end{cases}</pre></div>
+<p>We can imagine that if the threshold of 0.5 is changed to another value, the output of the model on the same test set will be different:</p>
+<ul>
+<li>If we <strong>increase</strong> the threshold, we would expect the model to output <strong>fewer positive labels</strong></li>
+<li>If we <strong>decrease</strong> the threshold, we would expect the model to output <strong>more positive labels</strong></li>
+</ul>
+<p>In other words, the value of the threshold is closely related to the precision and recall scores of the model on a test set. In general:</p>
+<ul>
+<li>With a higher threshold, the model will achieve higher precision and lower recall</li>
+<li>With a lower threshold, the model will achieve lower precision and higher recall</li>
+</ul>
+<p>This is what is commonly referred to as the <strong>precision-recall tradeoff</strong>.</p>
+<doc-anchor-target id="an-example">
+    <h3>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#an-example">#</doc-anchor-trigger>
+        <span>An Example</span>
+    </h3>
+</doc-anchor-target>
+<p>The <strong>precision-recall tradeoff</strong> can be easily explained by plotting the precision and recall scores against the threshold value. Let&#x27;s take a look at the example below.</p>
+<p>We take the <a href="https://www.kaggle.com/c/titanic">Titanic dataset</a> and build a simple classification model using the decision tree algorithm to predict whether a passenger survived in the end based on his or her gender and age.</p>
+<p>The following figure shows how precision and recall of the trained model change as we vary the <strong>decision threshold</strong>. We can see that as the threshold increases, the precision score rises and recall score drops.</p>
+<p><figure class="content-center">
+    <img src="/assets/images/precision-recall-changing-threshold.png" alt="" />
+    <figcaption class="caption"></figcaption>
+</figure>
+</p>
+<doc-anchor-target id="precision-recall-curve">
+    <h3>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#precision-recall-curve">#</doc-anchor-trigger>
+        <span>Precision-Recall Curve</span>
+    </h3>
+</doc-anchor-target>
+<doc-anchor-target id="other-classification-metrics">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#other-classification-metrics">#</doc-anchor-trigger>
+        <span>Other Classification Metrics</span>
+    </h2>
+</doc-anchor-target>
+<p>In addition to precision and recall, there are quite a number of other metrics for measuring the performance of a classification model. The table below summarises some of the commonly used ones.</p>
+<table class="comfortable">
+<thead>
+<tr>
+<th>Metric</th>
+<th>Formula</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Specificity</strong></td>
+<td><span class="math">\frac{TN}{FP + TN}</span></td>
+<td>This is also called the true negative rate, which refers to the ability of the model to identify true negatives. This is actually equivalent to the recall of the negative class.</td>
+</tr>
+<tr>
+<td><strong>Sensitivity</strong></td>
+<td><span class="math">\frac{TP}{TP + FN}</span></td>
+<td>This is the same as recall of the positive class as we discussed above.</td>
+</tr>
+<tr>
+<td><strong>F-Score</strong></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>AUC</strong></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
 <doc-anchor-target id="precision-and-recall-in-multi-class-classification">
     <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#precision-and-recall-in-multi-class-classification">#</doc-anchor-trigger>
         <span>Precision and Recall in Multi-class Classification</span>
     </h2>
 </doc-anchor-target>
-<doc-anchor-target id="the-precision-recall-curve">
-    <h2>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#the-precision-recall-curve">#</doc-anchor-trigger>
-        <span>The Precision-Recall Curve</span>
-    </h2>
-</doc-anchor-target>
-<p>Given a trained model, we can still</p>
 <doc-anchor-target id="debugging-ml-models-with-precision-and-recall">
     <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#debugging-ml-models-with-precision-and-recall">#</doc-anchor-trigger>

@@ -1,4 +1,15 @@
+---
+layout: default
+route: /collection/articles.html
+icon: dot
+order: 10000
+---
+
+This page lists some of the articles that I found inspiring, entertaining or useful. They span a wide range of topics, and I hope that I can continue to add to the list and share with the visitors of this page.
+
 # Articles
+
+
 
 ## Computer Science
 

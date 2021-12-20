@@ -102,18 +102,107 @@ To illustrate the problem of an imbalanced dataset, consider the example below. 
 
 ![](/assets/images/precision-recall-imbalanced-dataset.png)
 
-A model can easily achieve **90% accuracy** by simply label **everything as negatives** in the test set. Obviously, such a model is useless as it won't help us identify any positive.
+One can imagine that a model can easily achieve **90% accuracy** by simply label **everything as negatives** in the test set. Obviously, such a model is useless as it won't help us identify any positive, even though the accuracy looks impressive.
+
+### Precision and Recall
+
+As we can see from the discussion above, accuracy alone does not give us a full picture of **how good** our models are. We need some other measures that would allow us to understand how good a model is in identifying true postives and avoiding false positives. This is where **precision** and **recall** come into the scene.
+
+**Precision**, by definition, is the **ratio of true positives to all the samples that are labelled positives by the model**. For example, if a model labels 10 samples as positives, and out of which 8 of them are true positives, then the model's precision would be 80%. In other words, it's the **percentage of attempts that hit the target**. It can be computed by the following formula:
+
+$$
+Precision = \frac{TP}{TP + FP}
+$$
+
+On the other hannd, **recall** is defined as the percentage of all positives that are correctly identified by the model. It measures the ability of the model to pick up positives. For example, if there are 10 positives in the test set, and the model is able to correctly label 8 of them as positives, then the model has 80% recall. It's formula is given by:
+
+$$
+Recall = \frac{TP}{TP + FN}
+$$
+
+In the field of [information retrieval](https://en.wikipedia.org/wiki/Information_retrieval), precision is used to measure how relevant the search results are, and recall is used to measure how many truly relevant results are retrieved.
+
+Given their definitions, we can now apply them to the examples we discussed above and see how they help us to better understand the performance of the models (Models B and C in particular) we discussed above:
+
+Model  | Precision  | Recall
+---    | ---        | ---
+Model B | 30 / (30 + 20) = 60% | 30 / (30 + 20) = 60%
+Model C | 20 / (20 + 10) = 67% | 20 / (20 + 30) = 40%
+
+We can see that even though the two models' accuracy scores are the same, they have different precision and recall scores. Model C is more **precise**, but is **not able to recall** as many positives as Model B. Depending on the requirements on the final output, we can then determine which model to use. For example, if we have to decide on whether to put Model B or Model C into production:
+
+- If we want a model that **makes fewer mistakes** when trying to identify a positive, we would prefer **Model C**
+- If we want a model that is able to **identify as many positives as possible**, we would prefer **Model B**
+
+For imbalance datasets such as the one we mentioned above (with 10 positives and 90 negatives), precision and recall are much more useful than accuracy. For example, for a model that labels everything as **negatives**, its performance metrics will be:
+- **Accuracy**: **90%**
+- **Precision**: This is **undefined**, as the model does not output any positive samples (there are no true positives or false positives), and thus the denominator is zero.
+- **Recall**: **0%**, as there isn't any sample labelled as positive.
+
+As a result, we can see that even though such a model achieves high accuracy, both the precision and recall scores are problematic, suggesting that something is wrong about the model.
+
+## Trade-off and the Precision-Recall Curve
+
+For many classification models, the prediction usually comes with a score. Take [logistic regression](https://en.wikipedia.org/wiki/Logistic_regression) as an example, the output of the model is given by the formula:
+
+$$
+score = \sigma(w^TX + b)
+$$
+
+where $b$ is the bias term, $w$ is the vector of parameters or weights of the features, $X$ is the input feature vector, and $\sigma$ is the sigmoid function given by
+
+$$
+\sigma(x) = \frac{1}{1 + e^{-x}}
+$$
+
+The output of the sigmoid function is always between 0 and 1. Usually, the final label of input $X$ is determined by the following rule:
+
+$$
+\hat{y} = 
+\begin{cases}
+1 \quad \text{if } score >= 0.5\\
+0 \quad \text{otherwise}
+\end{cases}
+$$
+
+We can imagine that if the threshold of 0.5 is changed to another value, the output of the model on the same test set will be different:
+- If we **increase** the threshold, we would expect the model to output **fewer positive labels**
+- If we **decrease** the threshold, we would expect the model to output **more positive labels**
+
+In other words, the value of the threshold is closely related to the precision and recall scores of the model on a test set. In general:
+- With a higher threshold, the model will achieve higher precision and lower recall
+- With a lower threshold, the model will achieve lower precision and higher recall
+
+This is what is commonly referred to as the **precision-recall tradeoff**. 
+
+### An Example
+
+The **precision-recall tradeoff** can be easily explained by plotting the precision and recall scores against the threshold value. Let's take a look at the example below.
+
+We take the [Titanic dataset](https://www.kaggle.com/c/titanic) and build a simple classification model using the decision tree algorithm to predict whether a passenger survived in the end based on his or her gender and age.
+
+The following figure shows how precision and recall of the trained model change as we vary the **decision threshold**. We can see that as the threshold increases, the precision score rises and recall score drops.
+
+![](/assets/images/precision-recall-changing-threshold.png)
+
+### Precision-Recall Curve
 
 
-## Classification Evaluation Metrics and Their Relations
 
+
+## Other Classification Metrics
+
+In addition to precision and recall, there are quite a number of other metrics for measuring the performance of a classification model. The table below summarises some of the commonly used ones.
+
+Metric | Formula | Description
+---    | ---     | ---
+**Specificity** | $\frac{TN}{FP + TN}$ | This is also called the true negative rate, which refers to the ability of the model to identify true negatives. This is actually equivalent to the recall of the negative class.
+**Sensitivity** | $\frac{TP}{TP + FN}$ | This is the same as recall of the positive class as we discussed above.
+**F-Score** | |
+**AUC** | |
 
 ## Precision and Recall in Multi-class Classification
 
-
-## The Precision-Recall Curve
-
-Given a trained model, we can still 
 
 
 ## Debugging ML Models with Precision and Recall

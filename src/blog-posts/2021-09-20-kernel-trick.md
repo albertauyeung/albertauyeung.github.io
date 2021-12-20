@@ -1,4 +1,6 @@
-
+---
+visibility: hidden
+---
 
 
 "Kernels" are usually seen in the machine learning literature and have applications in many machine learning algorthms. This article aims at giving a friendly introduction to the concept and why kernels are useful in diffrent algorithms.
