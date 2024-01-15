@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='Matplotlib by default does not support displaying Unicode characters such as Chinese, Japanese and Korean characters. This post introduces two different methods to allow these characters to be shown in the graphs.
+The issue here is that we need to configure Matplotlib to use fonts that support the characters that we want to display. To configure the font used by Matplotlib, there are two ways.
+Specifying the Path to the Font File If you have a font file that support displaying CJK characters, you can directly provide the path to the font file using the FontProperties class in Matplotlib.'>
+<title>🌐 A Guide to Displaying CJK Characters in Matplotlib</title>
+
+<link rel='canonical' href='https://albertauyeung.github.io/2020/03/15/matplotlib-cjk-fonts.html'>
+
+<link rel="stylesheet" href="/scss/style.min.ebb0feb1238c5f4c8e14c9febf04dc409a6cacb74e106e0c4e417e5eb085669e.css"><meta property='og:title' content='🌐 A Guide to Displaying CJK Characters in Matplotlib'>
+<meta property='og:description' content='Matplotlib by default does not support displaying Unicode characters such as Chinese, Japanese and Korean characters. This post introduces two different methods to allow these characters to be shown in the graphs.
+The issue here is that we need to configure Matplotlib to use fonts that support the characters that we want to display. To configure the font used by Matplotlib, there are two ways.
+Specifying the Path to the Font File If you have a font file that support displaying CJK characters, you can directly provide the path to the font file using the FontProperties class in Matplotlib.'>
+<meta property='og:url' content='https://albertauyeung.github.io/2020/03/15/matplotlib-cjk-fonts.html'>
+<meta property='og:site_name' content='Albert Au Yeung'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='python' /><meta property='article:tag' content='matplotlib' /><meta property='article:tag' content='visualization' /><meta property='article:tag' content='jupyter' /><meta property='article:published_time' content='2020-03-15T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2020-03-15T00:00:00&#43;00:00'/>
+<meta name="twitter:title" content="🌐 A Guide to Displaying CJK Characters in Matplotlib">
+<meta name="twitter:description" content="Matplotlib by default does not support displaying Unicode characters such as Chinese, Japanese and Korean characters. This post introduces two different methods to allow these characters to be shown in the graphs.
+The issue here is that we need to configure Matplotlib to use fonts that support the characters that we want to display. To configure the font used by Matplotlib, there are two ways.
+Specifying the Path to the Font File If you have a font file that support displaying CJK characters, you can directly provide the path to the font file using the FontProperties class in Matplotlib.">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "light");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/avatar_hu504580e4e0594bf3f7bf7b76af994632_241575_300x0_resize_q75_box.jpg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Albert Au Yeung</a></h1>
+            <h2 class="site-description">AI/ML Engineer</h2>
+        </div>
+    </header><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/about' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+
+        <div class="menu-bottom-section">
+            
+            
+                <li id="dark-mode-toggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <span>Dark Mode</span>
+                </li>
+            
+        </div>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">Table of contents</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ul>
+    <li><a href="#specifying-the-path-to-the-font-file">Specifying the Path to the Font File</a></li>
+    <li><a href="#using-fonts-in-the-font-folder">Using Fonts in the Font Folder</a></li>
+    <li><a href="#using-custom-fonts-in-seaborn">Using Custom Fonts in Seaborn</a></li>
+  </ul>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/2020/03/15/matplotlib-cjk-fonts.html">🌐 A Guide to Displaying CJK Characters in Matplotlib</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Mar 15, 2020</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    3 minute read
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <p>Matplotlib by default does not support displaying Unicode characters such as Chinese, Japanese and Korean characters. This post introduces two different methods to allow these characters to be shown in the graphs.</p>
+<p>The issue here is that we need to configure Matplotlib to use fonts that support the characters that we want to display. To configure the font used by Matplotlib, there are two ways.</p>
+<h2 id="specifying-the-path-to-the-font-file">Specifying the Path to the Font File</h2>
+<p>If you have a font file that support displaying CJK characters, you can directly provide the path to the font file using the <code>FontProperties</code> class in Matplotlib. This font file can be a <code>.ttf</code> file (TrueType Font) or a <code>.otf</code> file (OpenType Font). For example, you can download a OTF font that supports displaying CJK characters from <a class="link" href="https://fonts.google.com/"  target="_blank" rel="noopener"
+    >Google Fonts</a>.</p>
+<p>Once we have the font file, we can create a <code>FontProperties</code> instance as follows:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> matplotlib.font_manager <span style="color:#66d9ef">as</span> fm
+</span></span><span style="display:flex;"><span>fprop <span style="color:#f92672">=</span> fm<span style="color:#f92672">.</span>FontProperties(fname<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;NotoSansCJKtc-Regular.otf&#39;</span>)
+</span></span></code></pre></div><p>When plotting a graph, we can provide this <code>FonProperties</code> instance as an argument to functions that control what words are displayed in the graph. The example below shows how to set the font for the title and the labels on the X-axis.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> matplotlib.pyplot <span style="color:#66d9ef">as</span> plt
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Prepare some data</span>
+</span></span><span style="display:flex;"><span>x <span style="color:#f92672">=</span> list(range(<span style="color:#ae81ff">20</span>))
+</span></span><span style="display:flex;"><span>xticks <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#34;類別</span><span style="color:#e6db74">{:d}</span><span style="color:#e6db74">&#34;</span><span style="color:#f92672">.</span>format(i) <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> x]
+</span></span><span style="display:flex;"><span>y <span style="color:#f92672">=</span> [random<span style="color:#f92672">.</span>randint(<span style="color:#ae81ff">10</span>,<span style="color:#ae81ff">99</span>) <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> x]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Plot the graph</span>
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>figure(figsize<span style="color:#f92672">=</span>(<span style="color:#ae81ff">8</span>, <span style="color:#ae81ff">2</span>))
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>bar(x, y)
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>xticks(x, xticks, fontproperties<span style="color:#f92672">=</span>fprop, fontsize<span style="color:#f92672">=</span><span style="color:#ae81ff">12</span>, rotation<span style="color:#f92672">=</span><span style="color:#ae81ff">45</span>)
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>title(<span style="color:#e6db74">&#34;圖1&#34;</span>, fontproperties<span style="color:#f92672">=</span>fprop, fontsize<span style="color:#f92672">=</span><span style="color:#ae81ff">18</span>)
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>show()
+</span></span></code></pre></div><p>The effect will be as follows:</p>
+<p><img src="/images/20200315_graph1.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="Graph 1"
+	
+	
+></p>
+<h2 id="using-fonts-in-the-font-folder">Using Fonts in the Font Folder</h2>
+<p>Another way of using a custom font is to install the font into Matplotlib&rsquo;s font folder, and update the font manager.</p>
+<p>Firstly, we need to know the path to the font folder. We can first use the following command to check the location of the Matplotlib installation:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>print(matplotlib<span style="color:#f92672">.</span>matplotlib_fname())
+</span></span></code></pre></div><p>On my computer the above command will print:</p>
+<pre tabindex="0"><code>/usr/local/lib/python3.7/site-packages/matplotlib/mpl-data/matplotlibrc
+</code></pre><p>The full path to the font folder can be obtained by replacing <code>/mpl-data/matplotlibrc</code> with <code>/mpl-data/fonts/ttf</code>:</p>
+<pre tabindex="0"><code>/usr/local/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf
+</code></pre><p>Next, you can put the font file you would like to use into the font folder, and then update Matplotlib&rsquo;s font manager:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> matplotlib.font_manager <span style="color:#66d9ef">as</span> fm
+</span></span><span style="display:flex;"><span>fm<span style="color:#f92672">.</span>_rebuild()
+</span></span></code></pre></div><p>Once this is done, you can check the name of the font you have installed using the following statement. In this example, I have downloaded the font <code>NotoSansCJKtc-Regular.otf</code> from Google Font, and placed it in the file folder.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>[f <span style="color:#66d9ef">for</span> f <span style="color:#f92672">in</span> fm<span style="color:#f92672">.</span>fontManager<span style="color:#f92672">.</span>ttflist <span style="color:#66d9ef">if</span> <span style="color:#e6db74">&#39;Noto&#39;</span> <span style="color:#f92672">in</span> f<span style="color:#f92672">.</span>name]
+</span></span></code></pre></div><p>And the following is the output:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>[<span style="color:#f92672">&lt;</span>Font <span style="color:#e6db74">&#39;Noto Sans CJK TC&#39;</span> (NotoSansCJKtc<span style="color:#f92672">-</span>Regular<span style="color:#f92672">.</span>otf) normal normal <span style="color:#ae81ff">400</span> normal<span style="color:#f92672">&gt;</span>,
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">&lt;</span>Font <span style="color:#e6db74">&#39;Noto Sans Tagalog&#39;</span> (NotoSansTagalog<span style="color:#f92672">-</span>Regular<span style="color:#f92672">.</span>ttf) normal normal <span style="color:#ae81ff">400</span> normal<span style="color:#f92672">&gt;</span>,
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">&lt;</span>Font <span style="color:#e6db74">&#39;Noto Sans Kayah Li&#39;</span> (NotoSansKayahLi<span style="color:#f92672">-</span>Regular<span style="color:#f92672">.</span>ttf) normal normal <span style="color:#ae81ff">400</span> normal<span style="color:#f92672">&gt;</span>,
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">&lt;</span>Font <span style="color:#e6db74">&#39;Noto Sans Tai Tham&#39;</span> (NotoSansTaiTham<span style="color:#f92672">-</span>Regular<span style="color:#f92672">.</span>ttf) normal normal <span style="color:#ae81ff">400</span> normal<span style="color:#f92672">&gt;</span>,
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">&lt;</span>Font <span style="color:#e6db74">&#39;Noto Sans Ol Chiki&#39;</span> (NotoSansOlChiki<span style="color:#f92672">-</span>Regular<span style="color:#f92672">.</span>ttf) normal normal <span style="color:#ae81ff">400</span> normal<span style="color:#f92672">&gt;</span>,
+</span></span><span style="display:flex;"><span> <span style="color:#f92672">...</span>
+</span></span></code></pre></div><p>Here, the name of the font is &ldquo;<code>Noto Sans CJK TC</code>&rdquo;. We can then configure Matplotlib to use this font in our graphs:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>matplotlib<span style="color:#f92672">.</span>rcParams[<span style="color:#e6db74">&#39;font.family&#39;</span>] <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#39;Noto Sans CJK TC&#39;</span>]
+</span></span></code></pre></div><p>Below is an example:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>figure(figsize<span style="color:#f92672">=</span>(<span style="color:#ae81ff">8</span>, <span style="color:#ae81ff">2</span>))
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>bar(x, y)
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>xticks(x, xticks, fontsize<span style="color:#f92672">=</span><span style="color:#ae81ff">12</span>, rotation<span style="color:#f92672">=</span><span style="color:#ae81ff">45</span>)
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>title(<span style="color:#e6db74">&#34;圖1&#34;</span>, fontsize<span style="color:#f92672">=</span><span style="color:#ae81ff">18</span>)
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>show()
+</span></span></code></pre></div><p>which will produce the same graph as above:</p>
+<p><img src="/images/20200315_graph1.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="Graph 1"
+	
+	
+></p>
+<h2 id="using-custom-fonts-in-seaborn">Using Custom Fonts in Seaborn</h2>
+<p>Choosing the second method described above allowing you to use the font in Seaborn too. Below is an example that shows how you can configure the font to be used in Seaborn.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> seaborn <span style="color:#66d9ef">as</span> sns
+</span></span><span style="display:flex;"><span>colour <span style="color:#f92672">=</span> sns<span style="color:#f92672">.</span>color_palette(<span style="color:#e6db74">&#34;GnBu_d&#34;</span>)
+</span></span><span style="display:flex;"><span>sns<span style="color:#f92672">.</span>set(rc<span style="color:#f92672">=</span>{<span style="color:#e6db74">&#39;figure.figsize&#39;</span>:(<span style="color:#ae81ff">8</span>, <span style="color:#ae81ff">2</span>), <span style="color:#e6db74">&#39;figure.dpi&#39;</span>:<span style="color:#ae81ff">120</span>})
+</span></span><span style="display:flex;"><span>sns<span style="color:#f92672">.</span>set(font<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;Noto Sans CJK TC&#39;</span>)
+</span></span><span style="display:flex;"><span>ax <span style="color:#f92672">=</span> sns<span style="color:#f92672">.</span>barplot(xticks, y, palette<span style="color:#f92672">=</span>colour)
+</span></span><span style="display:flex;"><span>ax<span style="color:#f92672">.</span>set_xticklabels(xticks, rotation<span style="color:#f92672">=</span><span style="color:#ae81ff">45</span>, fontsize<span style="color:#f92672">=</span><span style="color:#ae81ff">9</span>)
+</span></span><span style="display:flex;"><span>ax<span style="color:#f92672">.</span>set_title(<span style="color:#e6db74">&#34;圖表1&#34;</span>)
+</span></span><span style="display:flex;"><span>ax<span style="color:#f92672">.</span>grid()
+</span></span></code></pre></div><p>And the following graph will be produced:</p>
+<p><img src="/images/20200315_graph2.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="Graph 2"
+	
+	
+></p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/python/">python</a>
+        
+            <a href="/tags/matplotlib/">matplotlib</a>
+        
+            <a href="/tags/visualization/">visualization</a>
+        
+            <a href="/tags/jupyter/">jupyter</a>
+        
+    </section>
+
+
+    </footer>
+
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.css"integrity="sha256-J&#43;iAE0sgH8QSz9hpcDxXIftnj65JEZgNhGcgReTTK9s="crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.js"integrity="sha256-InsNdER1b2xUewP&#43;pKCUJpkhiqwHgqiPXDlIk7GzBu4="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/contrib/auto-render.min.js"integrity="sha256-y39Mpg7V3D4lhBX4x6O0bUqTV4pSrfgwEfGKfxkOdgI="crossorigin="anonymous"
+                defer
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+        renderMathInElement(document.querySelector(`.article-content`), {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ],
+            ignoredClasses: ["gist"]
+        });})
+</script>
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">Related content</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/2018/11/23/pyconhk-ml-deploy.html">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">🚀 Deploying ML Models in Python - A PyCon HK 2018 Talk</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/2018/06/03/generating-ngrams.html">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">🐍 Effortlessly Create N-Grams from Text in Python</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/2017/11/05/pyconhk-gbm.html">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">🚀 Using Gradient Boosting Machines in Python - A PyCon HK 2017 Talk</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/2017/07/08/fast-pandas-operation.html">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">⚡ Making pandas Operations Faster</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/2017/06/17/python-sequence-labelling-with-crf.html">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">🔍 Performing Sequence Labelling using CRF in Python</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2024 Albert Au Yeung
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.21.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

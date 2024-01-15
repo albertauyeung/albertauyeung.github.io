@@ -4,3 +4,4 @@ _site/
 _temp/
 _backup/
 .python-version
+.hugo_build.lock

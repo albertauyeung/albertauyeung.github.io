@@ -1,0 +1,70 @@
+baseURL = 'https://albertauyeung.github.io/'
+languageCode = 'en-us'
+title = 'Albert Au Yeung'
+theme = 'hugo-theme-stack'
+
+defaultContentLanguage = "en"
+hasCJKLanguage = false
+
+[menu]
+  
+  [[menu.main]]
+    identifier = "home"
+    name = "Home"
+    url = "/"
+    weight = -100
+
+    [menu.main.params]
+      icon = "home"
+      newtab = false
+
+  [[menu.main]]
+    identifier = "about"
+    name = "About"
+    url = "/page/about"
+    weight = -99
+
+    [menu.main.params]
+      icon = "user"
+      newtab = false
+
+[params]
+  mainSections = ["post"]
+  featuredImageField = "image"
+  rssFullContent = true
+
+  [params.article]
+    math = true
+
+  [params.footer]
+    since = 2024
+
+  [params.sidebar]
+    subtitle = "AI/ML Engineer"
+
+    [params.sidebar.avatar]
+      enabled = true
+      local = true
+      src = "avatar.jpg"
+
+  [params.colorScheme]
+    toggle = true
+    default = "light"
+
+  [[params.widgets.homepage]]
+    type = "search"
+
+  [[params.widgets.homepage]]
+    type = "archives"
+
+    [params.widgets.homepage.params]
+      limit = 5
+
+  [[params.widgets.homepage]]
+    type = "tag-cloud"
+
+    [params.widgets.homepage.params]
+      limit = 10
+
+  [[params.widgets.page]]
+    type = "toc"

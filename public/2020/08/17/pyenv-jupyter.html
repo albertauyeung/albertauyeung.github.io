@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='It is common that the different projects you are working on depend on different versions of Python. That is why pyenv becomes very handy for Python developers, as it lets you switch between different Python versions easily. With pyenv-virtualenv it can also be used together with virtualenv to create isolated development environments for different projects with different dependencies.
+For example, if some of the projects you are working on requires Tensorflow 1.'>
+<title>🪐 pyenv, virtualenv and using them with Jupyter</title>
+
+<link rel='canonical' href='https://albertauyeung.github.io/2020/08/17/pyenv-jupyter.html'>
+
+<link rel="stylesheet" href="/scss/style.min.ebb0feb1238c5f4c8e14c9febf04dc409a6cacb74e106e0c4e417e5eb085669e.css"><meta property='og:title' content='🪐 pyenv, virtualenv and using them with Jupyter'>
+<meta property='og:description' content='It is common that the different projects you are working on depend on different versions of Python. That is why pyenv becomes very handy for Python developers, as it lets you switch between different Python versions easily. With pyenv-virtualenv it can also be used together with virtualenv to create isolated development environments for different projects with different dependencies.
+For example, if some of the projects you are working on requires Tensorflow 1.'>
+<meta property='og:url' content='https://albertauyeung.github.io/2020/08/17/pyenv-jupyter.html'>
+<meta property='og:site_name' content='Albert Au Yeung'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='pyenv' /><meta property='article:tag' content='python' /><meta property='article:tag' content='jupyter' /><meta property='article:tag' content='virtualenv' /><meta property='article:published_time' content='2020-08-17T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2020-08-17T00:00:00&#43;00:00'/>
+<meta name="twitter:title" content="🪐 pyenv, virtualenv and using them with Jupyter">
+<meta name="twitter:description" content="It is common that the different projects you are working on depend on different versions of Python. That is why pyenv becomes very handy for Python developers, as it lets you switch between different Python versions easily. With pyenv-virtualenv it can also be used together with virtualenv to create isolated development environments for different projects with different dependencies.
+For example, if some of the projects you are working on requires Tensorflow 1.">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "light");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/avatar_hu504580e4e0594bf3f7bf7b76af994632_241575_300x0_resize_q75_box.jpg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Albert Au Yeung</a></h1>
+            <h2 class="site-description">AI/ML Engineer</h2>
+        </div>
+    </header><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/about' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+
+        <div class="menu-bottom-section">
+            
+            
+                <li id="dark-mode-toggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <span>Dark Mode</span>
+                </li>
+            
+        </div>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">Table of contents</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ul>
+    <li><a href="#installing-and-using-pyenv">Installing and Using pyenv</a></li>
+    <li><a href="#using-virtualenv-with-pyenv">Using virtualenv with pyenv</a></li>
+    <li><a href="#adding-kernels-to-jupyter">Adding Kernels to Jupyter</a></li>
+  </ul>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/2020/08/17/pyenv-jupyter.html">🪐 pyenv, virtualenv and using them with Jupyter</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Aug 17, 2020</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    4 minute read
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <p>It is common that the different projects you are working on depend on <strong>different versions of Python</strong>. That is why <a class="link" href="https://github.com/pyenv/pyenv"  target="_blank" rel="noopener"
+    >pyenv</a> becomes very handy for Python developers, as it lets you switch between different Python versions easily. With <a class="link" href="https://github.com/pyenv/pyenv-virtualenv"  target="_blank" rel="noopener"
+    >pyenv-virtualenv</a> it can also be used together with <a class="link" href="https://virtualenv.pypa.io/en/latest/"  target="_blank" rel="noopener"
+    >virtualenv</a> to create isolated development environments for different projects with different dependencies.</p>
+<p>For example, if some of the projects you are working on requires Tensorflow 1.15, while your system&rsquo;s Python is of version 3.8, you must find some ways to install Python 3.7 in order to work on your project, as Tensorflow 1.15 can only be run in Python 3.5 to Python 3.7.</p>
+<p>This article aims at giving a quick introduction to pyenv and pyenv-virtualenv, as well as describing how one can easily create new kernels of virtual environments in <a class="link" href="https://jupyter.org/"  target="_blank" rel="noopener"
+    >Jupyter</a>.</p>
+<h2 id="installing-and-using-pyenv">Installing and Using pyenv</h2>
+<p>pyenv works on macOS and Linux, but not Windows (except inside the Windows Subsystem for Linux). Windows users might want to check out <a class="link" href="https://github.com/pyenv-win/pyenv-win"  target="_blank" rel="noopener"
+    >pyenv-win</a> for further information.</p>
+<p>On macOS, it can be installed using Homebrew:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ brew update
+</span></span><span style="display:flex;"><span>$ brew install pyenv
+</span></span></code></pre></div><p>On both macOS and Linux, it can also be installed by checking out the latest version of pyenv. For details of installing pyenv this way, refer to the offical installation guidelines here: <a class="link" href="https://github.com/pyenv/pyenv#installation"  target="_blank" rel="noopener"
+    >https://github.com/pyenv/pyenv#installation</a>.</p>
+<p>After installation, add the following line to your <code>.bashrc</code> (or <code>.zshrc</code>) file:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>eval <span style="color:#e6db74">&#34;</span><span style="color:#66d9ef">$(</span>pyenv init -<span style="color:#66d9ef">)</span><span style="color:#e6db74">&#34;</span>
+</span></span></code></pre></div><p>Once you have pyenv installed, you can do a few things like below:</p>
+<p><strong>Installing a Python version</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># List all available Python versions</span>
+</span></span><span style="display:flex;"><span>$ pyenv install --list
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Install a specific Python version (3.7.8)</span>
+</span></span><span style="display:flex;"><span>$ pyenv install 3.7.8
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># List Python version installed</span>
+</span></span><span style="display:flex;"><span>$ pyenv versions
+</span></span><span style="display:flex;"><span>* system <span style="color:#f92672">(</span>set by /Users/....<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>  3.7.8
+</span></span></code></pre></div><p><strong>Setting a local Python version</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># Set the Python version for the current directory</span>
+</span></span><span style="display:flex;"><span>$ pyenv local 3.7.8
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Now by default you will be using Python 3.7.8</span>
+</span></span><span style="display:flex;"><span>$ python
+</span></span><span style="display:flex;"><span>Python 3.7.8 <span style="color:#f92672">(</span>default, Aug <span style="color:#ae81ff">17</span> 2020, 11:05:21<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>&gt;&gt;&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Unset it and change back to system default</span>
+</span></span><span style="display:flex;"><span>$ pyenv local --unset
+</span></span></code></pre></div><p><strong>Setting a global Python version</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># Install a new version and set it as system default</span>
+</span></span><span style="display:flex;"><span>$ pyenv install 2.7.6
+</span></span><span style="display:flex;"><span>$ pyenv global 2.7.6
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Now you have 2.7.6 as the default Python version</span>
+</span></span><span style="display:flex;"><span>$ python
+</span></span><span style="display:flex;"><span>Python 2.7.6 <span style="color:#f92672">(</span>default, Aug <span style="color:#ae81ff">17</span> 2020, 11:08:23<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>&gt;&gt;&gt;
+</span></span></code></pre></div><h2 id="using-virtualenv-with-pyenv">Using virtualenv with pyenv</h2>
+<p>pyenv by itself only allows you to switch between different Python versions. To create an isolated environment with a set of dependencies, we will need <a class="link" href="https://virtualenv.pypa.io/en/latest/"  target="_blank" rel="noopener"
+    >virtualenv</a> too. You can follow the steps below to set up your computer to use pyenv and virtualenv together.</p>
+<p>Firstly, we need ot install virtualenv:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ pip3 install virtualenv
+</span></span><span style="display:flex;"><span>$ pip3 install virtualenvwrapper
+</span></span></code></pre></div><p>Next, we need to install pyenv-virtualenv. This can be done on macOS by using brew as follows (or follow the instructions on <a class="link" href="https://github.com/pyenv/pyenv-virtualenv"  target="_blank" rel="noopener"
+    >this page</a> if you are not using macOS):</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ brew install pyenv-virtualenv
+</span></span></code></pre></div><p>Finally, add the following line to your <code>.bashrc</code> or <code>.zshrc</code> file:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>eval <span style="color:#e6db74">&#34;</span><span style="color:#66d9ef">$(</span>pyenv virtualenv-init -<span style="color:#66d9ef">)</span><span style="color:#e6db74">&#34;</span>
+</span></span></code></pre></div><p>Once you are done with the steps above, you can create new virtual environments as follows:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># Install a new Python version</span>
+</span></span><span style="display:flex;"><span>$ pyenv install 3.7.4
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Create a new virtualenv named myenv with Python 3.7.4</span>
+</span></span><span style="display:flex;"><span>$ pyenv virtualenv 3.7.4 tf1.15
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Go to the project directory, and set its local environment</span>
+</span></span><span style="display:flex;"><span>$ cd ~/repo/my-project
+</span></span><span style="display:flex;"><span>$ pyenv local tf1.15
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Install dependencies as needed</span>
+</span></span><span style="display:flex;"><span>$ pip3 install tensorflow<span style="color:#f92672">==</span>1.15
+</span></span></code></pre></div><h2 id="adding-kernels-to-jupyter">Adding Kernels to Jupyter</h2>
+<p>It is also common that we use Jupyter for quick prototyping and testing. It would be convenient if we can invoke different virtual environments in Jupyter to test our source codes. In fact, it is very easy to create new kernels of different virtual environments in Jupyter.</p>
+<p>Firstly, you have to check the paths of your Juypyter installation. (Note that it does not matter which environment you are using to run your Jupyter notebook or Jupyter lab.) You can check the paths using the following command:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ jupyter --paths
+</span></span></code></pre></div><p>On my computer, it is something like below. What we need to note here is the <code>data</code> path.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>config:
+</span></span><span style="display:flex;"><span>    /Users/albert/.jupyter
+</span></span><span style="display:flex;"><span>    /usr/local/Cellar/python@3.8/3.8.4/Frameworks/Python.framework/Versions/3.8/etc/jupyter
+</span></span><span style="display:flex;"><span>    /usr/local/etc/jupyter
+</span></span><span style="display:flex;"><span>    /etc/jupyter
+</span></span><span style="display:flex;"><span>data:
+</span></span><span style="display:flex;"><span>    /Users/albert/Library/Jupyter
+</span></span><span style="display:flex;"><span>    /usr/local/Cellar/python@3.8/3.8.4/Frameworks/Python.framework/Versions/3.8/share/jupyter
+</span></span><span style="display:flex;"><span>    /usr/local/share/jupyter
+</span></span><span style="display:flex;"><span>    /usr/share/jupyter
+</span></span><span style="display:flex;"><span>runtime:
+</span></span><span style="display:flex;"><span>    /Users/ayeung/Library/Jupyter/runtime
+</span></span></code></pre></div><p>Next, we will need to check the path to the Python interpreter of the virtual environment:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># Activate your virtualenv</span>
+</span></span><span style="display:flex;"><span>$ pyenv activate tf1.15
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Check path of the Python interpreter</span>
+</span></span><span style="display:flex;"><span>$ pyenv which python
+</span></span><span style="display:flex;"><span>/Users/albert/.pyenv/versions/tf1.15/bin/python
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Deactivate the virtualenv</span>
+</span></span><span style="display:flex;"><span>$ pyenv deactivate
+</span></span></code></pre></div><p>Finally, we create a new folder under the <code>kernels</code> directory:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ mkdir /User/albert/Library/Jupyter/kernels/tf1.15
+</span></span></code></pre></div><p>and add a new file named <code>kernel.json</code> in that directory with the following content:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;argv&#34;</span>: [
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;/User/albert/.pyenv/versions/tf1.15/bin/python&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;-m&#34;</span>, <span style="color:#e6db74">&#34;ipykernel&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;-f&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">{connection_file}</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>  ],
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;display_name&#34;</span>: <span style="color:#e6db74">&#34;tf1.15&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;language&#34;</span>: <span style="color:#e6db74">&#34;python&#34;</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Once this is done, you will be able to use the kernel in Jupyter.</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/pyenv/">pyenv</a>
+        
+            <a href="/tags/python/">python</a>
+        
+            <a href="/tags/jupyter/">jupyter</a>
+        
+            <a href="/tags/virtualenv/">virtualenv</a>
+        
+    </section>
+
+
+    </footer>
+
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.css"integrity="sha256-J&#43;iAE0sgH8QSz9hpcDxXIftnj65JEZgNhGcgReTTK9s="crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.js"integrity="sha256-InsNdER1b2xUewP&#43;pKCUJpkhiqwHgqiPXDlIk7GzBu4="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/contrib/auto-render.min.js"integrity="sha256-y39Mpg7V3D4lhBX4x6O0bUqTV4pSrfgwEfGKfxkOdgI="crossorigin="anonymous"
+                defer
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+        renderMathInElement(document.querySelector(`.article-content`), {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ],
+            ignoredClasses: ["gist"]
+        });})
+</script>
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">Related content</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/2020/03/15/matplotlib-cjk-fonts.html">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">🌐 A Guide to Displaying CJK Characters in Matplotlib</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/2020/06/19/bert-tokenization.html">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">🤖 Mastering BERT Tokenization and Encoding</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/2020/06/15/python-trie.html">
+        
+        
+            <div class="article-image">
+                
+                    <img src="/images/query_suggestion.png" loading="lazy" data-key="" data-hash="/images/query_suggestion.png"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">🌟 Implementing Trie in Python</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/2018/11/23/pyconhk-ml-deploy.html">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">🚀 Deploying ML Models in Python - A PyCon HK 2018 Talk</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/2018/06/03/generating-ngrams.html">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">🐍 Effortlessly Create N-Grams from Text in Python</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2024 Albert Au Yeung
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.21.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

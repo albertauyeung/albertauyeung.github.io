@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='最近在看 Daniel Kahneman 的新書 Noise（中譯《雜訊》）。Daniel Kahneman 是2002年諾貝爾經濟學奬得主，他的前作 Thinking Fast and Slow（中譯《快思慢想》）基於他跟拍檔 Amos Tversky 多年來的研究，介紹人類的兩大思考模式，引起很大迴響。如果没有看過該書，可以先看看 Kahneman 2011年在 Google 的演講。這次的新書，則主要介紹及說明決策過種由於各種原因出現的雜訊，導致人們在面對相同的問題時也可以給出完全不一樣的判斷。他指出，這種在決策中現的雜訊隨處可見，書中的例子更是令人大開眼界。
+在美國有人曾經研究過法官的判刑決定，不同的法官對某一案件的判刑可以是一年到十五年，有些研究更指出法官的判決跟會受一些看來毫不相關的因素影響。例如，如果本地的足球隊在週末輸了一場比賽，法官們在接下來的星期一所作出的判決會比較重。在法國，如果判決當天是辯護人的生日，法官作出的判決會較輕。書中另一個例子發生在 Kahneman 自己接觸過的一家保險公司。他發現保險公司不同員工在估算同一保單的價格或賠償金額時所作的決定並不一致，差額更可以超過 50%，而公司的管理層卻一直認為不同員工所作的決定相差不會超過 10%。
+更有趣的一項研究見於一位來自西班牙的行為心理學教授 Uri Simonsohn 發表的一篇論文，題為 &amp;ldquo;Clouds Make Nerds Look Good&amp;quot;。他發現天氣對大學入學申請的審批居然有明顯的影響： 天氣不好的時候，負責審批申請的人員會更看重學生的學術成績，而在天氣晴朗的日子，在其他非學術方面表現突出的學生會比較有利！
+Kahneman 在書中指出，決策的錯誤來自兩個因素，一為「偏見」(bias)，二為「雜訊」(noise)（更為正確的名稱應該是 variance，即判斷偏離平均值的程度）。一般情況下，人們更容易察覺到偏見的存在，而忽略雜訊，但修正偏見跟減低雜訊，對避免作出錯誤判斷的貢獻是一樣的。故此他認為我們不應對決策過程中出現的雜訊視而不見。
+作為一個在工作中經常應用到各種機器學習技術的軟件工程師，這些概念一點都不陌生。其實，bias 和 variance 正是機器學習中非常重要的概念，主要用於分析一個模型是否準確描述數據之間的關係。
+一個模型 bias 比較大時，說明它過份簡單，未能完全反映現實世界中事物之間的複雜關係。例如，當要預測一個人是否有心臟病時，如果模型只認為年齡越大，則有心臟病的機率越大，很明顯這個模型不會十分準確。換句話說，這個模型的「偏見」十分嚴重（過份簡單），因為它只參考一個人的其中一個特徴來作出判斷，而且只考慮此特徵跟結果的線性關係。 另一方面，一個模型的 variance 比較大時，說明它過份複雜，在學習數據之間的關係時，會把一些本來跟結果没有關係、只是偶爾出現在個別情況的特徵也納入考慮，導致模型在將來的應用中未能作出準確的判斷（因為它很容易被數據中的雜訊誤導），也就是在訓練模型時經常會提及的所謂 overfitting（過度擬合）。 一般人可能認為在作出各種專業判斷的時候，專業知識是最重要的因素，但 Kahneman 在這本書裡面明確指出決策過程中的雜訊跟專業知識是否全面没有必然關係。要避免錯誤的判斷，除了要排除「偏見」/擁有全面的知識外，更要關注作出判斷時的所出現的雜訊。'>
+<title>🔊 Noise 雜訊</title>
+
+<link rel='canonical' href='https://albertauyeung.github.io/2021/11/08/noise-daniel-kahneman.html'>
+
+<link rel="stylesheet" href="/scss/style.min.ebb0feb1238c5f4c8e14c9febf04dc409a6cacb74e106e0c4e417e5eb085669e.css"><meta property='og:title' content='🔊 Noise 雜訊'>
+<meta property='og:description' content='最近在看 Daniel Kahneman 的新書 Noise（中譯《雜訊》）。Daniel Kahneman 是2002年諾貝爾經濟學奬得主，他的前作 Thinking Fast and Slow（中譯《快思慢想》）基於他跟拍檔 Amos Tversky 多年來的研究，介紹人類的兩大思考模式，引起很大迴響。如果没有看過該書，可以先看看 Kahneman 2011年在 Google 的演講。這次的新書，則主要介紹及說明決策過種由於各種原因出現的雜訊，導致人們在面對相同的問題時也可以給出完全不一樣的判斷。他指出，這種在決策中現的雜訊隨處可見，書中的例子更是令人大開眼界。
+在美國有人曾經研究過法官的判刑決定，不同的法官對某一案件的判刑可以是一年到十五年，有些研究更指出法官的判決跟會受一些看來毫不相關的因素影響。例如，如果本地的足球隊在週末輸了一場比賽，法官們在接下來的星期一所作出的判決會比較重。在法國，如果判決當天是辯護人的生日，法官作出的判決會較輕。書中另一個例子發生在 Kahneman 自己接觸過的一家保險公司。他發現保險公司不同員工在估算同一保單的價格或賠償金額時所作的決定並不一致，差額更可以超過 50%，而公司的管理層卻一直認為不同員工所作的決定相差不會超過 10%。
+更有趣的一項研究見於一位來自西班牙的行為心理學教授 Uri Simonsohn 發表的一篇論文，題為 &amp;ldquo;Clouds Make Nerds Look Good&amp;quot;。他發現天氣對大學入學申請的審批居然有明顯的影響： 天氣不好的時候，負責審批申請的人員會更看重學生的學術成績，而在天氣晴朗的日子，在其他非學術方面表現突出的學生會比較有利！
+Kahneman 在書中指出，決策的錯誤來自兩個因素，一為「偏見」(bias)，二為「雜訊」(noise)（更為正確的名稱應該是 variance，即判斷偏離平均值的程度）。一般情況下，人們更容易察覺到偏見的存在，而忽略雜訊，但修正偏見跟減低雜訊，對避免作出錯誤判斷的貢獻是一樣的。故此他認為我們不應對決策過程中出現的雜訊視而不見。
+作為一個在工作中經常應用到各種機器學習技術的軟件工程師，這些概念一點都不陌生。其實，bias 和 variance 正是機器學習中非常重要的概念，主要用於分析一個模型是否準確描述數據之間的關係。
+一個模型 bias 比較大時，說明它過份簡單，未能完全反映現實世界中事物之間的複雜關係。例如，當要預測一個人是否有心臟病時，如果模型只認為年齡越大，則有心臟病的機率越大，很明顯這個模型不會十分準確。換句話說，這個模型的「偏見」十分嚴重（過份簡單），因為它只參考一個人的其中一個特徴來作出判斷，而且只考慮此特徵跟結果的線性關係。 另一方面，一個模型的 variance 比較大時，說明它過份複雜，在學習數據之間的關係時，會把一些本來跟結果没有關係、只是偶爾出現在個別情況的特徵也納入考慮，導致模型在將來的應用中未能作出準確的判斷（因為它很容易被數據中的雜訊誤導），也就是在訓練模型時經常會提及的所謂 overfitting（過度擬合）。 一般人可能認為在作出各種專業判斷的時候，專業知識是最重要的因素，但 Kahneman 在這本書裡面明確指出決策過程中的雜訊跟專業知識是否全面没有必然關係。要避免錯誤的判斷，除了要排除「偏見」/擁有全面的知識外，更要關注作出判斷時的所出現的雜訊。'>
+<meta property='og:url' content='https://albertauyeung.github.io/2021/11/08/noise-daniel-kahneman.html'>
+<meta property='og:site_name' content='Albert Au Yeung'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='book' /><meta property='article:tag' content='psychology' /><meta property='article:tag' content='social science' /><meta property='article:published_time' content='2021-11-08T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2021-11-08T00:00:00&#43;00:00'/>
+<meta name="twitter:title" content="🔊 Noise 雜訊">
+<meta name="twitter:description" content="最近在看 Daniel Kahneman 的新書 Noise（中譯《雜訊》）。Daniel Kahneman 是2002年諾貝爾經濟學奬得主，他的前作 Thinking Fast and Slow（中譯《快思慢想》）基於他跟拍檔 Amos Tversky 多年來的研究，介紹人類的兩大思考模式，引起很大迴響。如果没有看過該書，可以先看看 Kahneman 2011年在 Google 的演講。這次的新書，則主要介紹及說明決策過種由於各種原因出現的雜訊，導致人們在面對相同的問題時也可以給出完全不一樣的判斷。他指出，這種在決策中現的雜訊隨處可見，書中的例子更是令人大開眼界。
+在美國有人曾經研究過法官的判刑決定，不同的法官對某一案件的判刑可以是一年到十五年，有些研究更指出法官的判決跟會受一些看來毫不相關的因素影響。例如，如果本地的足球隊在週末輸了一場比賽，法官們在接下來的星期一所作出的判決會比較重。在法國，如果判決當天是辯護人的生日，法官作出的判決會較輕。書中另一個例子發生在 Kahneman 自己接觸過的一家保險公司。他發現保險公司不同員工在估算同一保單的價格或賠償金額時所作的決定並不一致，差額更可以超過 50%，而公司的管理層卻一直認為不同員工所作的決定相差不會超過 10%。
+更有趣的一項研究見於一位來自西班牙的行為心理學教授 Uri Simonsohn 發表的一篇論文，題為 &amp;ldquo;Clouds Make Nerds Look Good&amp;quot;。他發現天氣對大學入學申請的審批居然有明顯的影響： 天氣不好的時候，負責審批申請的人員會更看重學生的學術成績，而在天氣晴朗的日子，在其他非學術方面表現突出的學生會比較有利！
+Kahneman 在書中指出，決策的錯誤來自兩個因素，一為「偏見」(bias)，二為「雜訊」(noise)（更為正確的名稱應該是 variance，即判斷偏離平均值的程度）。一般情況下，人們更容易察覺到偏見的存在，而忽略雜訊，但修正偏見跟減低雜訊，對避免作出錯誤判斷的貢獻是一樣的。故此他認為我們不應對決策過程中出現的雜訊視而不見。
+作為一個在工作中經常應用到各種機器學習技術的軟件工程師，這些概念一點都不陌生。其實，bias 和 variance 正是機器學習中非常重要的概念，主要用於分析一個模型是否準確描述數據之間的關係。
+一個模型 bias 比較大時，說明它過份簡單，未能完全反映現實世界中事物之間的複雜關係。例如，當要預測一個人是否有心臟病時，如果模型只認為年齡越大，則有心臟病的機率越大，很明顯這個模型不會十分準確。換句話說，這個模型的「偏見」十分嚴重（過份簡單），因為它只參考一個人的其中一個特徴來作出判斷，而且只考慮此特徵跟結果的線性關係。 另一方面，一個模型的 variance 比較大時，說明它過份複雜，在學習數據之間的關係時，會把一些本來跟結果没有關係、只是偶爾出現在個別情況的特徵也納入考慮，導致模型在將來的應用中未能作出準確的判斷（因為它很容易被數據中的雜訊誤導），也就是在訓練模型時經常會提及的所謂 overfitting（過度擬合）。 一般人可能認為在作出各種專業判斷的時候，專業知識是最重要的因素，但 Kahneman 在這本書裡面明確指出決策過程中的雜訊跟專業知識是否全面没有必然關係。要避免錯誤的判斷，除了要排除「偏見」/擁有全面的知識外，更要關注作出判斷時的所出現的雜訊。">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "light");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/avatar_hu504580e4e0594bf3f7bf7b76af994632_241575_300x0_resize_q75_box.jpg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Albert Au Yeung</a></h1>
+            <h2 class="site-description">AI/ML Engineer</h2>
+        </div>
+    </header><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/about' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/page/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+
+        <div class="menu-bottom-section">
+            
+            
+                <li id="dark-mode-toggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <span>Dark Mode</span>
+                </li>
+            
+        </div>
+    </ol>
+</aside>
+
+    
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/2021/11/08/noise-daniel-kahneman.html">🔊 Noise 雜訊</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Nov 08, 2021</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    1 minute read
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <p>最近在看 <a class="link" href="https://en.wikipedia.org/wiki/Daniel_Kahneman"  target="_blank" rel="noopener"
+    >Daniel Kahneman</a> 的新書 <a class="link" href="https://readnoise.com/"  target="_blank" rel="noopener"
+    ><em>Noise</em>（中譯《雜訊》）</a>。Daniel Kahneman 是2002年諾貝爾經濟學奬得主，他的前作 <em>Thinking Fast and Slow</em>（中譯《快思慢想》）基於他跟拍檔 Amos Tversky 多年來的研究，介紹人類的兩大思考模式，引起很大迴響。如果没有看過該書，可以先看看 Kahneman <a class="link" href="https://www.youtube.com/watch?v=CjVQJdIrDJ0"  target="_blank" rel="noopener"
+    >2011年在 Google 的演講</a>。這次的新書，則主要介紹及說明決策過種由於各種原因出現的雜訊，導致人們在面對相同的問題時也可以給出完全不一樣的判斷。他指出，這種在決策中現的雜訊隨處可見，書中的例子更是令人大開眼界。</p>
+<p>在美國有人曾經研究過法官的判刑決定，不同的法官對某一案件的判刑可以是一年到十五年，有些研究更指出法官的判決跟會受一些看來毫不相關的因素影響。例如，如果本地的足球隊在週末輸了一場比賽，法官們在接下來的星期一所作出的判決會比較重。在法國，如果判決當天是辯護人的生日，法官作出的判決會較輕。書中另一個例子發生在 Kahneman 自己接觸過的一家保險公司。他發現保險公司不同員工在估算同一保單的價格或賠償金額時所作的決定並不一致，差額更可以超過 50%，而公司的管理層卻一直認為不同員工所作的決定相差不會超過 10%。</p>
+<p>更有趣的一項研究見於一位來自西班牙的行為心理學教授 <a class="link" href="http://urisohn.com/"  target="_blank" rel="noopener"
+    >Uri Simonsohn</a> 發表的一篇論文，題為 &ldquo;<a class="link" href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=906872"  target="_blank" rel="noopener"
+    >Clouds Make Nerds Look Good</a>&quot;。他發現天氣對大學入學申請的審批居然有明顯的影響： 天氣不好的時候，負責審批申請的人員會更看重學生的學術成績，而在天氣晴朗的日子，在其他非學術方面表現突出的學生會比較有利！</p>
+<p>Kahneman 在書中指出，決策的錯誤來自兩個因素，一為「偏見」(bias)，二為「雜訊」(noise)（更為正確的名稱應該是 variance，即判斷偏離平均值的程度）。一般情況下，人們更容易察覺到偏見的存在，而忽略雜訊，但修正偏見跟減低雜訊，對避免作出錯誤判斷的貢獻是一樣的。故此他認為我們不應對決策過程中出現的雜訊視而不見。</p>
+<p>作為一個在工作中經常應用到各種機器學習技術的軟件工程師，這些概念一點都不陌生。其實，<a class="link" href="https://en.wikipedia.org/wiki/Bias%E2%80%93variance_tradeoff"  target="_blank" rel="noopener"
+    >bias 和 variance</a> 正是機器學習中非常重要的概念，主要用於分析一個模型是否準確描述數據之間的關係。</p>
+<ul>
+<li>一個模型 bias 比較大時，說明它過份簡單，未能完全反映現實世界中事物之間的複雜關係。例如，當要預測一個人是否有心臟病時，如果模型只認為年齡越大，則有心臟病的機率越大，很明顯這個模型不會十分準確。換句話說，這個模型的「偏見」十分嚴重（過份簡單），因為它只參考一個人的其中一個特徴來作出判斷，而且只考慮此特徵跟結果的線性關係。</li>
+<li>另一方面，一個模型的 variance 比較大時，說明它過份複雜，在學習數據之間的關係時，會把一些本來跟結果没有關係、只是偶爾出現在個別情況的特徵也納入考慮，導致模型在將來的應用中未能作出準確的判斷（因為它很容易被數據中的雜訊誤導），也就是在訓練模型時經常會提及的所謂 overfitting（過度擬合）。</li>
+</ul>
+<p>一般人可能認為在作出各種專業判斷的時候，專業知識是最重要的因素，但 Kahneman 在這本書裡面明確指出決策過程中的雜訊跟專業知識是否全面没有必然關係。要避免錯誤的判斷，除了要排除「偏見」/擁有全面的知識外，更要關注作出判斷時的所出現的雜訊。</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/book/">book</a>
+        
+            <a href="/tags/psychology/">psychology</a>
+        
+            <a href="/tags/social-science/">social science</a>
+        
+    </section>
+
+
+    </footer>
+
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.css"integrity="sha256-J&#43;iAE0sgH8QSz9hpcDxXIftnj65JEZgNhGcgReTTK9s="crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/katex.min.js"integrity="sha256-InsNdER1b2xUewP&#43;pKCUJpkhiqwHgqiPXDlIk7GzBu4="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.15.6/dist/contrib/auto-render.min.js"integrity="sha256-y39Mpg7V3D4lhBX4x6O0bUqTV4pSrfgwEfGKfxkOdgI="crossorigin="anonymous"
+                defer
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+        renderMathInElement(document.querySelector(`.article-content`), {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ],
+            ignoredClasses: ["gist"]
+        });})
+</script>
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2024 Albert Au Yeung
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.21.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>
