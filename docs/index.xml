@@ -90,7 +90,7 @@
       
       <guid>/2021/12/20/project-hail-mary.html</guid>
       <description>&lt;p&gt;Like most people, I first knew about Andy Weir through the movie &lt;a href=&#34;https://en.wikipedia.org/wiki/The_Martian_(film)&#34;&gt;Martian&lt;/a&gt;. It was a great sci-fi movie with the science presented accurately. Therefore, when I knew that Andy Weir&amp;rsquo;s latest science fiction, &lt;a href=&#34;https://en.wikipedia.org/wiki/Project_Hail_Mary&#34;&gt;Project Hail Mary&lt;/a&gt;, was released, I immediately bought the book and started reading.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://example.org/images/project-hail-mary.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://ayeung.dev/images/project-hail-mary.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
 &lt;p&gt;Project Hail Mary tells the story of Ryland Grace, a high school scienc teacher, who was involved in a mission to save the Solar System. It turns out to be another great science fiction, which in my opinion won&amp;rsquo;t disappoint anyone who is attracted to it because of Andy Weir&amp;rsquo;s previous fictions. It definitely is the best book I read in 2021. I was later delighted to see that Bill Gates featured Project Hail Mary as &lt;a href=&#34;https://www.gatesnotes.com/Books/Project-Hail-Mary&#34;&gt;one of the five books he loved reading this year&lt;/a&gt;, and the book was also the &lt;a href=&#34;https://www.goodreads.com/choiceawards/best-science-fiction-books-2021&#34;&gt;winner of in the sci-fi category in the 2021 Goodreads Choice Award&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;In many aspect, Project Hail Mary is similar to Martian. Both protagonists are scientists who were thrown into desperate situations in which they have to fight for their own survival with their scientific knowledge. However, in Project Hail Mary, Ryland&amp;rsquo;s purpose is not only to survive but also to make sure that the mission to save the solar system and the human race. This adds more complexity into the story, as well as the decision making processes that Ryland has to gone through.&lt;/p&gt;
 &lt;p&gt;Although I enjoy different types of science fiction, I always find it more engaging when the aurthor attempts to present sciecne as accurate as possible and to explain things that appear in the story with existing scientific knowledge. That is why I enjoy reading Project Hail Mary very much. I highly recommend the book to anyone who is looking for something fun and inspiring to read over a weekend.&lt;/p&gt;</description>
@@ -657,7 +657,7 @@ Pad or truncate all sentences to the same length.&lt;/li&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;plt&lt;span style=&#34;color:#ff6ac1&#34;&gt;.&lt;/span&gt;title(&lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#34;圖1&amp;#34;&lt;/span&gt;, fontproperties&lt;span style=&#34;color:#ff6ac1&#34;&gt;=&lt;/span&gt;fprop, fontsize&lt;span style=&#34;color:#ff6ac1&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ff9f43&#34;&gt;18&lt;/span&gt;)
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;plt&lt;span style=&#34;color:#ff6ac1&#34;&gt;.&lt;/span&gt;show()
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;The effect will be as follows:&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://example.org/images/20200315_graph1.png&#34; alt=&#34;Graph 1&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://ayeung.dev/images/20200315_graph1.png&#34; alt=&#34;Graph 1&#34;&gt;&lt;/p&gt;
 &lt;h2 id=&#34;using-fonts-in-the-font-folder&#34; &gt;
 &lt;div&gt;
     &lt;a href=&#34;#using-fonts-in-the-font-folder&#34;&gt;
@@ -694,7 +694,7 @@ Pad or truncate all sentences to the same length.&lt;/li&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;plt&lt;span style=&#34;color:#ff6ac1&#34;&gt;.&lt;/span&gt;title(&lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#34;圖1&amp;#34;&lt;/span&gt;, fontsize&lt;span style=&#34;color:#ff6ac1&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ff9f43&#34;&gt;18&lt;/span&gt;)
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;plt&lt;span style=&#34;color:#ff6ac1&#34;&gt;.&lt;/span&gt;show()
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;which will produce the same graph as above:&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://example.org/images/20200315_graph1.png&#34; alt=&#34;Graph 1&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://ayeung.dev/images/20200315_graph1.png&#34; alt=&#34;Graph 1&#34;&gt;&lt;/p&gt;
 &lt;h2 id=&#34;using-custom-fonts-in-seaborn&#34; &gt;
 &lt;div&gt;
     &lt;a href=&#34;#using-custom-fonts-in-seaborn&#34;&gt;
@@ -713,7 +713,7 @@ Pad or truncate all sentences to the same length.&lt;/li&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;ax&lt;span style=&#34;color:#ff6ac1&#34;&gt;.&lt;/span&gt;set_title(&lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#34;圖表1&amp;#34;&lt;/span&gt;)
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;ax&lt;span style=&#34;color:#ff6ac1&#34;&gt;.&lt;/span&gt;grid()
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;And the following graph will be produced:&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://example.org/images/20200315_graph2.png&#34; alt=&#34;Graph 2&#34;&gt;&lt;/p&gt;</description>
+&lt;p&gt;&lt;img src=&#34;https://ayeung.dev/images/20200315_graph2.png&#34; alt=&#34;Graph 2&#34;&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -1732,17 +1732,17 @@ $\hat{r}_{ij} = b + bu_i + bd_j + \sum_{k=1}^k{p_{ik} q_{kj}}$
 &lt;/h2&gt;
 &lt;p&gt;古堡的中文譯名似乎沒有被統一，售票職員給我的小冊子上寫著「石庸古堡」，可是古堡外的小商店內售賣的書籍卻叫它作「西庸古堡」，我在網路上也看過不少其他的譯名，如「詩庸」、「希隆」等等。若把這些名字跟它的法語名字作比較，也實在沒有太大的分別。無論如何，小冊子的譯名該可算是比較「官方」的吧，暫且用「石庸古堡」這個名字吧。&lt;/p&gt;
 &lt;p&gt;到石庸古堡，坐火車到 Veytaux-Chillon 站算是最方便的，下車後在日內瓦湖邊步行 10 分鐘左右便可到達。可是，這畢竟是一個小車站，來往大城市的列車不停於此。另一個方法是坐火車到蒙特勒，從火車站坐巴士來到城堡的門前下車。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://example.org/images/chillon01.jpg&#34; alt=&#34;Chateau de chillon&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://ayeung.dev/images/chillon01.jpg&#34; alt=&#34;Chateau de chillon&#34;&gt;&lt;/p&gt;
 &lt;p&gt;雖說拜倫的詩為這座古堡添了不少名氣，可是它本身對遊人來說也是十分吸引的。一般城堡，多建在山丘高地上，居高臨下，以便防禦外來的襲擊。但是，石庸古堡卻建在湖邊的一個小島上，流過岸邊和島石間的日內瓦湖水便成了它自然的謢城河。日內瓦湖平靜如鏡，在古堡高處依稀可見湖的彼岸，四周是高聳入雲的雪山，映在湖面上，更覺宏偉。&lt;/p&gt;
 &lt;p&gt;石庸古堡的歷史，最早的記載始自公元一零零五年。可是，古堡的圍牆可追溯至中世紀時代。古堡所在的小島，更因在城堡入口附近所發掘到的墳墓，被證實在青銅時代已經有人類聚居。在附近發掘到的其他文物，也證明羅馬人曾經佔領此地。石庸古堡位處瑞士通往意大利的山道，自古以來即是軍事要地。古堡本來為錫永主教(Bishops of Sion) 所有，自十二世紀起則成為薩伏依公爵 (Dukes of Savoy) 的財產，直到一五三六年為瑞士人所攻佔。瑞士伯恩 (Bern) 的軍隊佔領城堡後，曾經用作大法官的倉庫、軍火庫、府第，以及監獄。古堡的塔樓和城垛便是在這個時期建造的。至一七九八年，沃州 (Canton of Vaud) 取得獨立，石庸古堡從此成為沃州的財產。一八八七年，瑞士成立了「石庸古堡修復協會」 (Association du Château de Chillon)，專責古堡的修復及圍謢工作。從它的歷史，可見石庸古堡曾經多次易手，而不同的主人也曾經進行多次修復及增建的工作。正因如此，石庸古堡的不同部份的建築雖然色調一致，但風格卻是有所不同，這也成為了古堡的特色之一。&lt;/p&gt;
 &lt;p&gt;石庸古堡成為各國遊客趨之若鶩的瑞士景點，乃是因為十九世紀英國浪漫詩人拜倫所寫的一首題為〈石庸的囚徒〉 (The Prisoner of Chillon) 的詩。一八一六年，拜倫跟居住在瑞士的友人、英國詩人雪萊 (Shelley) 一同遊覽日內瓦湖，並到石庸古堡參觀。拜倫在參觀期間，得知日內瓦一位民族英雄波尼伐 (François Bonivard) 因支持日內瓦獨立而被囚禁於古堡地下囚牢的事蹟，有感而發寫下一首題為 &amp;ldquo;Sonnet on Chillon&amp;rdquo; 的詩歌。其後在洛桑暫居的拜倫，基於波尼伐的事蹟，繼續完成了長詩〈石庸的囚徒〉，並在回到英國後出版。&lt;/p&gt;
 &lt;p&gt;拜倫所到過的囚禁波尼伐的牢房，現在應該是古堡最受人注目的地方。地下室的入口，在近城堡入口的一號院的後方。走下梯階，穿過地下拱室，便是古堡的囚牢。當年主張日內瓦獨立的波尼伐，便是被鐵鏈鎖在囚牢中的第五根柱子上。既然是瑞士第一古堡的地下囚房，又是拜倫詩歌中描述的地方，柱子上難免被刻上來自不同國家的遊客的「到此一遊」字句。畢竟，拜倫自己也在第三根柱子上刻下自己的名字。不過，貴人名士的塗鴉終究是有點不同，現在拜倫的簽名已經被玻璃保護著了。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://example.org/images/chillon02.jpg&#34; alt=&#34;Chateau de chillon&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://ayeung.dev/images/chillon02.jpg&#34; alt=&#34;Chateau de chillon&#34;&gt;&lt;/p&gt;
 &lt;p&gt;拜倫的詩，講述波尼伐及他的兩位弟弟被關押於此。他們被鎖在不同的柱子上，可以看見對方，卻觸摸不到。波尼伐的兩位弟弟沒能支撐到最後，都死在牢獄之中，只剩下波尼伐一人。拜倫的詩，實在是一個可歌可泣的悲慘故事。可是，「文人多大話」這句話可是沒有說錯。詩中的主角波尼伐，是日內瓦聖維克多修道院 (St. Victor) 的院長，十六世紀初因主張及推動日內瓦獨立，及對抗薩伏依公爵，而被囚禁於古堡之中。被囚禁的四年後，瑞士人成功攻佔石庸城堡，波尼伐終被釋放出來。歷史上，波尼伐的兩位弟弟卻是不存在的。無論如何，拜倫優美的文字和富感染力的描述，確實為石庸古堡添加了不少傳奇色彩。&lt;/p&gt;
 &lt;p&gt;在城堡內，幾乎所有的房間及設施都是開放給遊人參觀的。可是在近城門的一號院的一角，在十六世紀時曾經用作馬棚的地方，已被改建成新式房屋，小冊子上寫著現在是公寓。竟然有人住在一個對外開放給遊人參觀的歷史古蹟，實在有點奇怪。除了曾經囚禁波尼伐的監獄外，其他地方如堡主大廳、宴會廳、紋章大廳、公爵的卧室等等，都是很值得參觀的地方。遊人更可走上城堡的主塔，俯瞰城堡的宏偉建築或眺望四周壯麗的景色。&lt;/p&gt;
 &lt;p&gt;古堡及日內瓦湖畔，春夏秋冬各有不同的景致，雖然多數遊人不會有機會親身體會，在古堡外的小商店內出售的明信片及書籍，卻也可讓遊人感受一下此地四季不
 同的氣氛。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://example.org/images/chillon03.jpg&#34; alt=&#34;Chateau de chillon&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://ayeung.dev/images/chillon03.jpg&#34; alt=&#34;Chateau de chillon&#34;&gt;&lt;/p&gt;
 &lt;h2 id=&#34;參考資料&#34; &gt;
 &lt;div&gt;
     &lt;a href=&#34;#%e5%8f%83%e8%80%83%e8%b3%87%e6%96%99&#34;&gt;
