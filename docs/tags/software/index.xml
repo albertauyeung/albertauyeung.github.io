@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Software on ayeung.dev</title>
+    <link>/tags/software/</link>
+    <description>ayeung.dev (Software)</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    
+      
+
+      
+    
+
+    
+    <lastBuildDate>Wed, 15 Jan 2025 00:00:00 +0000</lastBuildDate>
+    
+    <atom:link href="/tags/software/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>📝 Heynote: Scratchpad for Developers</title>
+      <link>/2025/01/15/heynote.html</link>
+      <pubDate>Wed, 15 Jan 2025 00:00:00 +0000</pubDate>
+      
+      <guid>/2025/01/15/heynote.html</guid>
+      <description>&lt;p&gt;I recently discovered an application called &lt;a href=&#34;https://heynote.com/&#34;&gt;Heynote&lt;/a&gt; and I think it is a great tool for developers.&lt;/p&gt;
+&lt;p&gt;It is a note-taking application that allows you to quickly jot down notes, code snippets, and other information. While it is very simple, it offers a few very useful features, such as block-based editing, syntax highlighting, and markdown support, which are all very useful features for developers. I used to use Sublime Text to jot down notes and code snippets, but Heynote is definitely a better tool for lightweight note-taking. Check out &lt;a href=&#34;https://heyman.info/2024/heynote-scratchpad-for-developers&#34;&gt;the author&amp;rsquo;s blog post&lt;/a&gt; for more details!&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

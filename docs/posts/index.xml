@@ -13,10 +13,20 @@
     
 
     
-    <lastBuildDate>Sun, 27 Aug 2023 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 15 Jan 2025 00:00:00 +0000</lastBuildDate>
     
     <atom:link href="/posts/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>📝 Heynote: Scratchpad for Developers</title>
+      <link>/2025/01/15/heynote.html</link>
+      <pubDate>Wed, 15 Jan 2025 00:00:00 +0000</pubDate>
+      
+      <guid>/2025/01/15/heynote.html</guid>
+      <description>&lt;p&gt;I recently discovered an application called &lt;a href=&#34;https://heynote.com/&#34;&gt;Heynote&lt;/a&gt; and I think it is a great tool for developers.&lt;/p&gt;
+&lt;p&gt;It is a note-taking application that allows you to quickly jot down notes, code snippets, and other information. While it is very simple, it offers a few very useful features, such as block-based editing, syntax highlighting, and markdown support, which are all very useful features for developers. I used to use Sublime Text to jot down notes and code snippets, but Heynote is definitely a better tool for lightweight note-taking. Check out &lt;a href=&#34;https://heyman.info/2024/heynote-scratchpad-for-developers&#34;&gt;the author&amp;rsquo;s blog post&lt;/a&gt; for more details!&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>💻 Managing multiple Github accounts on the same computer</title>
@@ -1771,29 +1781,6 @@ $\hat{r}_{ij} = b + bu_i + bd_j + \sum_{k=1}^k{p_{ik} q_{kj}}$
 &lt;li&gt;余秋雨，〈希隆的囚徒〉，《行者無疆》，時報文化，台北，二零零一年。&lt;/li&gt;
 &lt;li&gt;欒珊瑚，《漫步蕾夢湖》，元尊文化，台北，一九九八年。&lt;/li&gt;
 &lt;/ul&gt;</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>/posts/2025-01-15-heynote/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>/posts/2025-01-15-heynote/</guid>
-      <description>&lt;h2 id=&#34;weight--20250115&#34; &gt;
-&lt;div&gt;
-    &lt;a href=&#34;#weight--20250115&#34;&gt;
-        #
-    &lt;/a&gt;
-    title: &amp;ldquo;📝 Heynote: Scratchpad for Developers&amp;rdquo;
-url: /2025/01/15/heynote.html
-date: 2025-01-15
-tags:
-- software
-weight: -20250115
-&lt;/div&gt;
-&lt;/h2&gt;
-&lt;p&gt;I recently discovered an application called &lt;a href=&#34;https://heyman.info/2024/heynote-scratchpad-for-developers&#34;&gt;Heynote&lt;/a&gt; and I think it is a great tool for developers.&lt;/p&gt;
-&lt;p&gt;It is a note-taking application that allows you to quickly jot down notes, code snippets, and other information. While it is very simple, it offers a few very useful features, such as block-based editing, syntax highlighting, and markdown support, which are all very useful features for developers. I used to use Sublime Text to jot down notes and code snippets, but Heynote is definitely a better tool for lightweight note-taking. Check out &lt;a href=&#34;https://heyman.info/2024/heynote-scratchpad-for-developers&#34;&gt;the author&amp;rsquo;s blog post&lt;/a&gt; for more details!&lt;/p&gt;</description>
     </item>
     
   </channel>
