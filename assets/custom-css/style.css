@@ -32,6 +32,9 @@ p, li, .u-url {
     border-radius: 0.5em;
     background-color: #e6e6e6;
 }
+.post-short-list {
+    margin: 0.5em 0.5em 2em 0.5em;
+}
 
 /* Quotations */
 .quotes {
