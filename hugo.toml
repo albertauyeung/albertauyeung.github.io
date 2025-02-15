@@ -1,70 +1,61 @@
-baseURL = 'https://albertauyeung.github.io/'
+baseURL = 'https://example.org/'
 languageCode = 'en-us'
-title = 'Albert Au Yeung'
-theme = 'stack'
+title = 'ayeung.dev'
+theme = "anubis2"
 
-defaultContentLanguage = "en"
-hasCJKLanguage = false
+[params.author]
+name = "Albert Au Yeung"
+location = "Dublin, Ireland"
 
-[menu]
-  
-  [[menu.main]]
-    identifier = "home"
-    name = "Home"
-    url = "/"
-    weight = -100
-
-    [menu.main.params]
-      icon = "home"
-      newtab = false
-
-  [[menu.main]]
-    identifier = "about"
-    name = "About"
-    url = "/page/about"
-    weight = -99
-
-    [menu.main.params]
-      icon = "user"
-      newtab = false
+[pagination]
+pagerSize = 20
 
 [params]
-  mainSections = ["post"]
-  featuredImageField = "image"
-  rssFullContent = true
+copyCodeButton = true
+rssAsSocialIcon = true
+readMore = true
+toc = false
+math = true
 
-  [params.article]
-    math = true
+customCSS = ["custom-css/style.css"]
 
-  [params.footer]
-    since = 2024
+social = [
+    { id = "github", url = "https://github.com/albertauyeung" },
+    { id = "linkedin", url = "https://www.linkedin.com/in/albert-au-yeung/" },
+]
 
-  [params.sidebar]
-    subtitle = "AI/ML Engineer"
+[[menu.main]]
+identifier = "home"
+name = "Home"
+url = "/"
+weight = 1
 
-    [params.sidebar.avatar]
-      enabled = true
-      local = true
-      src = "avatar.jpg"
+[[menu.main]]
+identifier = "about"
+name = "About"
+url = "/about/"
+weight = 2
 
-  [params.colorScheme]
-    toggle = true
-    default = "light"
+[[menu.main]]
+identifier = "tags"
+name = "Tags"
+url = "/tags/"
+weight = 3
 
-  [[params.widgets.homepage]]
-    type = "search"
+[[menu.main]]
+name = "Quotes"
+identifier = "quotes"
+url = "/quotes/"
+weight = 4
 
-  [[params.widgets.homepage]]
-    type = "archives"
+[[menu.main]]
+name = "Archive"
+identifier = "archive"
+url = "/posts/"
+weight = 5
 
-    [params.widgets.homepage.params]
-      limit = 5
+[markup.goldmark.renderer]
+unsafe = true
 
-  [[params.widgets.homepage]]
-    type = "tag-cloud"
-
-    [params.widgets.homepage.params]
-      limit = 10
-
-  [[params.widgets.page]]
-    type = "toc"
+[markup.highlight]
+style = "base16-snazzy"
