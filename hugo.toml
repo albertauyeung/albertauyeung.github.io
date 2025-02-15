@@ -2,6 +2,7 @@ baseURL = 'https://example.org/'
 languageCode = 'en-us'
 title = 'ayeung.dev'
 theme = "anubis2"
+publishDir = "docs"
 
 [params.author]
 name = "Albert Au Yeung"

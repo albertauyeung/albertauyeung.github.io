@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+
+
+<html lang="en-us" data-theme="">
+<head>
+    
+        
+<meta charset="utf-8">
+<meta name="HandheldFriendly" content="True">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer-when-downgrade">
+
+<title>🔥 Matrix Factorization: A Simple Tutorial and Implementation in Python - ayeung.dev</title>
+
+<meta name="description" content="There is probably no need to say that there is too much information on the Web nowadays. Search engines help us a little bit. What is better is to have something interesting recommended to us automatically without asking. Indeed, from as simple as a list of the most popular questions and answers on Quora to some more personalized recommendations we received on Amazon, we are usually offered recommendations on the Web.">
+
+
+
+
+
+<link rel="icon" type="image/x-icon" href="https://example.org/favicon.ico">
+<link rel="apple-touch-icon-precomposed" href="https://example.org/favicon.png">
+
+
+
+
+
+
+
+
+    
+
+
+
+<style>
+  body {
+    visibility: hidden;
+    opacity: 0;
+  }
+</style>
+
+<noscript>
+  <style>
+    body {
+      visibility: visible;
+      opacity: 1;
+    }
+  </style>
+</noscript>
+
+
+
+
+    
+
+
+
+
+
+    
+    
+        
+    
+    
+
+    
+        <link rel="stylesheet" href="/css/style.min.44f8240afd8df81b52565c4119ac5ae247776c77fc6d7ccf6e101a6c98abfa7a.css" integrity="sha256-RPgkCv2N&#43;BtSVlxBGaxa4kd3bHf8bXzPbhAabJir&#43;no=">
+    
+
+
+
+
+
+    
+
+
+
+
+
+    
+    
+        
+    
+    
+
+    
+        <link rel="stylesheet" href="/css/style.min.c4c04b3ef88e3d619ad4c7ee5e03048422bc55c4fefdc1f07657c1133670aa22.css" integrity="sha256-xMBLPviOPWGa1MfuXgMEhCK8VcT&#43;/cHwdlfBEzZwqiI=">
+    
+
+
+
+
+
+    
+
+
+
+
+
+    
+    
+        
+    
+    
+
+    
+        <link rel="stylesheet" href="/css/style.min.21c5d8fe0a79d623b0adc1ce4bd4f6dd2c05cd939c9aaaa966ba7186b1464f4d.css" integrity="sha256-IcXY/gp51iOwrcHOS9T23SwFzZOcmqqpZrpxhrFGT00=">
+    
+
+
+
+
+
+
+
+    
+    
+      
+    
+
+    
+      
+        <link rel="stylesheet" href="/css/style.min.089e7f1457df6ef7e8440d02f1c3ec62874fa6345ffbba7b7b6862fa52fd86f6.css" integrity="sha256-CJ5/FFffbvfoRA0C8cPsYodPpjRf&#43;7p7e2hi&#43;lL9hvY=" crossorigin="anonymous">
+      
+    
+
+
+
+
+
+
+    
+
+    
+
+
+
+
+
+    
+    
+        
+    
+    
+
+    
+        <script src="/js/script.min.08f04d96386c73c9bf4d160333f8f448c05a6e01c06770542ee0e013954ce930.js" type="text/javascript" charset="utf-8" integrity="sha256-CPBNljhsc8m/TRYDM/j0SMBabgHAZ3BULuDgE5VM6TA="></script>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+</head>
+<body>
+    <a class="skip-main" href="#main">Skip to main content</a>
+    <div class="container">
+        <header class="common-header">
+            
+                <div class="header-top">
+    <div class="header-top-left">
+        <h1 class="site-title noselect">
+    <a href="/">ayeung.dev</a>
+</h1>
+
+        
+
+
+
+
+
+
+
+    
+        <div class="theme-switcher">
+            <span class="inline-svg">
+
+    
+
+
+    
+    
+    
+    
+    
+
+    <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-sun-high"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14.828 14.828a4 4 0 1 0 -5.656 -5.656a4 4 0 0 0 5.656 5.656z" /><path d="M6.343 17.657l-1.414 1.414" /><path d="M6.343 6.343l-1.414 -1.414" /><path d="M17.657 6.343l1.414 -1.414" /><path d="M17.657 17.657l1.414 1.414" /><path d="M4 12h-2" /><path d="M12 4v-2" /><path d="M20 12h2" /><path d="M12 20v2" /></svg>
+
+
+</span>
+
+        </div>
+    
+
+    <script>
+        const STORAGE_KEY = 'user-color-scheme'
+        const defaultTheme = "light"
+
+        let currentTheme
+        let switchButton
+        let autoDefinedScheme = window.matchMedia('(prefers-color-scheme: dark)')
+
+        function switchTheme(e) {
+            currentTheme = (currentTheme === 'dark') ? 'light' : 'dark';
+            if (localStorage) localStorage.setItem(STORAGE_KEY, currentTheme);
+            document.documentElement.setAttribute('data-theme', currentTheme);
+            changeGiscusTheme(currentTheme);
+            document.body.dispatchEvent(new CustomEvent(currentTheme + "-theme-set"));
+        }
+
+        const autoChangeScheme = e => {
+            currentTheme = e.matches ? 'dark' : 'light'
+            document.documentElement.setAttribute('data-theme', currentTheme);
+            changeGiscusTheme(currentTheme);
+            document.body.dispatchEvent(new CustomEvent(currentTheme + "-theme-set"));
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            switchButton = document.querySelector('.theme-switcher')
+            currentTheme = detectCurrentScheme()
+
+            if (currentTheme === 'auto') {
+                autoChangeScheme(autoDefinedScheme);
+                autoDefinedScheme.addListener(autoChangeScheme);
+            } else {
+                document.documentElement.setAttribute('data-theme', currentTheme)
+            }
+
+            if (switchButton) {
+                switchButton.addEventListener('click', switchTheme, false)
+            }
+
+            showContent();
+        })
+
+        function detectCurrentScheme() {
+            if (localStorage !== null && localStorage.getItem(STORAGE_KEY)) {
+                return localStorage.getItem(STORAGE_KEY)
+            }
+            if (defaultTheme) {
+                return defaultTheme
+            }
+            return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+
+        function showContent() {
+            document.body.style.visibility = 'visible';
+            document.body.style.opacity = 1;
+        }
+
+        function changeGiscusTheme (theme) {
+            function sendMessage(message) {
+              const iframe = document.querySelector('iframe.giscus-frame');
+              if (!iframe) return;
+              iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+            }
+
+            sendMessage({
+              setConfig: {
+                theme: theme
+              }
+            });
+        }
+    </script>
+
+
+        <ul class="social-icons noselect">
+
+
+    
+        <li>
+            <a href="https://github.com/albertauyeung" title="Github" rel="me">
+            <span class="inline-svg">
+
+    
+
+
+    
+    
+    
+    
+    
+
+    <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-brand-github"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" /></svg>
+
+
+</span>
+
+            </a>
+        </li>
+    
+
+    
+        <li>
+            <a href="https://www.linkedin.com/in/albert-au-yeung/" title="Linkedin" rel="me">
+            <span class="inline-svg">
+
+    
+
+
+    
+    
+    
+    
+    
+
+    <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-brand-linkedin"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z" /><path d="M8 11l0 5" /><path d="M8 8l0 .01" /><path d="M12 16l0 -5" /><path d="M16 16v-3a2 2 0 0 0 -4 0" /></svg>
+
+
+</span>
+
+            </a>
+        </li>
+    
+
+
+
+
+
+
+    <li>
+            <a href="/index.xml" title="RSS" rel="me">
+            <span class="inline-svg">
+
+    
+
+
+    
+    
+    
+    
+    
+
+    <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-rss"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 19m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><path d="M4 4a16 16 0 0 1 16 16" /><path d="M4 11a9 9 0 0 1 9 9" /></svg>
+
+
+</span>
+
+            </a>
+        </li>
+    
+
+</ul>
+
+    </div>
+    <div class="header-top-right">
+
+    </div>
+</div>
+
+
+    <nav class="noselect">
+        
+        
+        <a class="" href="https://example.org/" title="">Home</a>
+        
+        <a class="" href="https://example.org/about/" title="">About</a>
+        
+        <a class="" href="https://example.org/tags/" title="">Tags</a>
+        
+        <a class="" href="https://example.org/quotes/" title="">Quotes</a>
+        
+        <a class="" href="https://example.org/posts/" title="">Archive</a>
+        
+    </nav>
+
+
+
+<script>
+  MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$','$$'], ['\\[', '\\]']],
+      processEscapes: true,
+      processEnvironments: true
+    },
+    options: {
+      skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+    }
+  };
+
+  window.addEventListener('load', (event) => {
+      document.querySelectorAll("mjx-container").forEach(function(x){
+        x.parentElement.classList += 'has-jax'})
+    });
+
+</script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+
+
+
+
+            
+        </header>
+        <main id="main" tabindex="-1">
+            
+    
+
+    <article class="post h-entry">
+        <div class="post-header">
+            <header>
+                <h1 class="p-name post-title">🔥 Matrix Factorization: A Simple Tutorial and Implementation in Python</h1>
+                
+
+            </header>
+            
+
+
+
+<div class="post-info noselect">
+    
+        <div class="post-date dt-published">
+            <time datetime="2017-04-23">2017-04-23</time>
+            
+        </div>
+    
+
+    <a class="post-hidden-url u-url" href="/2017/04/23/python-matrix-factorization.html">/2017/04/23/python-matrix-factorization.html</a>
+    <a href="https://example.org/" class="p-name p-author post-hidden-author h-card" rel="me">map[location:Dublin, Ireland name:Albert Au Yeung]</a>
+
+
+    <div class="post-taxonomies">
+        
+        
+            <ul class="post-tags">
+                
+                    
+                    <li><a href="/tags/python/">#Python</a></li>
+                
+                    
+                    <li><a href="/tags/machine-learning/">#Machine Learning</a></li>
+                
+                    
+                    <li><a href="/tags/matrix-factorization/">#Matrix Factorization</a></li>
+                
+            </ul>
+        
+        
+    </div>
+</div>
+
+        </div>
+        
+
+  
+  
+    
+  
+
+
+
+
+
+
+<script>
+  var toc = document.querySelector(".toc");
+  if (toc) {
+    toc.addEventListener("click", function () {
+      if (event.target.tagName !== "A") {
+        event.preventDefault();
+        if (this.open) {
+          this.open = false;
+          this.classList.remove("expanded");
+        } else {
+          this.open = true;
+          this.classList.add("expanded");
+        }
+      }
+    });
+  }
+</script>
+
+        <div class="content e-content">
+            <p>There is probably no need to say that there is too much information on the Web nowadays. Search engines help us a little bit. What is better is to have something interesting recommended to us automatically without asking. Indeed, from as simple as a list of the most popular questions and answers on <a href="https://www.quora.com/">Quora</a> to some more personalized recommendations we received on <a href="https://www.amazon.com">Amazon</a>, we are usually offered recommendations on the Web.</p>
+<p>Recommendations can be generated by a wide range of algorithms. While user-based or item-based <a href="http://en.wikipedia.org/wiki/Collaborative_filtering">collaborative filtering</a> methods are simple and intuitive, <a href="https://en.wikipedia.org/wiki/Matrix_decomposition">matrix factorization</a> techniques are usually more effective because they allow us to discover the latent features underlying the interactions between users and items. Of course, matrix factorization is simply a mathematical tool for playing around with matrices, and is therefore applicable in many scenarios where one would like to find out something hidden under the data.</p>
+<p>In this tutorial, we will go through the basic ideas and the mathematics of matrix factorization, and then we will present a simple implementation in <a href="http://www.python.org">Python</a>. We will proceed with the assumption that we are dealing with user ratings (e.g. an integer score from the range of 1 to 5) of items in a recommendation system.</p>
+<h2 id="basic-idea" >
+<div>
+    <a href="#basic-idea">
+        #
+    </a>
+    Basic Idea
+</div>
+</h2>
+<p>Just as its name suggests, matrix factorization is to, obviously, factorize a matrix, i.e. to find out two (or more) matrices such that when you multiply them you will get back the original matrix.</p>
+<p>As mentioned above, from an application point of view, matrix factorization can be used to discover latent features underlying the interactions between two different kinds of entities. (Of course, you can consider more than two kinds of entities and you will be dealing with tensor factorization, which would be more complicated.) And one obvious application is to predict ratings in collaborative filtering.</p>
+<p>In a recommendation system such as <a href="http://www.netflix.com/">Netflix</a> or <a href="http://movielens.umn.edu/">MovieLens</a>, there is a group of users and a set of items (movies for the above two systems). Given that each users have rated some items in the system, we would like to predict how the users would rate the items that they have not yet rated, such that we can make recommendations to the users. In this case, all the information we have about the existing ratings can be represented in a matrix. Assume now we have 5 users and 10 items, and ratings are integers ranging from 1 to 5, the matrix may look something like this (a hyphen means that the user has not yet rated the movie):</p>
+<table>
+  <thead>
+      <tr>
+          <th></th>
+          <th><strong>D1</strong></th>
+          <th><strong>D2</strong></th>
+          <th><strong>D3</strong></th>
+          <th><strong>D4</strong></th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>U1</strong></td>
+          <td>5</td>
+          <td>3</td>
+          <td>-</td>
+          <td>1</td>
+      </tr>
+      <tr>
+          <td><strong>U2</strong></td>
+          <td>4</td>
+          <td>-</td>
+          <td>-</td>
+          <td>1</td>
+      </tr>
+      <tr>
+          <td><strong>U3</strong></td>
+          <td>1</td>
+          <td>1</td>
+          <td>-</td>
+          <td>5</td>
+      </tr>
+      <tr>
+          <td><strong>U4</strong></td>
+          <td>1</td>
+          <td>-</td>
+          <td>-</td>
+          <td>4</td>
+      </tr>
+      <tr>
+          <td><strong>U5</strong></td>
+          <td>-</td>
+          <td>1</td>
+          <td>5</td>
+          <td>4</td>
+      </tr>
+  </tbody>
+</table>
+<p>Hence, the task of predicting the missing ratings can be considered as filling in the blanks (the hyphens in the matrix) such that the values would be consistent with the existing ratings in the matrix.</p>
+<p>The intuition behind using matrix factorization to solve this problem is that there should be some latent features that determine how a user rates an item. For example, two users would give high ratings to a certain movie if they both like the actors or actresses in the movie, or if the movie is an action movie, which is a genre preferred by both users.</p>
+<p>Hence, if we can discover these latent features, we should be able to predict a rating with respect to a certain user and a certain item, because the features associated with the user should match with the features associated with the item.</p>
+<p>In trying to discover the different features, we also make the assumption that the <strong>number of features</strong> would be smaller than the <strong>number of users</strong> and the <strong>number of items</strong>. It should not be difficult to understand this assumption because clearly it would not be reasonable to assume that each user is associated with a unique feature (although this is not impossible). And anyway if this is the case there would be no point in making recommendations, because each of these users would not be interested in the items rated by other users. Similarly, the same argument applies to the items.</p>
+<h2 id="the-maths-of-matrix-factorization" >
+<div>
+    <a href="#the-maths-of-matrix-factorization">
+        #
+    </a>
+    The Maths of Matrix Factorization
+</div>
+</h2>
+<p>Having discussed the intuition behind matrix factorization, we can now go on to work on the mathematics. Firstly, we have a set $U$ of users, and a set $D$ of items. Let $\mathbf{R}$ of size $|U| \times |D|$ be the matrix that contains all the ratings that the users have assigned to the items. Also, we assume that we would like to discover $K$ latent features. Our task, then, is to find two matrics $\mathbf{P}$ (of size $|U| \times |K|$) and $\mathbf{Q}$ (of size $|D| \times |K|$) such that their product apprioximates $\mathbf{R}$:</p>
+<p>$$\mathbf{R} \approx \mathbf{P} \times \mathbf{Q}^T = \hat{\mathbf{R}}$$</p>
+<p>In this way, each row of $\mathbf{P}$ would represent the strength of the associations between <strong>a user and the features</strong>. Similarly, each row of $\mathbf{Q}$  would represent the strength of the associations between <strong>an item and the features</strong>. To get the prediction of a rating of an item $d_j$ by $u_i$, we can calculate the dot product of their vectors:</p>
+<p>$$\hat{r}_{ij} = p_i^T q_j = \sum _{k=1}^{K}  p _{ik} q _{kj}$$</p>
+<p>Now, we have to find a way to obtain $\mathbf{P}$ and $\mathbf{Q}$. One way to approach this problem is the first intialize the two matrices with some values, calculate how <strong>different</strong> their product is to $\mathbf{M}$, and then try to minimize this difference iteratively. Such a method is called gradient descent, aiming at finding a local minimum of the difference.</p>
+<p>The difference here, usually called the <strong>error</strong> between the estimated rating and the real rating, can be calculated by the following equation for each <strong>user-item pair</strong>:</p>
+<p>$$e _{ij}^2 = (r _{ij} - \hat{r} _{ij})^2 = (r _{ij} - \sum _{k=1}^K p _{ik} q _{kj})^2$$</p>
+<p>Here we consider the <strong>squared error</strong> because the estimated rating can be either higher or lower than the real rating.</p>
+<p>To minimize the error, we have to know in which direction we have to modify the values of $p_{ik}$ and $q_{kj}$. In other words, we need to know the gradient at the current values, and therefore we differentiate the above equation with respect to these two variables separately:</p>
+<p>$$
+\frac{\partial}{\partial p _{ik}} e _{ij}^2 = -2(r _{ij} - \hat{r} _{ij}) (q _{kj}) = -2 e _{ij} q _{kj}
+$$</p>
+<p>$$
+\frac{\partial}{\partial q _{ik}} e _{ij}^2 = -2(r _{ij} - \hat{r} _{ij}) (p _{ik}) = -2 e _{ij} p _{ik}
+$$</p>
+<p>Having obtained the gradient, we can now formulate the <strong>update rules</strong> for both $p_{ik}$ and $q_{kj}$:</p>
+<p>$$p&rsquo; _{ik} = p _{ik} + \alpha \frac{\partial}{\partial p _{ik}} e _{ij}^2 = p _{ik} + 2\alpha e _{ij} q _{kj}$$</p>
+<p>$$q&rsquo; _{kj} = q _{kj} + \alpha \frac{\partial}{\partial q _{kj}} e _{ij}^2 = q _{kj} + 2\alpha e _{ij} p _{ik}$$</p>
+<p>Here, $\alpha$ is a constant whose value determines the <strong>rate of approaching the minimum</strong>. Usually we will choose a small value for $\alpha$, say 0.0002. This is because if we make too large a step towards the minimum we may run into the risk of missing the minimum and end up oscillating around the minimum.</p>
+<p>A question might have come to your mind by now: if we find two matrices $\mathbf{P}$ and $\mathbf{Q}$ such that $\mathbf{P} \times \mathbf{Q}$ approximates $\mathbf{R}$, isn&rsquo;t that our predictions of all the unseen ratings will be zeros? In fact, we are not really trying to come up with $\mathbf{P}$ and $\mathbf{Q}$ such that we can reproduce $\mathbf{R}$ exactly. Instead, we will only try to minimise the errors of the <strong>observed</strong> user-item pairs. In other words, if we let $T$ be a set of tuples, each of which is in the form of $(u_i, d_j, r_{ij})$, such that $T$ contains all the observed user-item pairs together with the associated ratings, we are only trying to minimise every $e_{ij}$ for $(u_i, d_j, r_{ij}) \in T$. (In other words, $T$ is our set of <strong>training data</strong>.) As for the rest of the unknowns, we will be able to determine their values once the associations between the users, items and features have been learnt.</p>
+<p>Using the above update rules, we can then iteratively perform the operation until the error converges to its minimum. We can check the overall error as calculated using the following equation and determine when we should stop the process.</p>
+<p>$$E = \sum _{(u _i, d _j, r _{ij}) \in T}{e _{ij}} = \sum _{(u _i,d _j,r _{ij}) \in T}{(r _{ij} - \sum _{k=1}^K p _{ik} q _{kj})^2}$$</p>
+<h2 id="regularization" >
+<div>
+    <a href="#regularization">
+        #
+    </a>
+    Regularization
+</div>
+</h2>
+<p>The above algorithm is a very basic algorithm for factorizing a matrix. There are a lot of methods to make things look more complicated. A common extension to this basic algorithm is to introduce <a href="https://en.wikipedia.org/wiki/Regularization_(mathematics)"><strong>regularization</strong></a> to avoid <strong>overfitting</strong>. This is done by adding a parameter $\beta$ and modify the squared error as follows:</p>
+<p>$$e _{ij}^2 = (r _{ij} - \sum _{k=1}^K p _{ik} q _{kj})^2 + \frac{\beta}{2} \sum _{k=1}^K (||P||^2 + ||Q||^2)$$</p>
+<p>In other words, the new parameter $\beta$ is used to control the <strong>magnitudes</strong> of the user-feature and item-feature vectors such that $P$ and $Q$ would give a good approximation of $R$ without having to contain large numbers. In practice, $\beta$ is set to some values in the order of 0.02. The new update rules for this squared error can be obtained by a procedure similar to the one described above. The new update rules are as follows:</p>
+<p>$$p&rsquo; _{ik} = p _{ik} + \alpha \frac{\partial}{\partial p _{ik}} e _{ij}^2 = p _{ik} + \alpha(2 e _{ij} q _{kj} - \beta p _{ik} )$$</p>
+<p>$$q&rsquo; _{kj} = q _{kj} + \alpha \frac{\partial}{\partial q _{kj}} e _{ij}^2 = q _{kj} + \alpha(2 e _{ij} p _{ik} - \beta q _{kj} )$$</p>
+<h2 id="adding-biases" >
+<div>
+    <a href="#adding-biases">
+        #
+    </a>
+    Adding Biases
+</div>
+</h2>
+<p>When predicting the ratings of users given to items, it is useful to consider how ratings are generated. In the above discussion, we have assumed that ratings are generated based on matching the users preferences on some latent factors and the items&rsquo; characteristics on the latent factors. Actually, it may also be helpful to consider additional factors here.</p>
+<p>For example, we can assume that when a rating is generated, some <strong>biases</strong> may also contribute to the ratings. In particular, every user may have his or her own bias, meaning that he or she may tend to rate items higher or lower than the others. In movie ratings, if a user is a serious movie watcher, he or she may tend to give lower ratings, when compared to another user who generally enjoys movies as long as they are not too boring. A similar idea can also be applied to the items being rated.</p>
+<p>Hence, in the equal of predicting a rating, we can also add these biases in order to better model how a rating is generated:</p>
+<center>
+$\hat{r}_{ij} = b + bu_i + bd_j + \sum_{k=1}^k{p_{ik} q_{kj}}$
+</center><br/>
+<p>where $b$ is the global bias (which can be easily estimated by using the mean of all ratings), $bu_i$ is the bias of user $i$, and $bd_j$ is the bias of item $j$.</p>
+<p>Using the same steps mentioned above, we can derive the update rules for the user biases and item biases easily:</p>
+<p>$$bu&rsquo; _i = bu _i + \alpha \times (e _{ij} - \beta bu _i)$$</p>
+<p>$$bd&rsquo; _j = bd _j + \alpha \times (e _{ij} - \beta bd _j)$$</p>
+<p>In practice, the process of factorization will converge faster if biases are included in the model.</p>
+<h2 id="a-simple-implementation-in-python" >
+<div>
+    <a href="#a-simple-implementation-in-python">
+        #
+    </a>
+    A Simple Implementation in Python
+</div>
+</h2>
+<p>Once we have derived the update rules as described above, it actually becomes very straightforward to implement the algorithm. The following is a function that implements the algorithm in Python using the <a href="https://en.wikipedia.org/wiki/Stochastic_gradient_descent"><strong>stochastic gradient descent</strong></a> algorithm. Note that this implementation requires the <a href="http://numpy.scipy.org/"><strong>Numpy</strong></a> module.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ff6ac1">import</span> numpy <span style="color:#ff6ac1">as</span> np
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">class</span> <span style="color:#f3f99d">MF</span>():
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">def</span> __init__(self, R, K, alpha, beta, iterations):
+</span></span><span style="display:flex;"><span>        <span style="color:#5af78e">&#34;&#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">        Perform matrix factorization to predict empty
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">        entries in a matrix.
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">        Arguments
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">        - R (ndarray)   : user-item rating matrix
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">        - K (int)       : number of latent dimensions
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">        - alpha (float) : learning rate
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">        - beta (float)  : regularization parameter
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">        &#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#ff6ac1">.</span>R <span style="color:#ff6ac1">=</span> R
+</span></span><span style="display:flex;"><span>        self<span style="color:#ff6ac1">.</span>num_users, self<span style="color:#ff6ac1">.</span>num_items <span style="color:#ff6ac1">=</span> R<span style="color:#ff6ac1">.</span>shape
+</span></span><span style="display:flex;"><span>        self<span style="color:#ff6ac1">.</span>K <span style="color:#ff6ac1">=</span> K
+</span></span><span style="display:flex;"><span>        self<span style="color:#ff6ac1">.</span>alpha <span style="color:#ff6ac1">=</span> alpha
+</span></span><span style="display:flex;"><span>        self<span style="color:#ff6ac1">.</span>beta <span style="color:#ff6ac1">=</span> beta
+</span></span><span style="display:flex;"><span>        self<span style="color:#ff6ac1">.</span>iterations <span style="color:#ff6ac1">=</span> iterations
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">def</span> <span style="color:#57c7ff">train</span>(self):
+</span></span><span style="display:flex;"><span>        <span style="color:#78787e"># Initialize user and item latent feature matrice</span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#ff6ac1">.</span>P <span style="color:#ff6ac1">=</span> np<span style="color:#ff6ac1">.</span>random<span style="color:#ff6ac1">.</span>normal(scale<span style="color:#ff6ac1">=</span><span style="color:#ff9f43">1.</span><span style="color:#ff6ac1">/</span>self<span style="color:#ff6ac1">.</span>K, size<span style="color:#ff6ac1">=</span>(self<span style="color:#ff6ac1">.</span>num_users, self<span style="color:#ff6ac1">.</span>K))
+</span></span><span style="display:flex;"><span>        self<span style="color:#ff6ac1">.</span>Q <span style="color:#ff6ac1">=</span> np<span style="color:#ff6ac1">.</span>random<span style="color:#ff6ac1">.</span>normal(scale<span style="color:#ff6ac1">=</span><span style="color:#ff9f43">1.</span><span style="color:#ff6ac1">/</span>self<span style="color:#ff6ac1">.</span>K, size<span style="color:#ff6ac1">=</span>(self<span style="color:#ff6ac1">.</span>num_items, self<span style="color:#ff6ac1">.</span>K))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#78787e"># Initialize the biases</span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#ff6ac1">.</span>b_u <span style="color:#ff6ac1">=</span> np<span style="color:#ff6ac1">.</span>zeros(self<span style="color:#ff6ac1">.</span>num_users)
+</span></span><span style="display:flex;"><span>        self<span style="color:#ff6ac1">.</span>b_i <span style="color:#ff6ac1">=</span> np<span style="color:#ff6ac1">.</span>zeros(self<span style="color:#ff6ac1">.</span>num_items)
+</span></span><span style="display:flex;"><span>        self<span style="color:#ff6ac1">.</span>b <span style="color:#ff6ac1">=</span> np<span style="color:#ff6ac1">.</span>mean(self<span style="color:#ff6ac1">.</span>R[np<span style="color:#ff6ac1">.</span>where(self<span style="color:#ff6ac1">.</span>R <span style="color:#ff6ac1">!=</span> <span style="color:#ff9f43">0</span>)])
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#78787e"># Create a list of training samples</span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#ff6ac1">.</span>samples <span style="color:#ff6ac1">=</span> [
+</span></span><span style="display:flex;"><span>            (i, j, self<span style="color:#ff6ac1">.</span>R[i, j])
+</span></span><span style="display:flex;"><span>            <span style="color:#ff6ac1">for</span> i <span style="color:#ff6ac1">in</span> <span style="color:#ff5c57">range</span>(self<span style="color:#ff6ac1">.</span>num_users)
+</span></span><span style="display:flex;"><span>            <span style="color:#ff6ac1">for</span> j <span style="color:#ff6ac1">in</span> <span style="color:#ff5c57">range</span>(self<span style="color:#ff6ac1">.</span>num_items)
+</span></span><span style="display:flex;"><span>            <span style="color:#ff6ac1">if</span> self<span style="color:#ff6ac1">.</span>R[i, j] <span style="color:#ff6ac1">&gt;</span> <span style="color:#ff9f43">0</span>
+</span></span><span style="display:flex;"><span>        ]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#78787e"># Perform stochastic gradient descent for number of iterations</span>
+</span></span><span style="display:flex;"><span>        training_process <span style="color:#ff6ac1">=</span> []
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">for</span> i <span style="color:#ff6ac1">in</span> <span style="color:#ff5c57">range</span>(self<span style="color:#ff6ac1">.</span>iterations):
+</span></span><span style="display:flex;"><span>            np<span style="color:#ff6ac1">.</span>random<span style="color:#ff6ac1">.</span>shuffle(self<span style="color:#ff6ac1">.</span>samples)
+</span></span><span style="display:flex;"><span>            self<span style="color:#ff6ac1">.</span>sgd()
+</span></span><span style="display:flex;"><span>            mse <span style="color:#ff6ac1">=</span> self<span style="color:#ff6ac1">.</span>mse()
+</span></span><span style="display:flex;"><span>            training_process<span style="color:#ff6ac1">.</span>append((i, mse))
+</span></span><span style="display:flex;"><span>            <span style="color:#ff6ac1">if</span> (i<span style="color:#ff6ac1">+</span><span style="color:#ff9f43">1</span>) <span style="color:#ff6ac1">%</span> <span style="color:#ff9f43">10</span> <span style="color:#ff6ac1">==</span> <span style="color:#ff9f43">0</span>:
+</span></span><span style="display:flex;"><span>                <span style="color:#ff5c57">print</span>(<span style="color:#5af78e">&#34;Iteration: </span><span style="color:#5af78e">%d</span><span style="color:#5af78e"> ; error = </span><span style="color:#5af78e">%.4f</span><span style="color:#5af78e">&#34;</span> <span style="color:#ff6ac1">%</span> (i<span style="color:#ff6ac1">+</span><span style="color:#ff9f43">1</span>, mse))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">return</span> training_process
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">def</span> <span style="color:#57c7ff">mse</span>(self):
+</span></span><span style="display:flex;"><span>        <span style="color:#5af78e">&#34;&#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">        A function to compute the total mean square error
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">        &#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        xs, ys <span style="color:#ff6ac1">=</span> self<span style="color:#ff6ac1">.</span>R<span style="color:#ff6ac1">.</span>nonzero()
+</span></span><span style="display:flex;"><span>        predicted <span style="color:#ff6ac1">=</span> self<span style="color:#ff6ac1">.</span>full_matrix()
+</span></span><span style="display:flex;"><span>        error <span style="color:#ff6ac1">=</span> <span style="color:#ff9f43">0</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">for</span> x, y <span style="color:#ff6ac1">in</span> <span style="color:#ff5c57">zip</span>(xs, ys):
+</span></span><span style="display:flex;"><span>            error <span style="color:#ff6ac1">+=</span> <span style="color:#ff5c57">pow</span>(self<span style="color:#ff6ac1">.</span>R[x, y] <span style="color:#ff6ac1">-</span> predicted[x, y], <span style="color:#ff9f43">2</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">return</span> np<span style="color:#ff6ac1">.</span>sqrt(error)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">def</span> <span style="color:#57c7ff">sgd</span>(self):
+</span></span><span style="display:flex;"><span>        <span style="color:#5af78e">&#34;&#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">        Perform stochastic graident descent
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">        &#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">for</span> i, j, r <span style="color:#ff6ac1">in</span> self<span style="color:#ff6ac1">.</span>samples:
+</span></span><span style="display:flex;"><span>            <span style="color:#78787e"># Computer prediction and error</span>
+</span></span><span style="display:flex;"><span>            prediction <span style="color:#ff6ac1">=</span> self<span style="color:#ff6ac1">.</span>get_rating(i, j)
+</span></span><span style="display:flex;"><span>            e <span style="color:#ff6ac1">=</span> (r <span style="color:#ff6ac1">-</span> prediction)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#78787e"># Update biases</span>
+</span></span><span style="display:flex;"><span>            self<span style="color:#ff6ac1">.</span>b_u[i] <span style="color:#ff6ac1">+=</span> self<span style="color:#ff6ac1">.</span>alpha <span style="color:#ff6ac1">*</span> (e <span style="color:#ff6ac1">-</span> self<span style="color:#ff6ac1">.</span>beta <span style="color:#ff6ac1">*</span> self<span style="color:#ff6ac1">.</span>b_u[i])
+</span></span><span style="display:flex;"><span>            self<span style="color:#ff6ac1">.</span>b_i[j] <span style="color:#ff6ac1">+=</span> self<span style="color:#ff6ac1">.</span>alpha <span style="color:#ff6ac1">*</span> (e <span style="color:#ff6ac1">-</span> self<span style="color:#ff6ac1">.</span>beta <span style="color:#ff6ac1">*</span> self<span style="color:#ff6ac1">.</span>b_i[j])
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#78787e"># Update user and item latent feature matrices</span>
+</span></span><span style="display:flex;"><span>            self<span style="color:#ff6ac1">.</span>P[i, :] <span style="color:#ff6ac1">+=</span> self<span style="color:#ff6ac1">.</span>alpha <span style="color:#ff6ac1">*</span> (e <span style="color:#ff6ac1">*</span> self<span style="color:#ff6ac1">.</span>Q[j, :] <span style="color:#ff6ac1">-</span> self<span style="color:#ff6ac1">.</span>beta <span style="color:#ff6ac1">*</span> self<span style="color:#ff6ac1">.</span>P[i,:])
+</span></span><span style="display:flex;"><span>            self<span style="color:#ff6ac1">.</span>Q[j, :] <span style="color:#ff6ac1">+=</span> self<span style="color:#ff6ac1">.</span>alpha <span style="color:#ff6ac1">*</span> (e <span style="color:#ff6ac1">*</span> self<span style="color:#ff6ac1">.</span>P[i, :] <span style="color:#ff6ac1">-</span> self<span style="color:#ff6ac1">.</span>beta <span style="color:#ff6ac1">*</span> self<span style="color:#ff6ac1">.</span>Q[j,:])
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">def</span> <span style="color:#57c7ff">get_rating</span>(self, i, j):
+</span></span><span style="display:flex;"><span>        <span style="color:#5af78e">&#34;&#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">        Get the predicted rating of user i and item j
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">        &#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        prediction <span style="color:#ff6ac1">=</span> self<span style="color:#ff6ac1">.</span>b <span style="color:#ff6ac1">+</span> self<span style="color:#ff6ac1">.</span>b_u[i] <span style="color:#ff6ac1">+</span> self<span style="color:#ff6ac1">.</span>b_i[j] <span style="color:#ff6ac1">+</span> self<span style="color:#ff6ac1">.</span>P[i, :]<span style="color:#ff6ac1">.</span>dot(self<span style="color:#ff6ac1">.</span>Q[j, :]<span style="color:#ff6ac1">.</span>T)
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">return</span> prediction
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">def</span> <span style="color:#57c7ff">full_matrix</span>(self):
+</span></span><span style="display:flex;"><span>        <span style="color:#5af78e">&#34;&#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">        Computer the full matrix using the resultant biases, P and Q
+</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">        &#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">return</span> self<span style="color:#ff6ac1">.</span>b <span style="color:#ff6ac1">+</span> self<span style="color:#ff6ac1">.</span>b_u[:,np<span style="color:#ff6ac1">.</span>newaxis] <span style="color:#ff6ac1">+</span> self<span style="color:#ff6ac1">.</span>b_i[np<span style="color:#ff6ac1">.</span>newaxis:,] <span style="color:#ff6ac1">+</span> self<span style="color:#ff6ac1">.</span>P<span style="color:#ff6ac1">.</span>dot(self<span style="color:#ff6ac1">.</span>Q<span style="color:#ff6ac1">.</span>T)
+</span></span></code></pre></div><p>We can try to apply it to our example mentioned above and see what we would get. Below is a code snippet in Python for running the example.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>R <span style="color:#ff6ac1">=</span> np<span style="color:#ff6ac1">.</span>array([
+</span></span><span style="display:flex;"><span>    [<span style="color:#ff9f43">5</span>, <span style="color:#ff9f43">3</span>, <span style="color:#ff9f43">0</span>, <span style="color:#ff9f43">1</span>],
+</span></span><span style="display:flex;"><span>    [<span style="color:#ff9f43">4</span>, <span style="color:#ff9f43">0</span>, <span style="color:#ff9f43">0</span>, <span style="color:#ff9f43">1</span>],
+</span></span><span style="display:flex;"><span>    [<span style="color:#ff9f43">1</span>, <span style="color:#ff9f43">1</span>, <span style="color:#ff9f43">0</span>, <span style="color:#ff9f43">5</span>],
+</span></span><span style="display:flex;"><span>    [<span style="color:#ff9f43">1</span>, <span style="color:#ff9f43">0</span>, <span style="color:#ff9f43">0</span>, <span style="color:#ff9f43">4</span>],
+</span></span><span style="display:flex;"><span>    [<span style="color:#ff9f43">0</span>, <span style="color:#ff9f43">1</span>, <span style="color:#ff9f43">5</span>, <span style="color:#ff9f43">4</span>],
+</span></span><span style="display:flex;"><span>])
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>mf <span style="color:#ff6ac1">=</span> MF(R, K<span style="color:#ff6ac1">=</span><span style="color:#ff9f43">2</span>, alpha<span style="color:#ff6ac1">=</span><span style="color:#ff9f43">0.1</span>, beta<span style="color:#ff6ac1">=</span><span style="color:#ff9f43">0.01</span>, iterations<span style="color:#ff6ac1">=</span><span style="color:#ff9f43">20</span>)
+</span></span></code></pre></div><p>And the matrix obtained from the above process would look something like this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>[[ <span style="color:#ff9f43">4.99</span>  <span style="color:#ff9f43">3.</span>    <span style="color:#ff9f43">3.34</span>  <span style="color:#ff9f43">1.01</span>]
+</span></span><span style="display:flex;"><span> [ <span style="color:#ff9f43">4.</span>    <span style="color:#ff9f43">3.18</span>  <span style="color:#ff9f43">2.98</span>  <span style="color:#ff9f43">1.01</span>]
+</span></span><span style="display:flex;"><span> [ <span style="color:#ff9f43">1.02</span>  <span style="color:#ff9f43">0.96</span>  <span style="color:#ff9f43">5.54</span>  <span style="color:#ff9f43">4.97</span>]
+</span></span><span style="display:flex;"><span> [ <span style="color:#ff9f43">1.</span>    <span style="color:#ff9f43">0.6</span>   <span style="color:#ff9f43">4.78</span>  <span style="color:#ff9f43">3.97</span>]
+</span></span><span style="display:flex;"><span> [ <span style="color:#ff9f43">1.53</span>  <span style="color:#ff9f43">1.05</span>  <span style="color:#ff9f43">4.94</span>  <span style="color:#ff9f43">4.03</span>]]
+</span></span></code></pre></div><p>We can see that for existing ratings we have the approximations very close to the true values, and we also get some &lsquo;predictions&rsquo; of the unknown values. In this simple example, we can easily see that $U1$ and $U2$ have similar taste and they both rated $D1$ and $D2$ high, while the rest of the users preferred $D3$, $D4$ and $D5$. When the number of features ($K$ in the Python code) is 2, the algorithm is able to associate the users and items to two different features, and the predictions also follow these associations. For example, we can see that the predicted rating of $U4$ on $D3$ is 4.78, because $U4$ and $U5$ both rated $D4$ high.</p>
+<h2 id="further-information" >
+<div>
+    <a href="#further-information">
+        #
+    </a>
+    Further Information
+</div>
+</h2>
+<p>We have discussed the intuitive meaning of the technique of matrix factorization and its use in collaborative filtering. In fact, there are many different extensions to the above technique. An important extension is the requirement that all the elements of the factor matrices $\mathbf{P}$ and $\mathbf{Q}$ in the above example) should be <strong>non-negative</strong>. In this case it is called <a href="https://en.wikipedia.org/wiki/Non-negative_matrix_factorization">non-negative matrix factorization (NMF)</a>. One advantage of NMF is that it results in intuitive meanings of the resultant matrices. Since no elements are negative, the process of multiplying the resultant matrices to get back the original matrix would not involve subtraction, and can be considered as a process of generating the original data by linear combinations of the latent features.</p>
+<h2 id="source-code" >
+<div>
+    <a href="#source-code">
+        #
+    </a>
+    Source Code
+</div>
+</h2>
+<p>An example can be found at this <a href="https://nbviewer.jupyter.org/github/albertauyeung/matrix-factorization-in-python/blob/master/mf.ipynb">IPython notebok</a>. It is also available at my Github account in <a href="https://github.com/albertauyeung/matrix-factorization-in-python">this repository</a>.</p>
+<h2 id="references" >
+<div>
+    <a href="#references">
+        #
+    </a>
+    References
+</div>
+</h2>
+<p>There have been quite a lot of references on matrix factorization. Below are some of the related papers:</p>
+<ul>
+<li>Gábor Takács et al (2008). <a href="http://portal.acm.org/citation.cfm?id=1454049">Matrix factorization and neighbor based algorithms for the Netflix prize problem</a>In: Proceedings of the 2008 ACM Conference on Recommender Systems, Lausanne, Switzerland, October 23 - 25, 267-274.</li>
+<li>Patrick Ott (2008). <a href="http://www.comp.leeds.ac.uk/ott/dl/mf_ott.pdf">Incremental Matrix Factorization for Collaborative Filtering</a>. Science, Technology and Design 01/2008, Anhalt University of Applied Sciences.</li>
+<li>Daniel D. Lee and H. Sebastian Seung (2001). <a href="http://hebb.mit.edu/people/seung/papers/nmfconverge.pdf">Algorithms for Non-negative Matrix Factorization</a>. Advances in Neural Information Processing Systems 13: Proceedings of the 2000 Conference. MIT Press. pp. 556–562.</li>
+<li>Daniel D. Lee and H. Sebastian Seung (1999). <a href="http://www.nature.com/nature/journal/v401/n6755/abs/401788a0.html">Learning the parts of objects by non-negative matrix factorization</a>. Nature, Vol. 401, No. 6755. (21 October 1999), pp. 788-791.</li>
+</ul>
+        </div>
+
+    </article>
+
+    
+    
+
+    
+        
+        
+    
+
+    
+
+    
+        
+
+
+
+
+
+
+
+
+
+    
+
+    
+
+    
+
+    
+
+        </main>
+        
+            <footer class="common-footer noselect">
+    
+    
+
+    <div class="common-footer-bottom">
+        
+
+        <div style="display: flex; align-items: center; gap:8px">
+            ©  Albert Au Yeung,  2025
+            
+        </div>
+        <div style="display:flex;align-items: center">
+            
+            
+            
+            
+            
+            
+        </div>
+        <div>
+            Powered by <a target="_blank" rel="noopener noreferrer" href="https://gohugo.io/">Hugo</a>, theme <a target="_blank" rel="noopener noreferrer" href="https://github.com/Junyi-99/hugo-theme-anubis2">Anubis2</a>.<br>
+            
+
+        </div>
+    </div>
+
+    <p class="h-card vcard">
+
+    <a href=https://example.org/ class="p-name u-url url fn" rel="me">map[location:Dublin, Ireland name:Albert Au Yeung]</a>
+
+    
+
+    
+</p>
+
+</footer>
+
+        
+    </div>
+</body>
+</html>

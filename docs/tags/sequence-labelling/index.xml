@@ -1,0 +1,374 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Sequence Labelling on ayeung.dev</title>
+    <link>/tags/sequence-labelling/</link>
+    <description>ayeung.dev (Sequence Labelling)</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    
+      
+
+      
+    
+
+    
+    <lastBuildDate>Sat, 17 Jun 2017 00:00:00 +0000</lastBuildDate>
+    
+    <atom:link href="/tags/sequence-labelling/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>🔍 Performing Sequence Labelling using CRF in Python</title>
+      <link>/2017/06/17/python-sequence-labelling-with-crf.html</link>
+      <pubDate>Sat, 17 Jun 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/2017/06/17/python-sequence-labelling-with-crf.html</guid>
+      <description>&lt;p&gt;In &lt;a href=&#34;https://en.wikipedia.org/wiki/Natural_language_processing&#34;&gt;natural language processing&lt;/a&gt;, it is a common task to &lt;strong&gt;extract words or phrases of particular types&lt;/strong&gt; from a given sentence or paragraph. For example, when performing analysis of a corpus of news articles, we may want to know which countries are mentioned in the articles, and how many articles are related to each of these countries.&lt;/p&gt;
+&lt;h2 id=&#34;sequence-labelling-in-nlp&#34; &gt;
+&lt;div&gt;
+    &lt;a href=&#34;#sequence-labelling-in-nlp&#34;&gt;
+        #
+    &lt;/a&gt;
+    Sequence Labelling in NLP
+&lt;/div&gt;
+&lt;/h2&gt;
+&lt;p&gt;This is actually a special case of &lt;strong&gt;sequence labelling&lt;/strong&gt; in NLP (others include &lt;a href=&#34;https://en.wikipedia.org/wiki/Part-of-speech_tagging&#34;&gt;POS tagging&lt;/a&gt; and &lt;a href=&#34;https://en.wikipedia.org/wiki/Shallow_parsing&#34;&gt;Chunking&lt;/a&gt;), in which the goal is to assign a label to each member in the sequence. In the case of identifying country names, we would like to assign a &amp;lsquo;&lt;em&gt;country&lt;/em&gt;&amp;rsquo; label to words that form part of a country name, and a &amp;lsquo;&lt;em&gt;irrelevant&lt;/em&gt;&amp;rsquo; label to all other words. For example, the following is a sentence broken down into tokens, and its desired output after the sequence labelling process:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#ff5c57&#34;&gt;input&lt;/span&gt; &lt;span style=&#34;color:#ff6ac1&#34;&gt;=&lt;/span&gt; [&lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#34;Paris&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#34;is&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#34;the&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#34;capital&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#34;of&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#34;France&amp;#34;&lt;/span&gt;]
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;output &lt;span style=&#34;color:#ff6ac1&#34;&gt;=&lt;/span&gt; [&lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#34;I&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#34;I&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#34;I&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#34;I&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#34;I&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#34;C&amp;#34;&lt;/span&gt;]
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;where &lt;em&gt;I&lt;/em&gt; means that the token of that position is an irrelevant word, and &lt;em&gt;C&lt;/em&gt; means that the token of that position is a word that form part of a country name.&lt;/p&gt;
+&lt;h2 id=&#34;methods-of-sequence-labelling&#34; &gt;
+&lt;div&gt;
+    &lt;a href=&#34;#methods-of-sequence-labelling&#34;&gt;
+        #
+    &lt;/a&gt;
+    Methods of Sequence Labelling
+&lt;/div&gt;
+&lt;/h2&gt;
+&lt;p&gt;A simple, though sometimes quite useful, approach is to prepare a &lt;strong&gt;dictionary&lt;/strong&gt; of country names, and look for these names in each of the sentences in the corpus. However, this method relies heavily on the comprehensiveness of the dictionary. While there is a limited number of countries, in other cases such as city names the number of possible entries in the dictionary can be huge. Even for countries, many countries may be referred to using different sequence of characters in different contexts. For example, the United States of America may be referred to in an article as &lt;em&gt;the USA&lt;/em&gt;, &lt;em&gt;the States&lt;/em&gt;, or simply &lt;em&gt;America&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;In fact, a person reading a news article would usually recognise that a word or a phrase refers to a country, even when he or she has not seen the name of that country before. The reason is that there are many differnt &lt;strong&gt;cues&lt;/strong&gt; in the sentence or the whole article that can be used to determine whether a word or a phrase is a country name. Take the following two sentences as examples:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Kerry travels to &lt;strong&gt;Laos&lt;/strong&gt;&amp;rsquo;s capital, Vientiane, on Monday for meetings of foreign ministers from the 10-member Association of South East Asia Nations (ASEAN).&lt;/li&gt;
+&lt;li&gt;The Governments of &lt;strong&gt;Bolivia&lt;/strong&gt; and &lt;strong&gt;Uruguay&lt;/strong&gt; will strengthen ties with a customs cooperation agreement to be in force on June 15th.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The first sentence implies that something called &lt;strong&gt;Lao&lt;/strong&gt; has a capital, suggesting that &lt;strong&gt;Lao&lt;/strong&gt; is a country. Similarly, in the second sentence we know that both &lt;strong&gt;Bolivia&lt;/strong&gt; and &lt;strong&gt;Uruguay&lt;/strong&gt; are countries as the news mentioned about their governments. In other words, the words around &amp;lsquo;Lao&amp;rsquo;, &amp;lsquo;Bolivia&amp;rsquo; and &amp;lsquo;Uruguay&amp;rsquo; provide clues as to whether they are country names.&lt;/p&gt;
+&lt;h2 id=&#34;conditional-random-field-crf&#34; &gt;
+&lt;div&gt;
+    &lt;a href=&#34;#conditional-random-field-crf&#34;&gt;
+        #
+    &lt;/a&gt;
+    Conditional Random Field (CRF)
+&lt;/div&gt;
+&lt;/h2&gt;
+&lt;p&gt;To take advantage of the surrounding context when labelling tokens in a sequence, a commonly used method is &lt;a href=&#34;https://en.wikipedia.org/wiki/Conditional_random_field&#34;&gt;conditional random field&lt;/a&gt; (CRF), first proposed by &lt;a href=&#34;http://repository.upenn.edu/cgi/viewcontent.cgi?article=1162&amp;amp;context=cis_papers&#34;&gt;Lafferty et al.&lt;/a&gt; in 2001. It is  a type of probabilistic graphical model that can be used to model sequential data, such as labels of words in a sentence.&lt;/p&gt;
+&lt;p&gt;This article is not intended to discuss the technical details of CRF. If you are interested, you are recommended to check out one of the following tutorials which provide very good explanation of how CRF works:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://homepages.inf.ed.ac.uk/csutton/publications/crftut-fnt.pdf&#34;&gt;An Introduction to Conditional
+Random Fields&lt;/a&gt; by Charles Sutton and Andrew McCallum&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://blog.echen.me/2012/01/03/introduction-to-conditional-random-fields/&#34;&gt;Introduction to Conditional Random Fields&lt;/a&gt; by Edwin Chen&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;In CRF, we will design a set of &lt;strong&gt;feature functions&lt;/strong&gt; to extract features for each word in a sentence. During model training, CRF will try to determine the weights of different feature functions that will maximise the likelihood of the labels in the training data.&lt;/p&gt;
+&lt;h2 id=&#34;train-crf-model-in-python&#34; &gt;
+&lt;div&gt;
+    &lt;a href=&#34;#train-crf-model-in-python&#34;&gt;
+        #
+    &lt;/a&gt;
+    Train CRF Model in Python
+&lt;/div&gt;
+&lt;/h2&gt;
+&lt;p&gt;One of the commonly used CRF library is &lt;a href=&#34;http://www.chokkan.org/software/crfsuite/&#34;&gt;CRFSuite implemented by Naoaki Okazaki&lt;/a&gt; in C/C++. The library is already easy to use given its command line interface. A Python binding to CRFSuite, &lt;a href=&#34;https://github.com/scrapinghub/python-crfsuite&#34;&gt;pycrfsuite&lt;/a&gt; is available for using the API in Python. This Python module is exactly the module used in the POS tagger in the &lt;a href=&#34;http://www.nltk.org/&#34;&gt;nltk module&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;To demonstrate how pysrfsuite can be used to train a linear chained CRF sequence labelling model, we will go through an example using some data for &lt;em&gt;named entity recognition&lt;/em&gt;.&lt;/p&gt;
+&lt;h3 id=&#34;named-entity-recogniton&#34; &gt;
+&lt;div&gt;
+    &lt;a href=&#34;#named-entity-recogniton&#34;&gt;
+        ##
+    &lt;/a&gt;
+    Named Entity Recogniton
+&lt;/div&gt;
+&lt;/h3&gt;
+&lt;p&gt;To train a named entity recognition model, we need some labelled data. The dataset that will be used below is the &lt;strong&gt;Reuters-128 dataset&lt;/strong&gt;, which is an English corpus in the NLP Interchange Format (NIF). It contains 128 economic news articles. The dataset contains information for &lt;strong&gt;880&lt;/strong&gt; named entities with their position in the document and a URI of a &lt;a href=&#34;http://wiki.dbpedia.org/&#34;&gt;DBpedia&lt;/a&gt; resource identifying the entity. It was created by the &lt;a href=&#34;http://aksw.org/About.html&#34;&gt;Agile Knowledge Engineering and Semantic Web research group at Leipzig University, Germany&lt;/a&gt;. More details can be found in &lt;a href=&#34;http://svn.aksw.org/papers/2014/LREC_N3NIFNERNED/public.pdf&#34;&gt;their paper&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;In the following, we will use the XML verison of the dataset, which can be downloaded from &lt;a href=&#34;https://github.com/AKSW/n3-collection&#34;&gt;https://github.com/AKSW/n3-collection&lt;/a&gt;. Below is some lines extracted from the XML data file:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-html&#34; data-lang=&#34;html&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&amp;lt;&lt;span style=&#34;color:#ff6ac1&#34;&gt;document&lt;/span&gt; &lt;span style=&#34;color:#57c7ff&#34;&gt;id&lt;/span&gt;&lt;span style=&#34;color:#ff6ac1&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#34;8&amp;#34;&lt;/span&gt;&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &amp;lt;&lt;span style=&#34;color:#ff6ac1&#34;&gt;documenturi&lt;/span&gt;&amp;gt;http://www.research.att.com/~lewis/Reuters-21578/15009&amp;lt;/&lt;span style=&#34;color:#ff6ac1&#34;&gt;documenturi&lt;/span&gt;&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &amp;lt;&lt;span style=&#34;color:#ff6ac1&#34;&gt;documentsource&lt;/span&gt;&amp;gt;Reuters-21578&amp;lt;/&lt;span style=&#34;color:#ff6ac1&#34;&gt;documentsource&lt;/span&gt;&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &amp;lt;&lt;span style=&#34;color:#ff6ac1&#34;&gt;textwithnamedentities&lt;/span&gt;&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &amp;lt;&lt;span style=&#34;color:#ff6ac1&#34;&gt;namedentityintext&lt;/span&gt; &lt;span style=&#34;color:#57c7ff&#34;&gt;uri&lt;/span&gt;&lt;span style=&#34;color:#ff6ac1&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#34;http://aksw.org/notInWiki/Home_Intensive_Care_Inc&amp;#34;&lt;/span&gt;&amp;gt;Home Intensive Care Inc&amp;lt;/&lt;span style=&#34;color:#ff6ac1&#34;&gt;namedentityintext&lt;/span&gt;&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &amp;lt;&lt;span style=&#34;color:#ff6ac1&#34;&gt;simpletextpart&lt;/span&gt;&amp;gt; said it has opened a Dialysis at Home office in &amp;lt;/&lt;span style=&#34;color:#ff6ac1&#34;&gt;simpletextpart&lt;/span&gt;&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &amp;lt;&lt;span style=&#34;color:#ff6ac1&#34;&gt;namedentityintext&lt;/span&gt; &lt;span style=&#34;color:#57c7ff&#34;&gt;uri&lt;/span&gt;&lt;span style=&#34;color:#ff6ac1&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#34;http://dbpedia.org/resource/Philadelphia&amp;#34;&lt;/span&gt;&amp;gt;Philadelphia&amp;lt;/&lt;span style=&#34;color:#ff6ac1&#34;&gt;namedentityintext&lt;/span&gt;&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &amp;lt;&lt;span style=&#34;color:#ff6ac1&#34;&gt;simpletextpart&lt;/span&gt;&amp;gt;, its 12th nationwide.&amp;lt;/&lt;span style=&#34;color:#ff6ac1&#34;&gt;simpletextpart&lt;/span&gt;&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &amp;lt;/&lt;span style=&#34;color:#ff6ac1&#34;&gt;textwithnamedentities&lt;/span&gt;&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&amp;lt;/&lt;span style=&#34;color:#ff6ac1&#34;&gt;document&lt;/span&gt;&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;The XML block shown above refers to one of the documents in the dataset. The semantics is self-explanatory. The document has a sentence &amp;lsquo;Home Intensive Care Inc said it has opened a Dialysis at Home office in Philadelphia, its 12th nationwide&amp;rsquo;, in which &lt;strong&gt;Home Intensive Care Inc&lt;/strong&gt; and &lt;strong&gt;Philadelphia&lt;/strong&gt; are labelled as named entities.&lt;/p&gt;
+&lt;h3 id=&#34;prepare-the-dataset-for-training&#34; &gt;
+&lt;div&gt;
+    &lt;a href=&#34;#prepare-the-dataset-for-training&#34;&gt;
+        ##
+    &lt;/a&gt;
+    Prepare the Dataset for Training
+&lt;/div&gt;
+&lt;/h3&gt;
+&lt;p&gt;In order to prepare the dataset for training, we need to label every word (or token) in the sentences to be either &lt;em&gt;irrelevant&lt;/em&gt; or part of a &lt;em&gt;named entity&lt;/em&gt;. Since the data is in XML format, we can make use of &lt;a href=&#34;https://www.crummy.com/software/BeautifulSoup/bs4/doc/&#34;&gt;BeautifulSoup&lt;/a&gt; to parse the file and extract the data as follows:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#ff6ac1&#34;&gt;from&lt;/span&gt; bs4 &lt;span style=&#34;color:#ff6ac1&#34;&gt;import&lt;/span&gt; BeautifulSoup &lt;span style=&#34;color:#ff6ac1&#34;&gt;as&lt;/span&gt; bs
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#ff6ac1&#34;&gt;from&lt;/span&gt; bs4.element &lt;span style=&#34;color:#ff6ac1&#34;&gt;import&lt;/span&gt; Tag
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#ff6ac1&#34;&gt;import&lt;/span&gt; codecs
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#78787e&#34;&gt;# Read data file and parse the XML&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#ff6ac1&#34;&gt;with&lt;/span&gt; codecs&lt;span style=&#34;color:#ff6ac1&#34;&gt;.&lt;/span&gt;open(&lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#34;reuters.xml&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#34;r&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#34;utf-8&amp;#34;&lt;/span&gt;) &lt;span style=&#34;color:#ff6ac1&#34;&gt;as&lt;/span&gt; infile:
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    soup &lt;span style=&#34;color:#ff6ac1&#34;&gt;=&lt;/span&gt; bs(infile, &lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#34;html5lib&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;docs &lt;span style=&#34;color:#ff6ac1&#34;&gt;=&lt;/span&gt; []
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#ff6ac1&#34;&gt;for&lt;/span&gt; elem &lt;span style=&#34;color:#ff6ac1&#34;&gt;in&lt;/span&gt; soup&lt;span style=&#34;color:#ff6ac1&#34;&gt;.&lt;/span&gt;find_all(&lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#34;document&amp;#34;&lt;/span&gt;):
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    texts &lt;span style=&#34;color:#ff6ac1&#34;&gt;=&lt;/span&gt; []
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#78787e&#34;&gt;# Loop through each child of the element under &amp;#34;textwithnamedentities&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#ff6ac1&#34;&gt;for&lt;/span&gt; c &lt;span style=&#34;color:#ff6ac1&#34;&gt;in&lt;/span&gt; elem&lt;span style=&#34;color:#ff6ac1&#34;&gt;.&lt;/span&gt;find(&lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#34;textwithnamedentities&amp;#34;&lt;/span&gt;)&lt;span style=&#34;color:#ff6ac1&#34;&gt;.&lt;/span&gt;children:
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#ff6ac1&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#ff5c57&#34;&gt;type&lt;/span&gt;(c) &lt;span style=&#34;color:#ff6ac1&#34;&gt;==&lt;/span&gt; Tag:
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#ff6ac1&#34;&gt;if&lt;/span&gt; c&lt;span style=&#34;color:#ff6ac1&#34;&gt;.&lt;/span&gt;name &lt;span style=&#34;color:#ff6ac1&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#34;namedentityintext&amp;#34;&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;                label &lt;span style=&#34;color:#ff6ac1&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#34;N&amp;#34;&lt;/span&gt;  &lt;span style=&#34;color:#78787e&#34;&gt;# part of a named entity&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#ff6ac1&#34;&gt;else&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;                label &lt;span style=&#34;color:#ff6ac1&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#34;I&amp;#34;&lt;/span&gt;  &lt;span style=&#34;color:#78787e&#34;&gt;# irrelevant word&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#ff6ac1&#34;&gt;for&lt;/span&gt; w &lt;span style=&#34;color:#ff6ac1&#34;&gt;in&lt;/span&gt; c&lt;span style=&#34;color:#ff6ac1&#34;&gt;.&lt;/span&gt;text&lt;span style=&#34;color:#ff6ac1&#34;&gt;.&lt;/span&gt;split(&lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#34; &amp;#34;&lt;/span&gt;):
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;                &lt;span style=&#34;color:#ff6ac1&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#ff5c57&#34;&gt;len&lt;/span&gt;(w) &lt;span style=&#34;color:#ff6ac1&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#ff9f43&#34;&gt;0&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;                    texts&lt;span style=&#34;color:#ff6ac1&#34;&gt;.&lt;/span&gt;append((w, label))
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    docs&lt;span style=&#34;color:#ff6ac1&#34;&gt;.&lt;/span&gt;append(texts)
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;The result will be a list of documents, each of which contains a list of (word, label) tuples. For example:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#ff6ac1&#34;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; doc[&lt;span style=&#34;color:#ff9f43&#34;&gt;0&lt;/span&gt;][:&lt;span style=&#34;color:#ff9f43&#34;&gt;10&lt;/span&gt;]
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;[(&lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#39;Paxar&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#39;N&amp;#39;&lt;/span&gt;),
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; (&lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#39;Corp&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#39;N&amp;#39;&lt;/span&gt;),
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; (&lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#39;said&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#39;I&amp;#39;&lt;/span&gt;),
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; (&lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#39;it&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#39;I&amp;#39;&lt;/span&gt;),
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; (&lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#39;has&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#39;I&amp;#39;&lt;/span&gt;),
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; (&lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#39;acquired&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#39;I&amp;#39;&lt;/span&gt;),
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; (&lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#39;Thermo-Print&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#39;N&amp;#39;&lt;/span&gt;),
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#ff6ac1&#34;&gt;...&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;generating-part-of-speech-tags&#34; &gt;
+&lt;div&gt;
+    &lt;a href=&#34;#generating-part-of-speech-tags&#34;&gt;
+        ##
+    &lt;/a&gt;
+    Generating Part-of-Speech Tags
+&lt;/div&gt;
+&lt;/h3&gt;
+&lt;p&gt;To train a CRF model, we need to create features for each of the tokens in the sentences. One particularly useful feature in NLP is the &lt;a href=&#34;https://en.wikipedia.org/wiki/Part-of-speech_tagging&#34;&gt;part-of-speech (POS) tags&lt;/a&gt; of the words. They indicates whether a word is a noun, a verb or an adjective. (In fact, a POS tagger is also usually a trained CRF model.)&lt;/p&gt;
+&lt;p&gt;We can use &lt;a href=&#34;http://www.nltk.org/book/ch05.html&#34;&gt;NLTK&amp;rsquo;s POS tagger&lt;/a&gt; to generate the POS tags for the tokens in our documents as follows:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#ff6ac1&#34;&gt;import&lt;/span&gt; nltk
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;data &lt;span style=&#34;color:#ff6ac1&#34;&gt;=&lt;/span&gt; []
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#ff6ac1&#34;&gt;for&lt;/span&gt; i, doc &lt;span style=&#34;color:#ff6ac1&#34;&gt;in&lt;/span&gt; &lt;span style=&#34;color:#ff5c57&#34;&gt;enumerate&lt;/span&gt;(docs):
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#78787e&#34;&gt;# Obtain the list of tokens in the document&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    tokens &lt;span style=&#34;color:#ff6ac1&#34;&gt;=&lt;/span&gt; [t &lt;span style=&#34;color:#ff6ac1&#34;&gt;for&lt;/span&gt; t, label &lt;span style=&#34;color:#ff6ac1&#34;&gt;in&lt;/span&gt; doc]
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#78787e&#34;&gt;# Perform POS tagging&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    tagged &lt;span style=&#34;color:#ff6ac1&#34;&gt;=&lt;/span&gt; nltk&lt;span style=&#34;color:#ff6ac1&#34;&gt;.&lt;/span&gt;pos_tag(tokens)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#78787e&#34;&gt;# Take the word, POS tag, and its label&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    data&lt;span style=&#34;color:#ff6ac1&#34;&gt;.&lt;/span&gt;append([(w, pos, label) &lt;span style=&#34;color:#ff6ac1&#34;&gt;for&lt;/span&gt; (w, label), (word, pos) &lt;span style=&#34;color:#ff6ac1&#34;&gt;in&lt;/span&gt; &lt;span style=&#34;color:#ff5c57&#34;&gt;zip&lt;/span&gt;(doc, tagged)])
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;The output of the above process will be a list of documents, each of which is a list of tuples with the word, its POS tag and its label:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#ff6ac1&#34;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; data[&lt;span style=&#34;color:#ff9f43&#34;&gt;0&lt;/span&gt;]
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;[(&lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#39;Paxar&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#39;NNP&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#39;N&amp;#39;&lt;/span&gt;),
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; (&lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#39;Corp&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#39;NNP&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#39;N&amp;#39;&lt;/span&gt;),
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; (&lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#39;said&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#39;VBD&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#39;I&amp;#39;&lt;/span&gt;),
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; (&lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#39;it&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#39;PRP&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#39;I&amp;#39;&lt;/span&gt;),
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; (&lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#39;has&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#39;VBZ&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#39;I&amp;#39;&lt;/span&gt;),
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; (&lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#39;acquired&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#39;VBN&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#39;I&amp;#39;&lt;/span&gt;),
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; (&lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#39;Thermo-Print&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#39;NNP&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#39;N&amp;#39;&lt;/span&gt;),
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; &lt;span style=&#34;color:#ff6ac1&#34;&gt;...&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;generating-features&#34; &gt;
+&lt;div&gt;
+    &lt;a href=&#34;#generating-features&#34;&gt;
+        ##
+    &lt;/a&gt;
+    Generating Features
+&lt;/div&gt;
+&lt;/h3&gt;
+&lt;p&gt;Given the POS tags, we can now continue to generate more features for each of the tokens in the dataset. The features that will be useful in the training process depends on the task at hand. Below are some of the commonly used features for a word $w$ in named entity recognition:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The word $w$ itself (converted to lowercase for normalisation)&lt;/li&gt;
+&lt;li&gt;The prefix/suffix of $w$ (e.g. -ion)&lt;/li&gt;
+&lt;li&gt;The words surrounding $w$, such as the previous and the next word&lt;/li&gt;
+&lt;li&gt;Whether $w$ is in uppercase or lowercase&lt;/li&gt;
+&lt;li&gt;Whether $w$ is a number, or contains digits&lt;/li&gt;
+&lt;li&gt;The POS tag of $w$, and those of the surrounding words&lt;/li&gt;
+&lt;li&gt;Whether $w$ is or contains a special character (e.g. hypen, dollar sign)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Below is a function for generating features for our documents. It takes a doc (in the form of a listof tuples as shown above), and an index (the $i$th document), and return the documents with features extracted. (A similar example can be found in &lt;a href=&#34;https://github.com/scrapinghub/python-crfsuite/blob/master/examples/CoNLL%202002.ipynb&#34;&gt;the repository of pyscrfsuite&lt;/a&gt;.)&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#ff6ac1&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#57c7ff&#34;&gt;word2features&lt;/span&gt;(doc, i):
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    word &lt;span style=&#34;color:#ff6ac1&#34;&gt;=&lt;/span&gt; doc[i][&lt;span style=&#34;color:#ff9f43&#34;&gt;0&lt;/span&gt;]
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    postag &lt;span style=&#34;color:#ff6ac1&#34;&gt;=&lt;/span&gt; doc[i][&lt;span style=&#34;color:#ff9f43&#34;&gt;1&lt;/span&gt;]
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#78787e&#34;&gt;# Common features for all words&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    features &lt;span style=&#34;color:#ff6ac1&#34;&gt;=&lt;/span&gt; [
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#39;bias&amp;#39;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#39;word.lower=&amp;#39;&lt;/span&gt; &lt;span style=&#34;color:#ff6ac1&#34;&gt;+&lt;/span&gt; word&lt;span style=&#34;color:#ff6ac1&#34;&gt;.&lt;/span&gt;lower(),
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#39;word[-3:]=&amp;#39;&lt;/span&gt; &lt;span style=&#34;color:#ff6ac1&#34;&gt;+&lt;/span&gt; word[&lt;span style=&#34;color:#ff6ac1&#34;&gt;-&lt;/span&gt;&lt;span style=&#34;color:#ff9f43&#34;&gt;3&lt;/span&gt;:],
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#39;word[-2:]=&amp;#39;&lt;/span&gt; &lt;span style=&#34;color:#ff6ac1&#34;&gt;+&lt;/span&gt; word[&lt;span style=&#34;color:#ff6ac1&#34;&gt;-&lt;/span&gt;&lt;span style=&#34;color:#ff9f43&#34;&gt;2&lt;/span&gt;:],
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#39;word.isupper=&lt;/span&gt;&lt;span style=&#34;color:#5af78e&#34;&gt;%s&lt;/span&gt;&lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#39;&lt;/span&gt; &lt;span style=&#34;color:#ff6ac1&#34;&gt;%&lt;/span&gt; word&lt;span style=&#34;color:#ff6ac1&#34;&gt;.&lt;/span&gt;isupper(),
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#39;word.istitle=&lt;/span&gt;&lt;span style=&#34;color:#5af78e&#34;&gt;%s&lt;/span&gt;&lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#39;&lt;/span&gt; &lt;span style=&#34;color:#ff6ac1&#34;&gt;%&lt;/span&gt; word&lt;span style=&#34;color:#ff6ac1&#34;&gt;.&lt;/span&gt;istitle(),
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#39;word.isdigit=&lt;/span&gt;&lt;span style=&#34;color:#5af78e&#34;&gt;%s&lt;/span&gt;&lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#39;&lt;/span&gt; &lt;span style=&#34;color:#ff6ac1&#34;&gt;%&lt;/span&gt; word&lt;span style=&#34;color:#ff6ac1&#34;&gt;.&lt;/span&gt;isdigit(),
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#39;postag=&amp;#39;&lt;/span&gt; &lt;span style=&#34;color:#ff6ac1&#34;&gt;+&lt;/span&gt; postag
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    ]
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#78787e&#34;&gt;# Features for words that are not&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#78787e&#34;&gt;# at the beginning of a document&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#ff6ac1&#34;&gt;if&lt;/span&gt; i &lt;span style=&#34;color:#ff6ac1&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#ff9f43&#34;&gt;0&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        word1 &lt;span style=&#34;color:#ff6ac1&#34;&gt;=&lt;/span&gt; doc[i&lt;span style=&#34;color:#ff6ac1&#34;&gt;-&lt;/span&gt;&lt;span style=&#34;color:#ff9f43&#34;&gt;1&lt;/span&gt;][&lt;span style=&#34;color:#ff9f43&#34;&gt;0&lt;/span&gt;]
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        postag1 &lt;span style=&#34;color:#ff6ac1&#34;&gt;=&lt;/span&gt; doc[i&lt;span style=&#34;color:#ff6ac1&#34;&gt;-&lt;/span&gt;&lt;span style=&#34;color:#ff9f43&#34;&gt;1&lt;/span&gt;][&lt;span style=&#34;color:#ff9f43&#34;&gt;1&lt;/span&gt;]
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        features&lt;span style=&#34;color:#ff6ac1&#34;&gt;.&lt;/span&gt;extend([
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#39;-1:word.lower=&amp;#39;&lt;/span&gt; &lt;span style=&#34;color:#ff6ac1&#34;&gt;+&lt;/span&gt; word1&lt;span style=&#34;color:#ff6ac1&#34;&gt;.&lt;/span&gt;lower(),
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#39;-1:word.istitle=&lt;/span&gt;&lt;span style=&#34;color:#5af78e&#34;&gt;%s&lt;/span&gt;&lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#39;&lt;/span&gt; &lt;span style=&#34;color:#ff6ac1&#34;&gt;%&lt;/span&gt; word1&lt;span style=&#34;color:#ff6ac1&#34;&gt;.&lt;/span&gt;istitle(),
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#39;-1:word.isupper=&lt;/span&gt;&lt;span style=&#34;color:#5af78e&#34;&gt;%s&lt;/span&gt;&lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#39;&lt;/span&gt; &lt;span style=&#34;color:#ff6ac1&#34;&gt;%&lt;/span&gt; word1&lt;span style=&#34;color:#ff6ac1&#34;&gt;.&lt;/span&gt;isupper(),
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#39;-1:word.isdigit=&lt;/span&gt;&lt;span style=&#34;color:#5af78e&#34;&gt;%s&lt;/span&gt;&lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#39;&lt;/span&gt; &lt;span style=&#34;color:#ff6ac1&#34;&gt;%&lt;/span&gt; word1&lt;span style=&#34;color:#ff6ac1&#34;&gt;.&lt;/span&gt;isdigit(),
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#39;-1:postag=&amp;#39;&lt;/span&gt; &lt;span style=&#34;color:#ff6ac1&#34;&gt;+&lt;/span&gt; postag1
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        ])
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#ff6ac1&#34;&gt;else&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#78787e&#34;&gt;# Indicate that it is the &amp;#39;beginning of a document&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        features&lt;span style=&#34;color:#ff6ac1&#34;&gt;.&lt;/span&gt;append(&lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#39;BOS&amp;#39;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#78787e&#34;&gt;# Features for words that are not&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#78787e&#34;&gt;# at the end of a document&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#ff6ac1&#34;&gt;if&lt;/span&gt; i &lt;span style=&#34;color:#ff6ac1&#34;&gt;&amp;lt;&lt;/span&gt; &lt;span style=&#34;color:#ff5c57&#34;&gt;len&lt;/span&gt;(doc)&lt;span style=&#34;color:#ff6ac1&#34;&gt;-&lt;/span&gt;&lt;span style=&#34;color:#ff9f43&#34;&gt;1&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        word1 &lt;span style=&#34;color:#ff6ac1&#34;&gt;=&lt;/span&gt; doc[i&lt;span style=&#34;color:#ff6ac1&#34;&gt;+&lt;/span&gt;&lt;span style=&#34;color:#ff9f43&#34;&gt;1&lt;/span&gt;][&lt;span style=&#34;color:#ff9f43&#34;&gt;0&lt;/span&gt;]
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        postag1 &lt;span style=&#34;color:#ff6ac1&#34;&gt;=&lt;/span&gt; doc[i&lt;span style=&#34;color:#ff6ac1&#34;&gt;+&lt;/span&gt;&lt;span style=&#34;color:#ff9f43&#34;&gt;1&lt;/span&gt;][&lt;span style=&#34;color:#ff9f43&#34;&gt;1&lt;/span&gt;]
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        features&lt;span style=&#34;color:#ff6ac1&#34;&gt;.&lt;/span&gt;extend([
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#39;+1:word.lower=&amp;#39;&lt;/span&gt; &lt;span style=&#34;color:#ff6ac1&#34;&gt;+&lt;/span&gt; word1&lt;span style=&#34;color:#ff6ac1&#34;&gt;.&lt;/span&gt;lower(),
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#39;+1:word.istitle=&lt;/span&gt;&lt;span style=&#34;color:#5af78e&#34;&gt;%s&lt;/span&gt;&lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#39;&lt;/span&gt; &lt;span style=&#34;color:#ff6ac1&#34;&gt;%&lt;/span&gt; word1&lt;span style=&#34;color:#ff6ac1&#34;&gt;.&lt;/span&gt;istitle(),
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#39;+1:word.isupper=&lt;/span&gt;&lt;span style=&#34;color:#5af78e&#34;&gt;%s&lt;/span&gt;&lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#39;&lt;/span&gt; &lt;span style=&#34;color:#ff6ac1&#34;&gt;%&lt;/span&gt; word1&lt;span style=&#34;color:#ff6ac1&#34;&gt;.&lt;/span&gt;isupper(),
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#39;+1:word.isdigit=&lt;/span&gt;&lt;span style=&#34;color:#5af78e&#34;&gt;%s&lt;/span&gt;&lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#39;&lt;/span&gt; &lt;span style=&#34;color:#ff6ac1&#34;&gt;%&lt;/span&gt; word1&lt;span style=&#34;color:#ff6ac1&#34;&gt;.&lt;/span&gt;isdigit(),
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#39;+1:postag=&amp;#39;&lt;/span&gt; &lt;span style=&#34;color:#ff6ac1&#34;&gt;+&lt;/span&gt; postag1
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        ])
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#ff6ac1&#34;&gt;else&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#78787e&#34;&gt;# Indicate that it is the &amp;#39;end of a document&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        features&lt;span style=&#34;color:#ff6ac1&#34;&gt;.&lt;/span&gt;append(&lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#39;EOS&amp;#39;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#ff6ac1&#34;&gt;return&lt;/span&gt; features
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;training-the-model&#34; &gt;
+&lt;div&gt;
+    &lt;a href=&#34;#training-the-model&#34;&gt;
+        ##
+    &lt;/a&gt;
+    Training the Model
+&lt;/div&gt;
+&lt;/h3&gt;
+&lt;p&gt;To train the model, we need to first prepare the training data and the corresponding labels. Also, to be able to investigate the accuracy of the model, we need to separate the data into training set and test set. Below are some codes for preparing the training data and test data, using the &lt;a href=&#34;http://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html&#34;&gt;&lt;code&gt;train_test_split&lt;/code&gt; function in scikit-learn&lt;/a&gt;.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#ff6ac1&#34;&gt;from&lt;/span&gt; sklearn.model_selection &lt;span style=&#34;color:#ff6ac1&#34;&gt;import&lt;/span&gt; train_test_split
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#78787e&#34;&gt;# A function for extracting features in documents&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#ff6ac1&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#57c7ff&#34;&gt;extract_features&lt;/span&gt;(doc):
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#ff6ac1&#34;&gt;return&lt;/span&gt; [word2features(doc, i) &lt;span style=&#34;color:#ff6ac1&#34;&gt;for&lt;/span&gt; i &lt;span style=&#34;color:#ff6ac1&#34;&gt;in&lt;/span&gt; &lt;span style=&#34;color:#ff5c57&#34;&gt;range&lt;/span&gt;(&lt;span style=&#34;color:#ff5c57&#34;&gt;len&lt;/span&gt;(doc))]
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#78787e&#34;&gt;# A function fo generating the list of labels for each document&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#ff6ac1&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#57c7ff&#34;&gt;get_labels&lt;/span&gt;(doc):
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#ff6ac1&#34;&gt;return&lt;/span&gt; [label &lt;span style=&#34;color:#ff6ac1&#34;&gt;for&lt;/span&gt; (token, postag, label) &lt;span style=&#34;color:#ff6ac1&#34;&gt;in&lt;/span&gt; doc]
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;X &lt;span style=&#34;color:#ff6ac1&#34;&gt;=&lt;/span&gt; [extract_features(doc) &lt;span style=&#34;color:#ff6ac1&#34;&gt;for&lt;/span&gt; doc &lt;span style=&#34;color:#ff6ac1&#34;&gt;in&lt;/span&gt; data]
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;y &lt;span style=&#34;color:#ff6ac1&#34;&gt;=&lt;/span&gt; [get_labels(doc) &lt;span style=&#34;color:#ff6ac1&#34;&gt;for&lt;/span&gt; doc &lt;span style=&#34;color:#ff6ac1&#34;&gt;in&lt;/span&gt; data]
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;X_train, X_test, y_train, y_test &lt;span style=&#34;color:#ff6ac1&#34;&gt;=&lt;/span&gt; train_test_split(X, y, test_size&lt;span style=&#34;color:#ff6ac1&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ff9f43&#34;&gt;0.2&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;In &lt;code&gt;pycrfsuite&lt;/code&gt;, A CRF model in can be trained by first creating a &lt;strong&gt;trainer&lt;/strong&gt;, and then submit the training data and corresponding labels to the trainer. After that, set the parameters and call &lt;code&gt;train()&lt;/code&gt; to start the training process. For the complete list of parameters, one can refer to the &lt;a href=&#34;http://www.chokkan.org/software/crfsuite/manual.html#idp8849114176&#34;&gt;documentation of CRFSuite&lt;/a&gt;. With the very small dataset in this example, the training with &lt;code&gt;max_iterations=200&lt;/code&gt; can be finished in a few seconds. Below is the code for creating the trainer and start training the model:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#ff6ac1&#34;&gt;import&lt;/span&gt; pycrfsuite
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;trainer &lt;span style=&#34;color:#ff6ac1&#34;&gt;=&lt;/span&gt; pycrfsuite&lt;span style=&#34;color:#ff6ac1&#34;&gt;.&lt;/span&gt;Trainer(verbose&lt;span style=&#34;color:#ff6ac1&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ff6ac1&#34;&gt;True&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#78787e&#34;&gt;# Submit training data to the trainer&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#ff6ac1&#34;&gt;for&lt;/span&gt; xseq, yseq &lt;span style=&#34;color:#ff6ac1&#34;&gt;in&lt;/span&gt; &lt;span style=&#34;color:#ff5c57&#34;&gt;zip&lt;/span&gt;(X_train, y_train):
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    trainer&lt;span style=&#34;color:#ff6ac1&#34;&gt;.&lt;/span&gt;append(xseq, yseq)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#78787e&#34;&gt;# Set the parameters of the model&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;trainer&lt;span style=&#34;color:#ff6ac1&#34;&gt;.&lt;/span&gt;set_params({
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#78787e&#34;&gt;# coefficient for L1 penalty&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#39;c1&amp;#39;&lt;/span&gt;: &lt;span style=&#34;color:#ff9f43&#34;&gt;0.1&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#78787e&#34;&gt;# coefficient for L2 penalty&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#39;c2&amp;#39;&lt;/span&gt;: &lt;span style=&#34;color:#ff9f43&#34;&gt;0.01&lt;/span&gt;,  
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#78787e&#34;&gt;# maximum number of iterations&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#39;max_iterations&amp;#39;&lt;/span&gt;: &lt;span style=&#34;color:#ff9f43&#34;&gt;200&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#78787e&#34;&gt;# whether to include transitions that&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#78787e&#34;&gt;# are possible, but not observed&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#39;feature.possible_transitions&amp;#39;&lt;/span&gt;: &lt;span style=&#34;color:#ff6ac1&#34;&gt;True&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;})
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#78787e&#34;&gt;# Provide a file name as a parameter to the train function, such that&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#78787e&#34;&gt;# the model will be saved to the file when training is finished&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;trainer&lt;span style=&#34;color:#ff6ac1&#34;&gt;.&lt;/span&gt;train(&lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#39;crf.model&amp;#39;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;If you have set &lt;code&gt;verbose=True&lt;/code&gt; when initialising the trainer, the trainer will print out the training progress as it is trained against the provided training data.&lt;/p&gt;
+&lt;h3 id=&#34;checking-the-results&#34; &gt;
+&lt;div&gt;
+    &lt;a href=&#34;#checking-the-results&#34;&gt;
+        ##
+    &lt;/a&gt;
+    Checking the Results
+&lt;/div&gt;
+&lt;/h3&gt;
+&lt;p&gt;Once we have the model trained, we can apply it on our test data and see whether it gives reasonable results. Assuming that the model is saved to a file named &lt;code&gt;crf.model&lt;/code&gt;. The following block of code shows how we can load the model into memory, and apply it on to our test data.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;tagger &lt;span style=&#34;color:#ff6ac1&#34;&gt;=&lt;/span&gt; pycrfsuite&lt;span style=&#34;color:#ff6ac1&#34;&gt;.&lt;/span&gt;Tagger()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;tagger&lt;span style=&#34;color:#ff6ac1&#34;&gt;.&lt;/span&gt;open(&lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#39;crf.model&amp;#39;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;y_pred &lt;span style=&#34;color:#ff6ac1&#34;&gt;=&lt;/span&gt; [tagger&lt;span style=&#34;color:#ff6ac1&#34;&gt;.&lt;/span&gt;tag(xseq) &lt;span style=&#34;color:#ff6ac1&#34;&gt;for&lt;/span&gt; xseq &lt;span style=&#34;color:#ff6ac1&#34;&gt;in&lt;/span&gt; X_test]
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#78787e&#34;&gt;# Let&amp;#39;s take a look at a random sample in the testing set&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;i &lt;span style=&#34;color:#ff6ac1&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ff9f43&#34;&gt;12&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#ff6ac1&#34;&gt;for&lt;/span&gt; x, y &lt;span style=&#34;color:#ff6ac1&#34;&gt;in&lt;/span&gt; &lt;span style=&#34;color:#ff5c57&#34;&gt;zip&lt;/span&gt;(y_pred[i], [x[&lt;span style=&#34;color:#ff9f43&#34;&gt;1&lt;/span&gt;]&lt;span style=&#34;color:#ff6ac1&#34;&gt;.&lt;/span&gt;split(&lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#34;=&amp;#34;&lt;/span&gt;)[&lt;span style=&#34;color:#ff9f43&#34;&gt;1&lt;/span&gt;] &lt;span style=&#34;color:#ff6ac1&#34;&gt;for&lt;/span&gt; x &lt;span style=&#34;color:#ff6ac1&#34;&gt;in&lt;/span&gt; X_test[i]]):
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#ff5c57&#34;&gt;print&lt;/span&gt;(&lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#5af78e&#34;&gt;%s&lt;/span&gt;&lt;span style=&#34;color:#5af78e&#34;&gt; (&lt;/span&gt;&lt;span style=&#34;color:#5af78e&#34;&gt;%s&lt;/span&gt;&lt;span style=&#34;color:#5af78e&#34;&gt;)&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#ff6ac1&#34;&gt;%&lt;/span&gt; (y, x))
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#39;&amp;#39;&amp;#39;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#5af78e&#34;&gt;The following will be printed:
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#5af78e&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#5af78e&#34;&gt;sci-med (N)
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#5af78e&#34;&gt;life (N)
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#5af78e&#34;&gt;systems (N)
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#5af78e&#34;&gt;inc (N)
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#5af78e&#34;&gt;said (I)
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#5af78e&#34;&gt;its (I)
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#5af78e&#34;&gt;directors (I)
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#5af78e&#34;&gt;approved (I)
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#5af78e&#34;&gt;a (I)
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#5af78e&#34;&gt;previously (I)
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#5af78e&#34;&gt;...
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#39;&amp;#39;&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;The result looks reasonable as the first four words are correctly identified as part of a named entity.&lt;/p&gt;
+&lt;p&gt;To study the performance of the CRF tagger trained above in a more quantitative way, we can check the &lt;strong&gt;precision&lt;/strong&gt; and &lt;strong&gt;recall&lt;/strong&gt; on the test data. This can be done very easily using the &lt;a href=&#34;http://scikit-learn.org/stable/modules/generated/sklearn.metrics.classification_report.html&#34;&gt;&lt;code&gt;classification_report&lt;/code&gt; function in scikit-learn&lt;/a&gt;. However, given that the predictions are sequences of tags, we need to transform the data into a list of labels before feeding them into the function.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#ff6ac1&#34;&gt;import&lt;/span&gt; numpy &lt;span style=&#34;color:#ff6ac1&#34;&gt;as&lt;/span&gt; np
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#ff6ac1&#34;&gt;from&lt;/span&gt; sklearn.metrics &lt;span style=&#34;color:#ff6ac1&#34;&gt;import&lt;/span&gt; classification_report
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#78787e&#34;&gt;# Create a mapping of labels to indices&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;labels &lt;span style=&#34;color:#ff6ac1&#34;&gt;=&lt;/span&gt; {&lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#34;N&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#ff9f43&#34;&gt;1&lt;/span&gt;, &lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#34;I&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#ff9f43&#34;&gt;0&lt;/span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#78787e&#34;&gt;# Convert the sequences of tags into a 1-dimensional array&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;predictions &lt;span style=&#34;color:#ff6ac1&#34;&gt;=&lt;/span&gt; np&lt;span style=&#34;color:#ff6ac1&#34;&gt;.&lt;/span&gt;array([labels[tag] &lt;span style=&#34;color:#ff6ac1&#34;&gt;for&lt;/span&gt; row &lt;span style=&#34;color:#ff6ac1&#34;&gt;in&lt;/span&gt; y_pred &lt;span style=&#34;color:#ff6ac1&#34;&gt;for&lt;/span&gt; tag &lt;span style=&#34;color:#ff6ac1&#34;&gt;in&lt;/span&gt; row])
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;truths &lt;span style=&#34;color:#ff6ac1&#34;&gt;=&lt;/span&gt; np&lt;span style=&#34;color:#ff6ac1&#34;&gt;.&lt;/span&gt;array([labels[tag] &lt;span style=&#34;color:#ff6ac1&#34;&gt;for&lt;/span&gt; row &lt;span style=&#34;color:#ff6ac1&#34;&gt;in&lt;/span&gt; y_test &lt;span style=&#34;color:#ff6ac1&#34;&gt;for&lt;/span&gt; tag &lt;span style=&#34;color:#ff6ac1&#34;&gt;in&lt;/span&gt; row])
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#78787e&#34;&gt;# Print out the classification report&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#ff5c57&#34;&gt;print&lt;/span&gt;(classification_report(
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    truths, predictions,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    target_names&lt;span style=&#34;color:#ff6ac1&#34;&gt;=&lt;/span&gt;[&lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#34;I&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#34;N&amp;#34;&lt;/span&gt;]))
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;which will prints a report as follows:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;              precision   recall  f1&lt;span style=&#34;color:#ff6ac1&#34;&gt;-&lt;/span&gt;score   support
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;          I       &lt;span style=&#34;color:#ff9f43&#34;&gt;0.98&lt;/span&gt;      &lt;span style=&#34;color:#ff9f43&#34;&gt;0.98&lt;/span&gt;      &lt;span style=&#34;color:#ff9f43&#34;&gt;0.98&lt;/span&gt;      &lt;span style=&#34;color:#ff9f43&#34;&gt;3322&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;          N       &lt;span style=&#34;color:#ff9f43&#34;&gt;0.85&lt;/span&gt;      &lt;span style=&#34;color:#ff9f43&#34;&gt;0.85&lt;/span&gt;      &lt;span style=&#34;color:#ff9f43&#34;&gt;0.85&lt;/span&gt;       &lt;span style=&#34;color:#ff9f43&#34;&gt;405&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;avg &lt;span style=&#34;color:#ff6ac1&#34;&gt;/&lt;/span&gt; total       &lt;span style=&#34;color:#ff9f43&#34;&gt;0.97&lt;/span&gt;      &lt;span style=&#34;color:#ff9f43&#34;&gt;0.97&lt;/span&gt;      &lt;span style=&#34;color:#ff9f43&#34;&gt;0.97&lt;/span&gt;      &lt;span style=&#34;color:#ff9f43&#34;&gt;3727&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;We can see that we have achieved 85% precision and 85% recall in predicting whether a word is part of a named entity. There are several things by which we can improve the performance, including creating better features or tuning the parameters of the CRF model.&lt;/p&gt;
+&lt;h3 id=&#34;source-codes&#34; &gt;
+&lt;div&gt;
+    &lt;a href=&#34;#source-codes&#34;&gt;
+        ##
+    &lt;/a&gt;
+    Source Codes
+&lt;/div&gt;
+&lt;/h3&gt;
+&lt;p&gt;The source code for reproducing the above results can be found in the following github repository: &lt;a href=&#34;https://github.com/albertauyeung/python-crf-named-entity-recognition&#34;&gt;https://github.com/albertauyeung/python-crf-named-entity-recognition&lt;/a&gt;.&lt;/p&gt;
+&lt;h2 id=&#34;references&#34; &gt;
+&lt;div&gt;
+    &lt;a href=&#34;#references&#34;&gt;
+        #
+    &lt;/a&gt;
+    References
+&lt;/div&gt;
+&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Lafferty, J., McCallum, A., Pereira, F. (2001). &lt;a href=&#34;http://repository.upenn.edu/cgi/viewcontent.cgi?article=1162&amp;amp;context=cis_papers&#34;&gt;&amp;ldquo;Conditional random fields: Probabilistic models for segmenting and labeling sequence data&amp;rdquo;&lt;/a&gt;. Proc. 18th International Conf. on Machine Learning. Morgan Kaufmann. pp. 282–289.&lt;/li&gt;
+&lt;li&gt;Erdogan, H. (2010). &lt;a href=&#34;http://www.icmla-conference.org/icmla10/CFP_Tutorial_files/hakan.pdf&#34;&gt;Sequence Labeling: Generative and Discriminative Approaches - Hidden Markov Models, Conditional Random Fields and Structured SVMs&lt;/a&gt;. ICMLA 2010 Tutorial.&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

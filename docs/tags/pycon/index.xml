@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Pycon on ayeung.dev</title>
+    <link>/tags/pycon/</link>
+    <description>ayeung.dev (Pycon)</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    
+      
+
+      
+    
+
+    
+    <lastBuildDate>Fri, 23 Nov 2018 00:00:00 +0000</lastBuildDate>
+    
+    <atom:link href="/tags/pycon/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>🚀 Deploying ML Models in Python - A PyCon HK 2018 Talk</title>
+      <link>/2018/11/23/pyconhk-ml-deploy.html</link>
+      <pubDate>Fri, 23 Nov 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/2018/11/23/pyconhk-ml-deploy.html</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;http://pycon.hk/2018/&#34;&gt;PyCon HK 2018&lt;/a&gt; was held on 23-24th November 2018 at Cyberport. I gave a talk on how to deploy machine learning models in Python. The slides of the talk can be found at the link: &lt;a href=&#34;http://talks.albertauyeung.com/pycon2018-deploy-ml-models/&#34;&gt;http://talks.albertauyeung.com/pycon2018-deploy-ml-models/&lt;/a&gt;.&lt;/p&gt;
+&lt;h2 id=&#34;video-on-youtube&#34; &gt;
+&lt;div&gt;
+    &lt;a href=&#34;#video-on-youtube&#34;&gt;
+        #
+    &lt;/a&gt;
+    Video on Youtube
+&lt;/div&gt;
+&lt;/h2&gt;
+&lt;div style=&#34;position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;&#34;&gt;
+      &lt;iframe allow=&#34;accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share&#34; allowfullscreen=&#34;allowfullscreen&#34; loading=&#34;eager&#34; referrerpolicy=&#34;strict-origin-when-cross-origin&#34; src=&#34;https://www.youtube.com/embed/U2YSFWDjfMw?autoplay=0&amp;amp;controls=1&amp;amp;end=0&amp;amp;loop=0&amp;amp;mute=0&amp;amp;start=0&#34; style=&#34;position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;&#34; title=&#34;YouTube video&#34;&gt;&lt;/iframe&gt;
+    &lt;/div&gt;</description>
+    </item>
+    
+    <item>
+      <title>🚀 Using Gradient Boosting Machines in Python - A PyCon HK 2017 Talk</title>
+      <link>/2017/11/05/pyconhk-gbm.html</link>
+      <pubDate>Sun, 05 Nov 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/2017/11/05/pyconhk-gbm.html</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;http://pycon.hk/2017/&#34;&gt;PyCon HK 2017&lt;/a&gt; was held on 3rd-4th November 2017 at the City University of Hong Kong. I gave a talk on using gradient boosting machines in Python to perform machine learning. The slides of the talk can be found at the link: &lt;a href=&#34;http://talks.albertauyeung.com/pycon2017-gradient-boosting/&#34;&gt;http://talks.albertauyeung.com/pycon2017-gradient-boosting/&lt;/a&gt;.&lt;/p&gt;
+&lt;h2 id=&#34;video-on-youtube&#34; &gt;
+&lt;div&gt;
+    &lt;a href=&#34;#video-on-youtube&#34;&gt;
+        #
+    &lt;/a&gt;
+    Video on Youtube
+&lt;/div&gt;
+&lt;/h2&gt;
+&lt;div style=&#34;position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;&#34;&gt;
+      &lt;iframe allow=&#34;accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share&#34; allowfullscreen=&#34;allowfullscreen&#34; loading=&#34;eager&#34; referrerpolicy=&#34;strict-origin-when-cross-origin&#34; src=&#34;https://www.youtube.com/embed/Wjev_fLNeOU?autoplay=0&amp;amp;controls=1&amp;amp;end=0&amp;amp;loop=0&amp;amp;mute=0&amp;amp;start=0&#34; style=&#34;position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;&#34; title=&#34;YouTube video&#34;&gt;&lt;/iframe&gt;
+    &lt;/div&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

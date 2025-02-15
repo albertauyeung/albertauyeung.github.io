@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Nltk on ayeung.dev</title>
+    <link>/tags/nltk/</link>
+    <description>ayeung.dev (Nltk)</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    
+      
+
+      
+    
+
+    
+    <lastBuildDate>Sun, 03 Jun 2018 00:00:00 +0000</lastBuildDate>
+    
+    <atom:link href="/tags/nltk/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>🐍 Effortlessly Create N-Grams from Text in Python</title>
+      <link>/2018/06/03/generating-ngrams.html</link>
+      <pubDate>Sun, 03 Jun 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/2018/06/03/generating-ngrams.html</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;https://en.wikipedia.org/wiki/N-gram&#34;&gt;N-grams&lt;/a&gt; are contiguous sequences of n-items in a sentence. N can be 1, 2 or any other positive integers, although usually we do not consider very large N because those n-grams rarely appears in many different places.&lt;/p&gt;
+&lt;p&gt;When performing machine learning tasks related to natural language processing, we usually need to generate n-grams from input sentences. For example, in text classification tasks, in addition to using each individual token found in the corpus, we may want to add bi-grams or tri-grams as features to represent our documents. This post describes several different ways to generate n-grams quickly from input sentences in Python.&lt;/p&gt;
+&lt;h2 id=&#34;the-pure-python-way&#34; &gt;
+&lt;div&gt;
+    &lt;a href=&#34;#the-pure-python-way&#34;&gt;
+        #
+    &lt;/a&gt;
+    The Pure Python Way
+&lt;/div&gt;
+&lt;/h2&gt;
+&lt;p&gt;In general, an input sentence is just a string of characters in Python. We can use build in functions in Python to generate n-grams quickly. Let&amp;rsquo;s take the following sentence as a sample input:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;s &lt;span style=&#34;color:#ff6ac1&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#34;&amp;#34;&amp;#34;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#5af78e&#34;&gt;    Natural-language processing (NLP) is an area of
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#5af78e&#34;&gt;    computer science and artificial intelligence
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#5af78e&#34;&gt;    concerned with the interactions between computers
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#5af78e&#34;&gt;    and human (natural) languages.
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#34;&amp;#34;&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;If we want to generate a list of bi-grams from the above sentence, the expected output would be something like below (depending on how do we want to treat the punctuations, the desired output can be different):&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;[
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#34;natural language&amp;#34;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#34;language processing&amp;#34;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#34;processing nlp&amp;#34;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#34;nlp is&amp;#34;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#34;is an&amp;#34;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#34;an area&amp;#34;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#ff6ac1&#34;&gt;...&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;]
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;The following function can be used to achieve this:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#ff6ac1&#34;&gt;import&lt;/span&gt; re
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#ff6ac1&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#57c7ff&#34;&gt;generate_ngrams&lt;/span&gt;(s, n):
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#78787e&#34;&gt;# Convert to lowercases&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    s &lt;span style=&#34;color:#ff6ac1&#34;&gt;=&lt;/span&gt; s&lt;span style=&#34;color:#ff6ac1&#34;&gt;.&lt;/span&gt;lower()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#78787e&#34;&gt;# Replace all none alphanumeric characters with spaces&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    s &lt;span style=&#34;color:#ff6ac1&#34;&gt;=&lt;/span&gt; re&lt;span style=&#34;color:#ff6ac1&#34;&gt;.&lt;/span&gt;sub(&lt;span style=&#34;color:#5af78e&#34;&gt;r&lt;/span&gt;&lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#39;[^a-zA-Z0-9\s]&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#39; &amp;#39;&lt;/span&gt;, s)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#78787e&#34;&gt;# Break sentence in the token, remove empty tokens&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    tokens &lt;span style=&#34;color:#ff6ac1&#34;&gt;=&lt;/span&gt; [token &lt;span style=&#34;color:#ff6ac1&#34;&gt;for&lt;/span&gt; token &lt;span style=&#34;color:#ff6ac1&#34;&gt;in&lt;/span&gt; s&lt;span style=&#34;color:#ff6ac1&#34;&gt;.&lt;/span&gt;split(&lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#34; &amp;#34;&lt;/span&gt;) &lt;span style=&#34;color:#ff6ac1&#34;&gt;if&lt;/span&gt; token &lt;span style=&#34;color:#ff6ac1&#34;&gt;!=&lt;/span&gt; &lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt;]
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#78787e&#34;&gt;# Use the zip function to help us generate n-grams&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#78787e&#34;&gt;# Concatentate the tokens into ngrams and return&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    ngrams &lt;span style=&#34;color:#ff6ac1&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ff5c57&#34;&gt;zip&lt;/span&gt;(&lt;span style=&#34;color:#ff6ac1&#34;&gt;*&lt;/span&gt;[token[i:] &lt;span style=&#34;color:#ff6ac1&#34;&gt;for&lt;/span&gt; i &lt;span style=&#34;color:#ff6ac1&#34;&gt;in&lt;/span&gt; &lt;span style=&#34;color:#ff5c57&#34;&gt;range&lt;/span&gt;(n)])
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#ff6ac1&#34;&gt;return&lt;/span&gt; [&lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#34; &amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#ff6ac1&#34;&gt;.&lt;/span&gt;join(ngram) &lt;span style=&#34;color:#ff6ac1&#34;&gt;for&lt;/span&gt; ngram &lt;span style=&#34;color:#ff6ac1&#34;&gt;in&lt;/span&gt; ngrams]
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Applying the above function to the sentence, with &lt;code&gt;n=5&lt;/code&gt;, gives the following output:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#ff6ac1&#34;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; generate_ngrams(s, n&lt;span style=&#34;color:#ff6ac1&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ff9f43&#34;&gt;5&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;[&lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#39;natural language processing nlp is&amp;#39;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; &lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#39;language processing nlp is an&amp;#39;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; &lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#39;processing nlp is an area&amp;#39;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; &lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#39;nlp is an area of&amp;#39;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; &lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#39;is an area of computer&amp;#39;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; &lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#39;an area of computer science&amp;#39;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; &lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#39;area of computer science and&amp;#39;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; &lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#39;of computer science and artificial&amp;#39;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; &lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#39;computer science and artificial intelligence&amp;#39;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; &lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#39;science and artificial intelligence concerned&amp;#39;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; &lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#39;and artificial intelligence concerned with&amp;#39;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; &lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#39;artificial intelligence concerned with the&amp;#39;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; &lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#39;intelligence concerned with the interactions&amp;#39;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; &lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#39;concerned with the interactions between&amp;#39;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; &lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#39;with the interactions between computers&amp;#39;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; &lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#39;the interactions between computers and&amp;#39;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; &lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#39;interactions between computers and human&amp;#39;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; &lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#39;between computers and human natural&amp;#39;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; &lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#39;computers and human natural languages&amp;#39;&lt;/span&gt;]
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;The above function makes use of the &lt;code&gt;zip&lt;/code&gt; function, which creates a generator that aggregates elements from multiple lists (or iterables in genera). The blocks of codes and comments below offer some more explanation of the usage:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#78787e&#34;&gt;# Sample sentence&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;s &lt;span style=&#34;color:#ff6ac1&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#34;one two three four five&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;tokens &lt;span style=&#34;color:#ff6ac1&#34;&gt;=&lt;/span&gt; s&lt;span style=&#34;color:#ff6ac1&#34;&gt;.&lt;/span&gt;split(&lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#34; &amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#78787e&#34;&gt;# tokens = [&amp;#34;one&amp;#34;, &amp;#34;two&amp;#34;, &amp;#34;three&amp;#34;, &amp;#34;four&amp;#34;, &amp;#34;five&amp;#34;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sequences &lt;span style=&#34;color:#ff6ac1&#34;&gt;=&lt;/span&gt; [tokens[i:] &lt;span style=&#34;color:#ff6ac1&#34;&gt;for&lt;/span&gt; i &lt;span style=&#34;color:#ff6ac1&#34;&gt;in&lt;/span&gt; &lt;span style=&#34;color:#ff5c57&#34;&gt;range&lt;/span&gt;(&lt;span style=&#34;color:#ff9f43&#34;&gt;3&lt;/span&gt;)]
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#78787e&#34;&gt;# The above will generate sequences of tokens starting&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#78787e&#34;&gt;# from different elements of the list of tokens.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#78787e&#34;&gt;# The parameter in the range() function controls&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#78787e&#34;&gt;# how many sequences to generate.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#78787e&#34;&gt;#&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#78787e&#34;&gt;# sequences = [&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#78787e&#34;&gt;#   [&amp;#39;one&amp;#39;, &amp;#39;two&amp;#39;, &amp;#39;three&amp;#39;, &amp;#39;four&amp;#39;, &amp;#39;five&amp;#39;],&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#78787e&#34;&gt;#   [&amp;#39;two&amp;#39;, &amp;#39;three&amp;#39;, &amp;#39;four&amp;#39;, &amp;#39;five&amp;#39;],&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#78787e&#34;&gt;#   [&amp;#39;three&amp;#39;, &amp;#39;four&amp;#39;, &amp;#39;five&amp;#39;]]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;bigrams &lt;span style=&#34;color:#ff6ac1&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ff5c57&#34;&gt;zip&lt;/span&gt;(&lt;span style=&#34;color:#ff6ac1&#34;&gt;*&lt;/span&gt;sequences)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#78787e&#34;&gt;# The zip function takes the sequences as a list of inputs&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#78787e&#34;&gt;# (using the * operator, this is equivalent to&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#78787e&#34;&gt;# zip(sequences[0], sequences[1], sequences[2]).&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#78787e&#34;&gt;# Each tuple it returns will contain one element from&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#78787e&#34;&gt;# each of the sequences.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#78787e&#34;&gt;# &lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#78787e&#34;&gt;# To inspect the content of bigrams, try:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#78787e&#34;&gt;# print(list(bigrams))&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#78787e&#34;&gt;# which will give the following:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#78787e&#34;&gt;#&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#78787e&#34;&gt;# [&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#78787e&#34;&gt;#   (&amp;#39;one&amp;#39;, &amp;#39;two&amp;#39;, &amp;#39;three&amp;#39;),&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#78787e&#34;&gt;#   (&amp;#39;two&amp;#39;, &amp;#39;three&amp;#39;, &amp;#39;four&amp;#39;),&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#78787e&#34;&gt;#   (&amp;#39;three&amp;#39;, &amp;#39;four&amp;#39;, &amp;#39;five&amp;#39;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#78787e&#34;&gt;# ]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#78787e&#34;&gt;#&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#78787e&#34;&gt;# Note: even though the first sequence has 5 elements,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#78787e&#34;&gt;# zip will stop after returning 3 tuples, because the&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#78787e&#34;&gt;# last sequence only has 3 elements. In other words,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#78787e&#34;&gt;# the zip function automatically handles the ending of&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#78787e&#34;&gt;# the n-gram generation.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;using-nltk&#34; &gt;
+&lt;div&gt;
+    &lt;a href=&#34;#using-nltk&#34;&gt;
+        #
+    &lt;/a&gt;
+    Using NLTK
+&lt;/div&gt;
+&lt;/h2&gt;
+&lt;p&gt;Instead of using pure Python functions, we can also get help from some natural language processing libraries such as the &lt;a href=&#34;https://www.nltk.org/&#34;&gt;Natural Language Toolkit (NLTK)&lt;/a&gt;. In particular, nltk has the &lt;code&gt;ngrams&lt;/code&gt; function that returns a generator of n-grams given a tokenized sentence. (See the documentaion of the function &lt;a href=&#34;http://www.nltk.org/api/nltk.html#nltk.util.ngrams&#34;&gt;here&lt;/a&gt;)&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#ff6ac1&#34;&gt;import&lt;/span&gt; re
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#ff6ac1&#34;&gt;from&lt;/span&gt; nltk.util &lt;span style=&#34;color:#ff6ac1&#34;&gt;import&lt;/span&gt; ngrams
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;s &lt;span style=&#34;color:#ff6ac1&#34;&gt;=&lt;/span&gt; s&lt;span style=&#34;color:#ff6ac1&#34;&gt;.&lt;/span&gt;lower()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;s &lt;span style=&#34;color:#ff6ac1&#34;&gt;=&lt;/span&gt; re&lt;span style=&#34;color:#ff6ac1&#34;&gt;.&lt;/span&gt;sub(&lt;span style=&#34;color:#5af78e&#34;&gt;r&lt;/span&gt;&lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#39;[^a-zA-Z0-9\s]&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#39; &amp;#39;&lt;/span&gt;, s)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;tokens &lt;span style=&#34;color:#ff6ac1&#34;&gt;=&lt;/span&gt; [token &lt;span style=&#34;color:#ff6ac1&#34;&gt;for&lt;/span&gt; token &lt;span style=&#34;color:#ff6ac1&#34;&gt;in&lt;/span&gt; s&lt;span style=&#34;color:#ff6ac1&#34;&gt;.&lt;/span&gt;split(&lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#34; &amp;#34;&lt;/span&gt;) &lt;span style=&#34;color:#ff6ac1&#34;&gt;if&lt;/span&gt; token &lt;span style=&#34;color:#ff6ac1&#34;&gt;!=&lt;/span&gt; &lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt;]
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;output &lt;span style=&#34;color:#ff6ac1&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ff5c57&#34;&gt;list&lt;/span&gt;(ngrams(tokens, &lt;span style=&#34;color:#ff9f43&#34;&gt;5&lt;/span&gt;))
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;The above block of code will generate the same output as the function &lt;code&gt;generate_ngrams()&lt;/code&gt; as shown above.&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>
