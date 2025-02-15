@@ -1,4 +1,4 @@
-baseURL = 'https://example.org/'
+baseURL = 'https://ayeung.dev/'
 languageCode = 'en-us'
 title = 'ayeung.dev'
 theme = "anubis2"
