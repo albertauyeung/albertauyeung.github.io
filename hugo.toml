@@ -18,6 +18,9 @@ readMore = true
 toc = false
 math = true
 
+colorTheme = "light"
+colorThemeSwitcher = false
+
 customCSS = ["custom-css/style.css"]
 
 social = [
