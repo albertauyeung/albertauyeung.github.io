@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 
 
-    
-
 <html lang="en-us" data-theme="">
 <head>
     
@@ -28,13 +26,27 @@
 
 
 
+
+
     
 
 
 
-    
+<style>
+  body {
+    visibility: hidden;
+    opacity: 0;
+  }
+</style>
 
-
+<noscript>
+  <style>
+    body {
+      visibility: visible;
+      opacity: 1;
+    }
+  </style>
+</noscript>
 
 
 
@@ -108,7 +120,7 @@
 
     
       
-        <link rel="stylesheet" href="/css/style.min.501a18f184de613bbd235ece9218c319166ee042d67b2fc5d5b9cedc01afaffb.css" integrity="sha256-UBoY8YTeYTu9I17OkhjDGRZu4ELWey/F1bnO3AGvr/s=" crossorigin="anonymous">
+        <link rel="stylesheet" href="/css/style.min.bc2ba405e352f0155ca07bcc3b2b20b7d7498bc9a1f2d2d9a146e731ed5342b3.css" integrity="sha256-vCukBeNS8BVcoHvMOysgt9dJi8mh8tLZoUbnMe1TQrM=" crossorigin="anonymous">
       
     
 
@@ -180,13 +192,103 @@ gtag('config', 'G-12LX2RWP72');
 
 
 
+
+
     
 
 
 
     
+        <div class="theme-switcher">
+            <span class="inline-svg">
+
+    
 
 
+    
+    
+    
+    
+    
+
+    <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-sun-high"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14.828 14.828a4 4 0 1 0 -5.656 -5.656a4 4 0 0 0 5.656 5.656z" /><path d="M6.343 17.657l-1.414 1.414" /><path d="M6.343 6.343l-1.414 -1.414" /><path d="M17.657 6.343l1.414 -1.414" /><path d="M17.657 17.657l1.414 1.414" /><path d="M4 12h-2" /><path d="M12 4v-2" /><path d="M20 12h2" /><path d="M12 20v2" /></svg>
+
+
+</span>
+
+        </div>
+    
+
+    <script>
+        const STORAGE_KEY = 'user-color-scheme'
+        const defaultTheme = "light"
+
+        let currentTheme
+        let switchButton
+        let autoDefinedScheme = window.matchMedia('(prefers-color-scheme: dark)')
+
+        function switchTheme(e) {
+            currentTheme = (currentTheme === 'dark') ? 'light' : 'dark';
+            if (localStorage) localStorage.setItem(STORAGE_KEY, currentTheme);
+            document.documentElement.setAttribute('data-theme', currentTheme);
+            changeGiscusTheme(currentTheme);
+            document.body.dispatchEvent(new CustomEvent(currentTheme + "-theme-set"));
+        }
+
+        const autoChangeScheme = e => {
+            currentTheme = e.matches ? 'dark' : 'light'
+            document.documentElement.setAttribute('data-theme', currentTheme);
+            changeGiscusTheme(currentTheme);
+            document.body.dispatchEvent(new CustomEvent(currentTheme + "-theme-set"));
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            switchButton = document.querySelector('.theme-switcher')
+            currentTheme = detectCurrentScheme()
+
+            if (currentTheme === 'auto') {
+                autoChangeScheme(autoDefinedScheme);
+                autoDefinedScheme.addListener(autoChangeScheme);
+            } else {
+                document.documentElement.setAttribute('data-theme', currentTheme)
+            }
+
+            if (switchButton) {
+                switchButton.addEventListener('click', switchTheme, false)
+            }
+
+            showContent();
+        })
+
+        function detectCurrentScheme() {
+            if (localStorage !== null && localStorage.getItem(STORAGE_KEY)) {
+                return localStorage.getItem(STORAGE_KEY)
+            }
+            if (defaultTheme) {
+                return defaultTheme
+            }
+            return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+
+        function showContent() {
+            document.body.style.visibility = 'visible';
+            document.body.style.opacity = 1;
+        }
+
+        function changeGiscusTheme (theme) {
+            function sendMessage(message) {
+              const iframe = document.querySelector('iframe.giscus-frame');
+              if (!iframe) return;
+              iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+            }
+
+            sendMessage({
+              setConfig: {
+                theme: theme
+              }
+            });
+        }
+    </script>
 
 
         <ul class="social-icons noselect">
@@ -452,24 +554,24 @@ gtag('config', 'G-12LX2RWP72');
 <p>For tokens not appearing in the original vocabulary, it is designed that they should be replaced with a special token <code>[UNK]</code>, which stands for <strong>unknown</strong> token.</p>
 <p>However, converting all unseen tokens into <code>[UNK]</code> will take away a lot of information from the input data. Hence, BERT makes use of a <strong>WordPiece</strong> algorithm that breaks a word into several <em>subwords</em>, such that commonly seen subwords can also be represented by the model.</p>
 <p>For example, the word <code>characteristically</code> does not appear in the original vocabulary. Nevertheless, when we use the BERT tokenizer to tokenize a sentence containing this word, we get something as shown below:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ff6ac1">&gt;&gt;&gt;</span> <span style="color:#ff6ac1">from</span> transformers <span style="color:#ff6ac1">import</span> BertTokenizer
-</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">&gt;&gt;&gt;</span> tz <span style="color:#ff6ac1">=</span> BertTokenizer<span style="color:#ff6ac1">.</span>from_pretrained(<span style="color:#5af78e">&#34;bert-base-cased&#34;</span>)
-</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">&gt;&gt;&gt;</span> tz<span style="color:#ff6ac1">.</span>convert_tokens_to_ids([<span style="color:#5af78e">&#34;characteristically&#34;</span>])
-</span></span><span style="display:flex;"><span>[<span style="color:#ff9f43">100</span>]
+<div class="highlight"><pre tabindex="0" style="color:#d8dee9;background-color:#2e3440;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#81a1c1">&gt;&gt;&gt;</span> <span style="color:#81a1c1;font-weight:bold">from</span> <span style="color:#8fbcbb">transformers</span> <span style="color:#81a1c1;font-weight:bold">import</span> BertTokenizer
+</span></span><span style="display:flex;"><span><span style="color:#81a1c1">&gt;&gt;&gt;</span> tz <span style="color:#81a1c1">=</span> BertTokenizer<span style="color:#81a1c1">.</span>from_pretrained<span style="color:#eceff4">(</span><span style="color:#a3be8c">&#34;bert-base-cased&#34;</span><span style="color:#eceff4">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#81a1c1">&gt;&gt;&gt;</span> tz<span style="color:#81a1c1">.</span>convert_tokens_to_ids<span style="color:#eceff4">([</span><span style="color:#a3be8c">&#34;characteristically&#34;</span><span style="color:#eceff4">])</span>
+</span></span><span style="display:flex;"><span><span style="color:#eceff4">[</span><span style="color:#b48ead">100</span><span style="color:#eceff4">]</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">&gt;&gt;&gt;</span> sent <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">&#34;He remains characteristically confident and optimistic.&#34;</span>
-</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">&gt;&gt;&gt;</span> tz<span style="color:#ff6ac1">.</span>tokenize(sent)
-</span></span><span style="display:flex;"><span>[<span style="color:#5af78e">&#39;He&#39;</span>,
-</span></span><span style="display:flex;"><span> <span style="color:#5af78e">&#39;remains&#39;</span>,
-</span></span><span style="display:flex;"><span> <span style="color:#5af78e">&#39;characteristic&#39;</span>,
-</span></span><span style="display:flex;"><span> <span style="color:#5af78e">&#39;##ally&#39;</span>,
-</span></span><span style="display:flex;"><span> <span style="color:#5af78e">&#39;confident&#39;</span>,
-</span></span><span style="display:flex;"><span> <span style="color:#5af78e">&#39;and&#39;</span>,
-</span></span><span style="display:flex;"><span> <span style="color:#5af78e">&#39;optimistic&#39;</span>,
-</span></span><span style="display:flex;"><span> <span style="color:#5af78e">&#39;.&#39;</span>]
+</span></span><span style="display:flex;"><span><span style="color:#81a1c1">&gt;&gt;&gt;</span> sent <span style="color:#81a1c1">=</span> <span style="color:#a3be8c">&#34;He remains characteristically confident and optimistic.&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#81a1c1">&gt;&gt;&gt;</span> tz<span style="color:#81a1c1">.</span>tokenize<span style="color:#eceff4">(</span>sent<span style="color:#eceff4">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#eceff4">[</span><span style="color:#a3be8c">&#39;He&#39;</span><span style="color:#eceff4">,</span>
+</span></span><span style="display:flex;"><span> <span style="color:#a3be8c">&#39;remains&#39;</span><span style="color:#eceff4">,</span>
+</span></span><span style="display:flex;"><span> <span style="color:#a3be8c">&#39;characteristic&#39;</span><span style="color:#eceff4">,</span>
+</span></span><span style="display:flex;"><span> <span style="color:#a3be8c">&#39;##ally&#39;</span><span style="color:#eceff4">,</span>
+</span></span><span style="display:flex;"><span> <span style="color:#a3be8c">&#39;confident&#39;</span><span style="color:#eceff4">,</span>
+</span></span><span style="display:flex;"><span> <span style="color:#a3be8c">&#39;and&#39;</span><span style="color:#eceff4">,</span>
+</span></span><span style="display:flex;"><span> <span style="color:#a3be8c">&#39;optimistic&#39;</span><span style="color:#eceff4">,</span>
+</span></span><span style="display:flex;"><span> <span style="color:#a3be8c">&#39;.&#39;</span><span style="color:#eceff4">]</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">&gt;&gt;&gt;</span> tz<span style="color:#ff6ac1">.</span>convert_tokens_to_ids(tz<span style="color:#ff6ac1">.</span>tokenize(sent))
-</span></span><span style="display:flex;"><span>[<span style="color:#ff9f43">1124</span>, <span style="color:#ff9f43">2606</span>, <span style="color:#ff9f43">7987</span>, <span style="color:#ff9f43">2716</span>, <span style="color:#ff9f43">9588</span>, <span style="color:#ff9f43">1105</span>, <span style="color:#ff9f43">24876</span>, <span style="color:#ff9f43">119</span>]
+</span></span><span style="display:flex;"><span><span style="color:#81a1c1">&gt;&gt;&gt;</span> tz<span style="color:#81a1c1">.</span>convert_tokens_to_ids<span style="color:#eceff4">(</span>tz<span style="color:#81a1c1">.</span>tokenize<span style="color:#eceff4">(</span>sent<span style="color:#eceff4">))</span>
+</span></span><span style="display:flex;"><span><span style="color:#eceff4">[</span><span style="color:#b48ead">1124</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">2606</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">7987</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">2716</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">9588</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">1105</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">24876</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">119</span><span style="color:#eceff4">]</span>
 </span></span></code></pre></div><p>We can see that the word <code>characteristically</code> will be converted to the ID <code>100</code>, which is the ID of the token <code>[UNK]</code>, if we do not apply the tokenization function of the BERT model.</p>
 <p>The BERT tokenization function, on the other hand, will first breaks the word into two subwoards, namely <code>characteristic</code> and <code>##ally</code>, where the first token is a more commonly-seen word (prefix) in a corpus, and the second token is prefixed by two hashes <code>##</code> to indicate that it is a suffix following some other subwords.</p>
 <p>After this tokenization step, all tokens can be converted into their corresponding IDs.</p>
@@ -490,20 +592,20 @@ gtag('config', 'G-12LX2RWP72');
 <li>Converting each token into their corresponding IDs in the model</li>
 </ol>
 <p>An example of preparing a sentence for input to the BERT model is shown below. For simplicity, we assume the maximum length is 10 in the example below (while in the original model it is set to be 512).</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-markdown" data-lang="markdown"><span style="display:flex;"><span><span style="font-weight:bold"># Original Sentence
-</span></span></span><span style="display:flex;"><span><span style="font-weight:bold"></span>Let&#39;s learn deep learning!
+<div class="highlight"><pre tabindex="0" style="color:#d8dee9;background-color:#2e3440;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-markdown" data-lang="markdown"><span style="display:flex;"><span><span style="color:#88c0d0;font-weight:bold"># Original Sentence
+</span></span></span><span style="display:flex;"><span><span style="color:#88c0d0;font-weight:bold"></span>Let&#39;s learn deep learning!
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="font-weight:bold"># Tokenized Sentence
-</span></span></span><span style="display:flex;"><span><span style="font-weight:bold"></span>[&#39;Let&#39;, &#34;&#39;&#34;, &#39;s&#39;, &#39;learn&#39;, &#39;deep&#39;, &#39;learning&#39;, &#39;!&#39;]
+</span></span><span style="display:flex;"><span><span style="color:#88c0d0;font-weight:bold"># Tokenized Sentence
+</span></span></span><span style="display:flex;"><span><span style="color:#88c0d0;font-weight:bold"></span>[&#39;Let&#39;, &#34;&#39;&#34;, &#39;s&#39;, &#39;learn&#39;, &#39;deep&#39;, &#39;learning&#39;, &#39;!&#39;]
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="font-weight:bold"># Adding [CLS] and [SEP] Tokens
-</span></span></span><span style="display:flex;"><span><span style="font-weight:bold"></span>[&#39;[CLS]&#39;, &#39;Let&#39;, &#34;&#39;&#34;, &#39;s&#39;, &#39;learn&#39;, &#39;deep&#39;, &#39;learning&#39;, &#39;!&#39;, &#39;[SEP]&#39;]
+</span></span><span style="display:flex;"><span><span style="color:#88c0d0;font-weight:bold"># Adding [CLS] and [SEP] Tokens
+</span></span></span><span style="display:flex;"><span><span style="color:#88c0d0;font-weight:bold"></span>[&#39;[CLS]&#39;, &#39;Let&#39;, &#34;&#39;&#34;, &#39;s&#39;, &#39;learn&#39;, &#39;deep&#39;, &#39;learning&#39;, &#39;!&#39;, &#39;[SEP]&#39;]
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="font-weight:bold"># Padding
-</span></span></span><span style="display:flex;"><span><span style="font-weight:bold"></span>[&#39;[CLS]&#39;, &#39;Let&#39;, &#34;&#39;&#34;, &#39;s&#39;, &#39;learn&#39;, &#39;deep&#39;, &#39;learning&#39;, &#39;!&#39;, &#39;[SEP]&#39;, &#39;[PAD]&#39;]
+</span></span><span style="display:flex;"><span><span style="color:#88c0d0;font-weight:bold"># Padding
+</span></span></span><span style="display:flex;"><span><span style="color:#88c0d0;font-weight:bold"></span>[&#39;[CLS]&#39;, &#39;Let&#39;, &#34;&#39;&#34;, &#39;s&#39;, &#39;learn&#39;, &#39;deep&#39;, &#39;learning&#39;, &#39;!&#39;, &#39;[SEP]&#39;, &#39;[PAD]&#39;]
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="font-weight:bold"># Converting to IDs
-</span></span></span><span style="display:flex;"><span><span style="font-weight:bold"></span>[101, 2421, 112, 188, 3858, 1996, 3776, 106, 102, 0]
+</span></span><span style="display:flex;"><span><span style="color:#88c0d0;font-weight:bold"># Converting to IDs
+</span></span></span><span style="display:flex;"><span><span style="color:#88c0d0;font-weight:bold"></span>[101, 2421, 112, 188, 3858, 1996, 3776, 106, 102, 0]
 </span></span></code></pre></div><h2 id="tokenization-using-the-transformers-package" >
 <div>
     <a href="#tokenization-using-the-transformers-package">
@@ -522,42 +624,42 @@ Pad or truncate all sentences to the same length.</li>
 <li>Create the attention masks which explicitly differentiate real tokens from <code>[PAD]</code> tokens</li>
 </ol>
 <p>The following codes shows how this can be done.</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#78787e"># Import tokenizer from transformers package</span>
-</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">from</span> transformers <span style="color:#ff6ac1">import</span> BertTokenizer
+<div class="highlight"><pre tabindex="0" style="color:#d8dee9;background-color:#2e3440;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#616e87;font-style:italic"># Import tokenizer from transformers package</span>
+</span></span><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">from</span> <span style="color:#8fbcbb">transformers</span> <span style="color:#81a1c1;font-weight:bold">import</span> BertTokenizer
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#78787e"># Load the tokenizer of the &#34;bert-base-cased&#34; pretrained model</span>
-</span></span><span style="display:flex;"><span><span style="color:#78787e"># See https://huggingface.co/transformers/pretrained_models.html for other models</span>
-</span></span><span style="display:flex;"><span>tz <span style="color:#ff6ac1">=</span> BertTokenizer<span style="color:#ff6ac1">.</span>from_pretrained(<span style="color:#5af78e">&#34;bert-base-cased&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#616e87;font-style:italic"># Load the tokenizer of the &#34;bert-base-cased&#34; pretrained model</span>
+</span></span><span style="display:flex;"><span><span style="color:#616e87;font-style:italic"># See https://huggingface.co/transformers/pretrained_models.html for other models</span>
+</span></span><span style="display:flex;"><span>tz <span style="color:#81a1c1">=</span> BertTokenizer<span style="color:#81a1c1">.</span>from_pretrained<span style="color:#eceff4">(</span><span style="color:#a3be8c">&#34;bert-base-cased&#34;</span><span style="color:#eceff4">)</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#78787e"># The senetence to be encoded</span>
-</span></span><span style="display:flex;"><span>sent <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">&#34;Let&#39;s learn deep learning!&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#616e87;font-style:italic"># The senetence to be encoded</span>
+</span></span><span style="display:flex;"><span>sent <span style="color:#81a1c1">=</span> <span style="color:#a3be8c">&#34;Let&#39;s learn deep learning!&#34;</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#78787e"># Encode the sentence</span>
-</span></span><span style="display:flex;"><span>encoded <span style="color:#ff6ac1">=</span> tz<span style="color:#ff6ac1">.</span>encode_plus(
-</span></span><span style="display:flex;"><span>    text<span style="color:#ff6ac1">=</span>sent,  <span style="color:#78787e"># the sentence to be encoded</span>
-</span></span><span style="display:flex;"><span>    add_special_tokens<span style="color:#ff6ac1">=</span><span style="color:#ff6ac1">True</span>,  <span style="color:#78787e"># Add [CLS] and [SEP]</span>
-</span></span><span style="display:flex;"><span>    max_length <span style="color:#ff6ac1">=</span> <span style="color:#ff9f43">64</span>,  <span style="color:#78787e"># maximum length of a sentence</span>
-</span></span><span style="display:flex;"><span>    pad_to_max_length<span style="color:#ff6ac1">=</span><span style="color:#ff6ac1">True</span>,  <span style="color:#78787e"># Add [PAD]s</span>
-</span></span><span style="display:flex;"><span>    return_attention_mask <span style="color:#ff6ac1">=</span> <span style="color:#ff6ac1">True</span>,  <span style="color:#78787e"># Generate the attention mask</span>
-</span></span><span style="display:flex;"><span>    return_tensors <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">&#39;pt&#39;</span>,  <span style="color:#78787e"># ask the function to return PyTorch tensors</span>
-</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span><span style="color:#616e87;font-style:italic"># Encode the sentence</span>
+</span></span><span style="display:flex;"><span>encoded <span style="color:#81a1c1">=</span> tz<span style="color:#81a1c1">.</span>encode_plus<span style="color:#eceff4">(</span>
+</span></span><span style="display:flex;"><span>    text<span style="color:#81a1c1">=</span>sent<span style="color:#eceff4">,</span>  <span style="color:#616e87;font-style:italic"># the sentence to be encoded</span>
+</span></span><span style="display:flex;"><span>    add_special_tokens<span style="color:#81a1c1">=</span><span style="color:#81a1c1;font-weight:bold">True</span><span style="color:#eceff4">,</span>  <span style="color:#616e87;font-style:italic"># Add [CLS] and [SEP]</span>
+</span></span><span style="display:flex;"><span>    max_length <span style="color:#81a1c1">=</span> <span style="color:#b48ead">64</span><span style="color:#eceff4">,</span>  <span style="color:#616e87;font-style:italic"># maximum length of a sentence</span>
+</span></span><span style="display:flex;"><span>    pad_to_max_length<span style="color:#81a1c1">=</span><span style="color:#81a1c1;font-weight:bold">True</span><span style="color:#eceff4">,</span>  <span style="color:#616e87;font-style:italic"># Add [PAD]s</span>
+</span></span><span style="display:flex;"><span>    return_attention_mask <span style="color:#81a1c1">=</span> <span style="color:#81a1c1;font-weight:bold">True</span><span style="color:#eceff4">,</span>  <span style="color:#616e87;font-style:italic"># Generate the attention mask</span>
+</span></span><span style="display:flex;"><span>    return_tensors <span style="color:#81a1c1">=</span> <span style="color:#a3be8c">&#39;pt&#39;</span><span style="color:#eceff4">,</span>  <span style="color:#616e87;font-style:italic"># ask the function to return PyTorch tensors</span>
+</span></span><span style="display:flex;"><span><span style="color:#eceff4">)</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#78787e"># Get the input IDs and attention mask in tensor format</span>
-</span></span><span style="display:flex;"><span>input_ids <span style="color:#ff6ac1">=</span> encoded[<span style="color:#5af78e">&#39;input_ids&#39;</span>]
-</span></span><span style="display:flex;"><span>attn_mask <span style="color:#ff6ac1">=</span> encoded[<span style="color:#5af78e">&#39;attention_mask&#39;</span>]
+</span></span><span style="display:flex;"><span><span style="color:#616e87;font-style:italic"># Get the input IDs and attention mask in tensor format</span>
+</span></span><span style="display:flex;"><span>input_ids <span style="color:#81a1c1">=</span> encoded<span style="color:#eceff4">[</span><span style="color:#a3be8c">&#39;input_ids&#39;</span><span style="color:#eceff4">]</span>
+</span></span><span style="display:flex;"><span>attn_mask <span style="color:#81a1c1">=</span> encoded<span style="color:#eceff4">[</span><span style="color:#a3be8c">&#39;attention_mask&#39;</span><span style="color:#eceff4">]</span>
 </span></span></code></pre></div><p>After executing the codes above, we will have the following content for the <code>input_ids</code> and <code>attn_mask</code> variables:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ff6ac1">&gt;&gt;&gt;</span> <span style="color:#ff5c57">input</span><span style="color:#ff6ac1">-</span>ids
-</span></span><span style="display:flex;"><span>tensor([[ <span style="color:#ff9f43">101</span>, <span style="color:#ff9f43">2421</span>,  <span style="color:#ff9f43">112</span>,  <span style="color:#ff9f43">188</span>, <span style="color:#ff9f43">3858</span>, <span style="color:#ff9f43">1996</span>, <span style="color:#ff9f43">3776</span>,  <span style="color:#ff9f43">106</span>,  <span style="color:#ff9f43">102</span>,    <span style="color:#ff9f43">0</span>,    <span style="color:#ff9f43">0</span>,    <span style="color:#ff9f43">0</span>,
-</span></span><span style="display:flex;"><span>            <span style="color:#ff9f43">0</span>,    <span style="color:#ff9f43">0</span>,    <span style="color:#ff9f43">0</span>,    <span style="color:#ff9f43">0</span>,    <span style="color:#ff9f43">0</span>,    <span style="color:#ff9f43">0</span>,    <span style="color:#ff9f43">0</span>,    <span style="color:#ff9f43">0</span>,    <span style="color:#ff9f43">0</span>,    <span style="color:#ff9f43">0</span>,    <span style="color:#ff9f43">0</span>,    <span style="color:#ff9f43">0</span>,
-</span></span><span style="display:flex;"><span>            <span style="color:#ff9f43">0</span>,    <span style="color:#ff9f43">0</span>,    <span style="color:#ff9f43">0</span>,    <span style="color:#ff9f43">0</span>,    <span style="color:#ff9f43">0</span>,    <span style="color:#ff9f43">0</span>,    <span style="color:#ff9f43">0</span>,    <span style="color:#ff9f43">0</span>,    <span style="color:#ff9f43">0</span>,    <span style="color:#ff9f43">0</span>,    <span style="color:#ff9f43">0</span>,    <span style="color:#ff9f43">0</span>,
-</span></span><span style="display:flex;"><span>            <span style="color:#ff9f43">0</span>,    <span style="color:#ff9f43">0</span>,    <span style="color:#ff9f43">0</span>,    <span style="color:#ff9f43">0</span>,    <span style="color:#ff9f43">0</span>,    <span style="color:#ff9f43">0</span>,    <span style="color:#ff9f43">0</span>,    <span style="color:#ff9f43">0</span>,    <span style="color:#ff9f43">0</span>,    <span style="color:#ff9f43">0</span>,    <span style="color:#ff9f43">0</span>,    <span style="color:#ff9f43">0</span>,
-</span></span><span style="display:flex;"><span>            <span style="color:#ff9f43">0</span>,    <span style="color:#ff9f43">0</span>,    <span style="color:#ff9f43">0</span>,    <span style="color:#ff9f43">0</span>,    <span style="color:#ff9f43">0</span>,    <span style="color:#ff9f43">0</span>,    <span style="color:#ff9f43">0</span>,    <span style="color:#ff9f43">0</span>,    <span style="color:#ff9f43">0</span>,    <span style="color:#ff9f43">0</span>,    <span style="color:#ff9f43">0</span>,    <span style="color:#ff9f43">0</span>,
-</span></span><span style="display:flex;"><span>            <span style="color:#ff9f43">0</span>,    <span style="color:#ff9f43">0</span>,    <span style="color:#ff9f43">0</span>,    <span style="color:#ff9f43">0</span>]])
-</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">&gt;&gt;&gt;</span>
-</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">&gt;&gt;&gt;</span> attn_mask
-</span></span><span style="display:flex;"><span>tensor([[<span style="color:#ff9f43">1</span>, <span style="color:#ff9f43">1</span>, <span style="color:#ff9f43">1</span>, <span style="color:#ff9f43">1</span>, <span style="color:#ff9f43">1</span>, <span style="color:#ff9f43">1</span>, <span style="color:#ff9f43">1</span>, <span style="color:#ff9f43">1</span>, <span style="color:#ff9f43">1</span>, <span style="color:#ff9f43">0</span>, <span style="color:#ff9f43">0</span>, <span style="color:#ff9f43">0</span>, <span style="color:#ff9f43">0</span>, <span style="color:#ff9f43">0</span>, <span style="color:#ff9f43">0</span>, <span style="color:#ff9f43">0</span>, <span style="color:#ff9f43">0</span>, <span style="color:#ff9f43">0</span>, <span style="color:#ff9f43">0</span>, <span style="color:#ff9f43">0</span>, <span style="color:#ff9f43">0</span>, <span style="color:#ff9f43">0</span>, <span style="color:#ff9f43">0</span>, <span style="color:#ff9f43">0</span>,
-</span></span><span style="display:flex;"><span>         <span style="color:#ff9f43">0</span>, <span style="color:#ff9f43">0</span>, <span style="color:#ff9f43">0</span>, <span style="color:#ff9f43">0</span>, <span style="color:#ff9f43">0</span>, <span style="color:#ff9f43">0</span>, <span style="color:#ff9f43">0</span>, <span style="color:#ff9f43">0</span>, <span style="color:#ff9f43">0</span>, <span style="color:#ff9f43">0</span>, <span style="color:#ff9f43">0</span>, <span style="color:#ff9f43">0</span>, <span style="color:#ff9f43">0</span>, <span style="color:#ff9f43">0</span>, <span style="color:#ff9f43">0</span>, <span style="color:#ff9f43">0</span>, <span style="color:#ff9f43">0</span>, <span style="color:#ff9f43">0</span>, <span style="color:#ff9f43">0</span>, <span style="color:#ff9f43">0</span>, <span style="color:#ff9f43">0</span>, <span style="color:#ff9f43">0</span>, <span style="color:#ff9f43">0</span>, <span style="color:#ff9f43">0</span>,
-</span></span><span style="display:flex;"><span>         <span style="color:#ff9f43">0</span>, <span style="color:#ff9f43">0</span>, <span style="color:#ff9f43">0</span>, <span style="color:#ff9f43">0</span>, <span style="color:#ff9f43">0</span>, <span style="color:#ff9f43">0</span>, <span style="color:#ff9f43">0</span>, <span style="color:#ff9f43">0</span>, <span style="color:#ff9f43">0</span>, <span style="color:#ff9f43">0</span>, <span style="color:#ff9f43">0</span>, <span style="color:#ff9f43">0</span>, <span style="color:#ff9f43">0</span>, <span style="color:#ff9f43">0</span>, <span style="color:#ff9f43">0</span>, <span style="color:#ff9f43">0</span>]])
+<div class="highlight"><pre tabindex="0" style="color:#d8dee9;background-color:#2e3440;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#81a1c1">&gt;&gt;&gt;</span> <span style="color:#81a1c1">input</span><span style="color:#81a1c1">-</span>ids
+</span></span><span style="display:flex;"><span>tensor<span style="color:#eceff4">([[</span> <span style="color:#b48ead">101</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">2421</span><span style="color:#eceff4">,</span>  <span style="color:#b48ead">112</span><span style="color:#eceff4">,</span>  <span style="color:#b48ead">188</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">3858</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">1996</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">3776</span><span style="color:#eceff4">,</span>  <span style="color:#b48ead">106</span><span style="color:#eceff4">,</span>  <span style="color:#b48ead">102</span><span style="color:#eceff4">,</span>    <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span>    <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span>    <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span>    <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span>    <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span>    <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span>    <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span>    <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span>    <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span>    <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span>    <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span>    <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span>    <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span>    <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span>    <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span>    <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span>    <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span>    <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span>    <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span>    <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span>    <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span>    <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span>    <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span>    <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span>    <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span>    <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span>    <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span>    <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span>    <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span>    <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span>    <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span>    <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span>    <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span>    <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span>    <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span>    <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span>    <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span>    <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span>    <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span>    <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span>    <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span>    <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span>    <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span>    <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span>    <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span>    <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span>    <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span>    <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span>    <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span>    <span style="color:#b48ead">0</span><span style="color:#eceff4">]])</span>
+</span></span><span style="display:flex;"><span><span style="color:#81a1c1">&gt;&gt;&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#81a1c1">&gt;&gt;&gt;</span> attn_mask
+</span></span><span style="display:flex;"><span>tensor<span style="color:#eceff4">([[</span><span style="color:#b48ead">1</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">1</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">1</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">1</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">1</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">1</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">1</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">1</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">1</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span>
+</span></span><span style="display:flex;"><span>         <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span>
+</span></span><span style="display:flex;"><span>         <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">0</span><span style="color:#eceff4">]])</span>
 </span></span></code></pre></div><p>The <strong>&ldquo;attention mask&rdquo;</strong> tells the model which tokens should be attended to and which (the <code>[PAD]</code> tokens) should not (see the <a href="https://huggingface.co/transformers/glossary.html#attention-mask">documentation</a> for more detail). It will be needed when we feed the input into the BERT model.</p>
 <h2 id="reference" >
 <div>

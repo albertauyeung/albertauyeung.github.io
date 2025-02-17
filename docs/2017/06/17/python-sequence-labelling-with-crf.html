@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 
 
-    
-
 <html lang="en-us" data-theme="">
 <head>
     
@@ -28,13 +26,27 @@
 
 
 
+
+
     
 
 
 
-    
+<style>
+  body {
+    visibility: hidden;
+    opacity: 0;
+  }
+</style>
 
-
+<noscript>
+  <style>
+    body {
+      visibility: visible;
+      opacity: 1;
+    }
+  </style>
+</noscript>
 
 
 
@@ -108,7 +120,7 @@
 
     
       
-        <link rel="stylesheet" href="/css/style.min.501a18f184de613bbd235ece9218c319166ee042d67b2fc5d5b9cedc01afaffb.css" integrity="sha256-UBoY8YTeYTu9I17OkhjDGRZu4ELWey/F1bnO3AGvr/s=" crossorigin="anonymous">
+        <link rel="stylesheet" href="/css/style.min.bc2ba405e352f0155ca07bcc3b2b20b7d7498bc9a1f2d2d9a146e731ed5342b3.css" integrity="sha256-vCukBeNS8BVcoHvMOysgt9dJi8mh8tLZoUbnMe1TQrM=" crossorigin="anonymous">
       
     
 
@@ -180,13 +192,103 @@ gtag('config', 'G-12LX2RWP72');
 
 
 
+
+
     
 
 
 
     
+        <div class="theme-switcher">
+            <span class="inline-svg">
+
+    
 
 
+    
+    
+    
+    
+    
+
+    <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-sun-high"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14.828 14.828a4 4 0 1 0 -5.656 -5.656a4 4 0 0 0 5.656 5.656z" /><path d="M6.343 17.657l-1.414 1.414" /><path d="M6.343 6.343l-1.414 -1.414" /><path d="M17.657 6.343l1.414 -1.414" /><path d="M17.657 17.657l1.414 1.414" /><path d="M4 12h-2" /><path d="M12 4v-2" /><path d="M20 12h2" /><path d="M12 20v2" /></svg>
+
+
+</span>
+
+        </div>
+    
+
+    <script>
+        const STORAGE_KEY = 'user-color-scheme'
+        const defaultTheme = "light"
+
+        let currentTheme
+        let switchButton
+        let autoDefinedScheme = window.matchMedia('(prefers-color-scheme: dark)')
+
+        function switchTheme(e) {
+            currentTheme = (currentTheme === 'dark') ? 'light' : 'dark';
+            if (localStorage) localStorage.setItem(STORAGE_KEY, currentTheme);
+            document.documentElement.setAttribute('data-theme', currentTheme);
+            changeGiscusTheme(currentTheme);
+            document.body.dispatchEvent(new CustomEvent(currentTheme + "-theme-set"));
+        }
+
+        const autoChangeScheme = e => {
+            currentTheme = e.matches ? 'dark' : 'light'
+            document.documentElement.setAttribute('data-theme', currentTheme);
+            changeGiscusTheme(currentTheme);
+            document.body.dispatchEvent(new CustomEvent(currentTheme + "-theme-set"));
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            switchButton = document.querySelector('.theme-switcher')
+            currentTheme = detectCurrentScheme()
+
+            if (currentTheme === 'auto') {
+                autoChangeScheme(autoDefinedScheme);
+                autoDefinedScheme.addListener(autoChangeScheme);
+            } else {
+                document.documentElement.setAttribute('data-theme', currentTheme)
+            }
+
+            if (switchButton) {
+                switchButton.addEventListener('click', switchTheme, false)
+            }
+
+            showContent();
+        })
+
+        function detectCurrentScheme() {
+            if (localStorage !== null && localStorage.getItem(STORAGE_KEY)) {
+                return localStorage.getItem(STORAGE_KEY)
+            }
+            if (defaultTheme) {
+                return defaultTheme
+            }
+            return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+
+        function showContent() {
+            document.body.style.visibility = 'visible';
+            document.body.style.opacity = 1;
+        }
+
+        function changeGiscusTheme (theme) {
+            function sendMessage(message) {
+              const iframe = document.querySelector('iframe.giscus-frame');
+              if (!iframe) return;
+              iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+            }
+
+            sendMessage({
+              setConfig: {
+                theme: theme
+              }
+            });
+        }
+    </script>
 
 
         <ul class="social-icons noselect">
@@ -412,8 +514,8 @@ gtag('config', 'G-12LX2RWP72');
 </div>
 </h2>
 <p>This is actually a special case of <strong>sequence labelling</strong> in NLP (others include <a href="https://en.wikipedia.org/wiki/Part-of-speech_tagging">POS tagging</a> and <a href="https://en.wikipedia.org/wiki/Shallow_parsing">Chunking</a>), in which the goal is to assign a label to each member in the sequence. In the case of identifying country names, we would like to assign a &lsquo;<em>country</em>&rsquo; label to words that form part of a country name, and a &lsquo;<em>irrelevant</em>&rsquo; label to all other words. For example, the following is a sentence broken down into tokens, and its desired output after the sequence labelling process:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ff5c57">input</span> <span style="color:#ff6ac1">=</span> [<span style="color:#5af78e">&#34;Paris&#34;</span>, <span style="color:#5af78e">&#34;is&#34;</span>, <span style="color:#5af78e">&#34;the&#34;</span>, <span style="color:#5af78e">&#34;capital&#34;</span>, <span style="color:#5af78e">&#34;of&#34;</span>, <span style="color:#5af78e">&#34;France&#34;</span>]
-</span></span><span style="display:flex;"><span>output <span style="color:#ff6ac1">=</span> [<span style="color:#5af78e">&#34;I&#34;</span>, <span style="color:#5af78e">&#34;I&#34;</span>, <span style="color:#5af78e">&#34;I&#34;</span>, <span style="color:#5af78e">&#34;I&#34;</span>, <span style="color:#5af78e">&#34;I&#34;</span>, <span style="color:#5af78e">&#34;C&#34;</span>]
+<div class="highlight"><pre tabindex="0" style="color:#d8dee9;background-color:#2e3440;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#81a1c1">input</span> <span style="color:#81a1c1">=</span> <span style="color:#eceff4">[</span><span style="color:#a3be8c">&#34;Paris&#34;</span><span style="color:#eceff4">,</span> <span style="color:#a3be8c">&#34;is&#34;</span><span style="color:#eceff4">,</span> <span style="color:#a3be8c">&#34;the&#34;</span><span style="color:#eceff4">,</span> <span style="color:#a3be8c">&#34;capital&#34;</span><span style="color:#eceff4">,</span> <span style="color:#a3be8c">&#34;of&#34;</span><span style="color:#eceff4">,</span> <span style="color:#a3be8c">&#34;France&#34;</span><span style="color:#eceff4">]</span>
+</span></span><span style="display:flex;"><span>output <span style="color:#81a1c1">=</span> <span style="color:#eceff4">[</span><span style="color:#a3be8c">&#34;I&#34;</span><span style="color:#eceff4">,</span> <span style="color:#a3be8c">&#34;I&#34;</span><span style="color:#eceff4">,</span> <span style="color:#a3be8c">&#34;I&#34;</span><span style="color:#eceff4">,</span> <span style="color:#a3be8c">&#34;I&#34;</span><span style="color:#eceff4">,</span> <span style="color:#a3be8c">&#34;I&#34;</span><span style="color:#eceff4">,</span> <span style="color:#a3be8c">&#34;C&#34;</span><span style="color:#eceff4">]</span>
 </span></span></code></pre></div><p>where <em>I</em> means that the token of that position is an irrelevant word, and <em>C</em> means that the token of that position is a word that form part of a country name.</p>
 <h2 id="methods-of-sequence-labelling" >
 <div>
@@ -466,16 +568,16 @@ Random Fields</a> by Charles Sutton and Andrew McCallum</li>
 </h3>
 <p>To train a named entity recognition model, we need some labelled data. The dataset that will be used below is the <strong>Reuters-128 dataset</strong>, which is an English corpus in the NLP Interchange Format (NIF). It contains 128 economic news articles. The dataset contains information for <strong>880</strong> named entities with their position in the document and a URI of a <a href="http://wiki.dbpedia.org/">DBpedia</a> resource identifying the entity. It was created by the <a href="http://aksw.org/About.html">Agile Knowledge Engineering and Semantic Web research group at Leipzig University, Germany</a>. More details can be found in <a href="http://svn.aksw.org/papers/2014/LREC_N3NIFNERNED/public.pdf">their paper</a>.</p>
 <p>In the following, we will use the XML verison of the dataset, which can be downloaded from <a href="https://github.com/AKSW/n3-collection">https://github.com/AKSW/n3-collection</a>. Below is some lines extracted from the XML data file:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-html" data-lang="html"><span style="display:flex;"><span>&lt;<span style="color:#ff6ac1">document</span> <span style="color:#57c7ff">id</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">&#34;8&#34;</span>&gt;
-</span></span><span style="display:flex;"><span>    &lt;<span style="color:#ff6ac1">documenturi</span>&gt;http://www.research.att.com/~lewis/Reuters-21578/15009&lt;/<span style="color:#ff6ac1">documenturi</span>&gt;
-</span></span><span style="display:flex;"><span>    &lt;<span style="color:#ff6ac1">documentsource</span>&gt;Reuters-21578&lt;/<span style="color:#ff6ac1">documentsource</span>&gt;
-</span></span><span style="display:flex;"><span>    &lt;<span style="color:#ff6ac1">textwithnamedentities</span>&gt;
-</span></span><span style="display:flex;"><span>    &lt;<span style="color:#ff6ac1">namedentityintext</span> <span style="color:#57c7ff">uri</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">&#34;http://aksw.org/notInWiki/Home_Intensive_Care_Inc&#34;</span>&gt;Home Intensive Care Inc&lt;/<span style="color:#ff6ac1">namedentityintext</span>&gt;
-</span></span><span style="display:flex;"><span>    &lt;<span style="color:#ff6ac1">simpletextpart</span>&gt; said it has opened a Dialysis at Home office in &lt;/<span style="color:#ff6ac1">simpletextpart</span>&gt;
-</span></span><span style="display:flex;"><span>    &lt;<span style="color:#ff6ac1">namedentityintext</span> <span style="color:#57c7ff">uri</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">&#34;http://dbpedia.org/resource/Philadelphia&#34;</span>&gt;Philadelphia&lt;/<span style="color:#ff6ac1">namedentityintext</span>&gt;
-</span></span><span style="display:flex;"><span>    &lt;<span style="color:#ff6ac1">simpletextpart</span>&gt;, its 12th nationwide.&lt;/<span style="color:#ff6ac1">simpletextpart</span>&gt;
-</span></span><span style="display:flex;"><span>    &lt;/<span style="color:#ff6ac1">textwithnamedentities</span>&gt;
-</span></span><span style="display:flex;"><span>&lt;/<span style="color:#ff6ac1">document</span>&gt;
+<div class="highlight"><pre tabindex="0" style="color:#d8dee9;background-color:#2e3440;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-html" data-lang="html"><span style="display:flex;"><span><span style="color:#eceff4">&lt;</span><span style="color:#81a1c1">document</span> <span style="color:#8fbcbb">id</span><span style="color:#81a1c1">=</span><span style="color:#a3be8c">&#34;8&#34;</span><span style="color:#eceff4">&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#eceff4">&lt;</span><span style="color:#81a1c1">documenturi</span><span style="color:#eceff4">&gt;</span>http://www.research.att.com/~lewis/Reuters-21578/15009<span style="color:#eceff4">&lt;/</span><span style="color:#81a1c1">documenturi</span><span style="color:#eceff4">&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#eceff4">&lt;</span><span style="color:#81a1c1">documentsource</span><span style="color:#eceff4">&gt;</span>Reuters-21578<span style="color:#eceff4">&lt;/</span><span style="color:#81a1c1">documentsource</span><span style="color:#eceff4">&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#eceff4">&lt;</span><span style="color:#81a1c1">textwithnamedentities</span><span style="color:#eceff4">&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#eceff4">&lt;</span><span style="color:#81a1c1">namedentityintext</span> <span style="color:#8fbcbb">uri</span><span style="color:#81a1c1">=</span><span style="color:#a3be8c">&#34;http://aksw.org/notInWiki/Home_Intensive_Care_Inc&#34;</span><span style="color:#eceff4">&gt;</span>Home Intensive Care Inc<span style="color:#eceff4">&lt;/</span><span style="color:#81a1c1">namedentityintext</span><span style="color:#eceff4">&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#eceff4">&lt;</span><span style="color:#81a1c1">simpletextpart</span><span style="color:#eceff4">&gt;</span> said it has opened a Dialysis at Home office in <span style="color:#eceff4">&lt;/</span><span style="color:#81a1c1">simpletextpart</span><span style="color:#eceff4">&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#eceff4">&lt;</span><span style="color:#81a1c1">namedentityintext</span> <span style="color:#8fbcbb">uri</span><span style="color:#81a1c1">=</span><span style="color:#a3be8c">&#34;http://dbpedia.org/resource/Philadelphia&#34;</span><span style="color:#eceff4">&gt;</span>Philadelphia<span style="color:#eceff4">&lt;/</span><span style="color:#81a1c1">namedentityintext</span><span style="color:#eceff4">&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#eceff4">&lt;</span><span style="color:#81a1c1">simpletextpart</span><span style="color:#eceff4">&gt;</span>, its 12th nationwide.<span style="color:#eceff4">&lt;/</span><span style="color:#81a1c1">simpletextpart</span><span style="color:#eceff4">&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#eceff4">&lt;/</span><span style="color:#81a1c1">textwithnamedentities</span><span style="color:#eceff4">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#eceff4">&lt;/</span><span style="color:#81a1c1">document</span><span style="color:#eceff4">&gt;</span>
 </span></span></code></pre></div><p>The XML block shown above refers to one of the documents in the dataset. The semantics is self-explanatory. The document has a sentence &lsquo;Home Intensive Care Inc said it has opened a Dialysis at Home office in Philadelphia, its 12th nationwide&rsquo;, in which <strong>Home Intensive Care Inc</strong> and <strong>Philadelphia</strong> are labelled as named entities.</p>
 <h3 id="prepare-the-dataset-for-training" >
 <div>
@@ -486,39 +588,39 @@ Random Fields</a> by Charles Sutton and Andrew McCallum</li>
 </div>
 </h3>
 <p>In order to prepare the dataset for training, we need to label every word (or token) in the sentences to be either <em>irrelevant</em> or part of a <em>named entity</em>. Since the data is in XML format, we can make use of <a href="https://www.crummy.com/software/BeautifulSoup/bs4/doc/">BeautifulSoup</a> to parse the file and extract the data as follows:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ff6ac1">from</span> bs4 <span style="color:#ff6ac1">import</span> BeautifulSoup <span style="color:#ff6ac1">as</span> bs
-</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">from</span> bs4.element <span style="color:#ff6ac1">import</span> Tag
-</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">import</span> codecs
+<div class="highlight"><pre tabindex="0" style="color:#d8dee9;background-color:#2e3440;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">from</span> <span style="color:#8fbcbb">bs4</span> <span style="color:#81a1c1;font-weight:bold">import</span> BeautifulSoup <span style="color:#81a1c1;font-weight:bold">as</span> bs
+</span></span><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">from</span> <span style="color:#8fbcbb">bs4.element</span> <span style="color:#81a1c1;font-weight:bold">import</span> Tag
+</span></span><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">import</span> <span style="color:#8fbcbb">codecs</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#78787e"># Read data file and parse the XML</span>
-</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">with</span> codecs<span style="color:#ff6ac1">.</span>open(<span style="color:#5af78e">&#34;reuters.xml&#34;</span>, <span style="color:#5af78e">&#34;r&#34;</span>, <span style="color:#5af78e">&#34;utf-8&#34;</span>) <span style="color:#ff6ac1">as</span> infile:
-</span></span><span style="display:flex;"><span>    soup <span style="color:#ff6ac1">=</span> bs(infile, <span style="color:#5af78e">&#34;html5lib&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#616e87;font-style:italic"># Read data file and parse the XML</span>
+</span></span><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">with</span> codecs<span style="color:#81a1c1">.</span>open<span style="color:#eceff4">(</span><span style="color:#a3be8c">&#34;reuters.xml&#34;</span><span style="color:#eceff4">,</span> <span style="color:#a3be8c">&#34;r&#34;</span><span style="color:#eceff4">,</span> <span style="color:#a3be8c">&#34;utf-8&#34;</span><span style="color:#eceff4">)</span> <span style="color:#81a1c1;font-weight:bold">as</span> infile<span style="color:#eceff4">:</span>
+</span></span><span style="display:flex;"><span>    soup <span style="color:#81a1c1">=</span> bs<span style="color:#eceff4">(</span>infile<span style="color:#eceff4">,</span> <span style="color:#a3be8c">&#34;html5lib&#34;</span><span style="color:#eceff4">)</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>docs <span style="color:#ff6ac1">=</span> []
-</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">for</span> elem <span style="color:#ff6ac1">in</span> soup<span style="color:#ff6ac1">.</span>find_all(<span style="color:#5af78e">&#34;document&#34;</span>):
-</span></span><span style="display:flex;"><span>    texts <span style="color:#ff6ac1">=</span> []
+</span></span><span style="display:flex;"><span>docs <span style="color:#81a1c1">=</span> <span style="color:#eceff4">[]</span>
+</span></span><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">for</span> elem <span style="color:#81a1c1;font-weight:bold">in</span> soup<span style="color:#81a1c1">.</span>find_all<span style="color:#eceff4">(</span><span style="color:#a3be8c">&#34;document&#34;</span><span style="color:#eceff4">):</span>
+</span></span><span style="display:flex;"><span>    texts <span style="color:#81a1c1">=</span> <span style="color:#eceff4">[]</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#78787e"># Loop through each child of the element under &#34;textwithnamedentities&#34;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">for</span> c <span style="color:#ff6ac1">in</span> elem<span style="color:#ff6ac1">.</span>find(<span style="color:#5af78e">&#34;textwithnamedentities&#34;</span>)<span style="color:#ff6ac1">.</span>children:
-</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">if</span> <span style="color:#ff5c57">type</span>(c) <span style="color:#ff6ac1">==</span> Tag:
-</span></span><span style="display:flex;"><span>            <span style="color:#ff6ac1">if</span> c<span style="color:#ff6ac1">.</span>name <span style="color:#ff6ac1">==</span> <span style="color:#5af78e">&#34;namedentityintext&#34;</span>:
-</span></span><span style="display:flex;"><span>                label <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">&#34;N&#34;</span>  <span style="color:#78787e"># part of a named entity</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#ff6ac1">else</span>:
-</span></span><span style="display:flex;"><span>                label <span style="color:#ff6ac1">=</span> <span style="color:#5af78e">&#34;I&#34;</span>  <span style="color:#78787e"># irrelevant word</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#ff6ac1">for</span> w <span style="color:#ff6ac1">in</span> c<span style="color:#ff6ac1">.</span>text<span style="color:#ff6ac1">.</span>split(<span style="color:#5af78e">&#34; &#34;</span>):
-</span></span><span style="display:flex;"><span>                <span style="color:#ff6ac1">if</span> <span style="color:#ff5c57">len</span>(w) <span style="color:#ff6ac1">&gt;</span> <span style="color:#ff9f43">0</span>:
-</span></span><span style="display:flex;"><span>                    texts<span style="color:#ff6ac1">.</span>append((w, label))
-</span></span><span style="display:flex;"><span>    docs<span style="color:#ff6ac1">.</span>append(texts)
+</span></span><span style="display:flex;"><span>    <span style="color:#616e87;font-style:italic"># Loop through each child of the element under &#34;textwithnamedentities&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#81a1c1;font-weight:bold">for</span> c <span style="color:#81a1c1;font-weight:bold">in</span> elem<span style="color:#81a1c1">.</span>find<span style="color:#eceff4">(</span><span style="color:#a3be8c">&#34;textwithnamedentities&#34;</span><span style="color:#eceff4">)</span><span style="color:#81a1c1">.</span>children<span style="color:#eceff4">:</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#81a1c1;font-weight:bold">if</span> <span style="color:#81a1c1">type</span><span style="color:#eceff4">(</span>c<span style="color:#eceff4">)</span> <span style="color:#81a1c1">==</span> Tag<span style="color:#eceff4">:</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#81a1c1;font-weight:bold">if</span> c<span style="color:#81a1c1">.</span>name <span style="color:#81a1c1">==</span> <span style="color:#a3be8c">&#34;namedentityintext&#34;</span><span style="color:#eceff4">:</span>
+</span></span><span style="display:flex;"><span>                label <span style="color:#81a1c1">=</span> <span style="color:#a3be8c">&#34;N&#34;</span>  <span style="color:#616e87;font-style:italic"># part of a named entity</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#81a1c1;font-weight:bold">else</span><span style="color:#eceff4">:</span>
+</span></span><span style="display:flex;"><span>                label <span style="color:#81a1c1">=</span> <span style="color:#a3be8c">&#34;I&#34;</span>  <span style="color:#616e87;font-style:italic"># irrelevant word</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#81a1c1;font-weight:bold">for</span> w <span style="color:#81a1c1;font-weight:bold">in</span> c<span style="color:#81a1c1">.</span>text<span style="color:#81a1c1">.</span>split<span style="color:#eceff4">(</span><span style="color:#a3be8c">&#34; &#34;</span><span style="color:#eceff4">):</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#81a1c1;font-weight:bold">if</span> <span style="color:#81a1c1">len</span><span style="color:#eceff4">(</span>w<span style="color:#eceff4">)</span> <span style="color:#81a1c1">&gt;</span> <span style="color:#b48ead">0</span><span style="color:#eceff4">:</span>
+</span></span><span style="display:flex;"><span>                    texts<span style="color:#81a1c1">.</span>append<span style="color:#eceff4">((</span>w<span style="color:#eceff4">,</span> label<span style="color:#eceff4">))</span>
+</span></span><span style="display:flex;"><span>    docs<span style="color:#81a1c1">.</span>append<span style="color:#eceff4">(</span>texts<span style="color:#eceff4">)</span>
 </span></span></code></pre></div><p>The result will be a list of documents, each of which contains a list of (word, label) tuples. For example:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ff6ac1">&gt;&gt;&gt;</span> doc[<span style="color:#ff9f43">0</span>][:<span style="color:#ff9f43">10</span>]
-</span></span><span style="display:flex;"><span>[(<span style="color:#5af78e">&#39;Paxar&#39;</span>, <span style="color:#5af78e">&#39;N&#39;</span>),
-</span></span><span style="display:flex;"><span> (<span style="color:#5af78e">&#39;Corp&#39;</span>, <span style="color:#5af78e">&#39;N&#39;</span>),
-</span></span><span style="display:flex;"><span> (<span style="color:#5af78e">&#39;said&#39;</span>, <span style="color:#5af78e">&#39;I&#39;</span>),
-</span></span><span style="display:flex;"><span> (<span style="color:#5af78e">&#39;it&#39;</span>, <span style="color:#5af78e">&#39;I&#39;</span>),
-</span></span><span style="display:flex;"><span> (<span style="color:#5af78e">&#39;has&#39;</span>, <span style="color:#5af78e">&#39;I&#39;</span>),
-</span></span><span style="display:flex;"><span> (<span style="color:#5af78e">&#39;acquired&#39;</span>, <span style="color:#5af78e">&#39;I&#39;</span>),
-</span></span><span style="display:flex;"><span> (<span style="color:#5af78e">&#39;Thermo-Print&#39;</span>, <span style="color:#5af78e">&#39;N&#39;</span>),
-</span></span><span style="display:flex;"><span>  <span style="color:#ff6ac1">...</span>
+<div class="highlight"><pre tabindex="0" style="color:#d8dee9;background-color:#2e3440;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#81a1c1">&gt;&gt;&gt;</span> doc<span style="color:#eceff4">[</span><span style="color:#b48ead">0</span><span style="color:#eceff4">][:</span><span style="color:#b48ead">10</span><span style="color:#eceff4">]</span>
+</span></span><span style="display:flex;"><span><span style="color:#eceff4">[(</span><span style="color:#a3be8c">&#39;Paxar&#39;</span><span style="color:#eceff4">,</span> <span style="color:#a3be8c">&#39;N&#39;</span><span style="color:#eceff4">),</span>
+</span></span><span style="display:flex;"><span> <span style="color:#eceff4">(</span><span style="color:#a3be8c">&#39;Corp&#39;</span><span style="color:#eceff4">,</span> <span style="color:#a3be8c">&#39;N&#39;</span><span style="color:#eceff4">),</span>
+</span></span><span style="display:flex;"><span> <span style="color:#eceff4">(</span><span style="color:#a3be8c">&#39;said&#39;</span><span style="color:#eceff4">,</span> <span style="color:#a3be8c">&#39;I&#39;</span><span style="color:#eceff4">),</span>
+</span></span><span style="display:flex;"><span> <span style="color:#eceff4">(</span><span style="color:#a3be8c">&#39;it&#39;</span><span style="color:#eceff4">,</span> <span style="color:#a3be8c">&#39;I&#39;</span><span style="color:#eceff4">),</span>
+</span></span><span style="display:flex;"><span> <span style="color:#eceff4">(</span><span style="color:#a3be8c">&#39;has&#39;</span><span style="color:#eceff4">,</span> <span style="color:#a3be8c">&#39;I&#39;</span><span style="color:#eceff4">),</span>
+</span></span><span style="display:flex;"><span> <span style="color:#eceff4">(</span><span style="color:#a3be8c">&#39;acquired&#39;</span><span style="color:#eceff4">,</span> <span style="color:#a3be8c">&#39;I&#39;</span><span style="color:#eceff4">),</span>
+</span></span><span style="display:flex;"><span> <span style="color:#eceff4">(</span><span style="color:#a3be8c">&#39;Thermo-Print&#39;</span><span style="color:#eceff4">,</span> <span style="color:#a3be8c">&#39;N&#39;</span><span style="color:#eceff4">),</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#81a1c1">...</span>
 </span></span></code></pre></div><h3 id="generating-part-of-speech-tags" >
 <div>
     <a href="#generating-part-of-speech-tags">
@@ -529,28 +631,28 @@ Random Fields</a> by Charles Sutton and Andrew McCallum</li>
 </h3>
 <p>To train a CRF model, we need to create features for each of the tokens in the sentences. One particularly useful feature in NLP is the <a href="https://en.wikipedia.org/wiki/Part-of-speech_tagging">part-of-speech (POS) tags</a> of the words. They indicates whether a word is a noun, a verb or an adjective. (In fact, a POS tagger is also usually a trained CRF model.)</p>
 <p>We can use <a href="http://www.nltk.org/book/ch05.html">NLTK&rsquo;s POS tagger</a> to generate the POS tags for the tokens in our documents as follows:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ff6ac1">import</span> nltk
-</span></span><span style="display:flex;"><span>data <span style="color:#ff6ac1">=</span> []
-</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">for</span> i, doc <span style="color:#ff6ac1">in</span> <span style="color:#ff5c57">enumerate</span>(docs):
+<div class="highlight"><pre tabindex="0" style="color:#d8dee9;background-color:#2e3440;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">import</span> <span style="color:#8fbcbb">nltk</span>
+</span></span><span style="display:flex;"><span>data <span style="color:#81a1c1">=</span> <span style="color:#eceff4">[]</span>
+</span></span><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">for</span> i<span style="color:#eceff4">,</span> doc <span style="color:#81a1c1;font-weight:bold">in</span> <span style="color:#81a1c1">enumerate</span><span style="color:#eceff4">(</span>docs<span style="color:#eceff4">):</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#78787e"># Obtain the list of tokens in the document</span>
-</span></span><span style="display:flex;"><span>    tokens <span style="color:#ff6ac1">=</span> [t <span style="color:#ff6ac1">for</span> t, label <span style="color:#ff6ac1">in</span> doc]
+</span></span><span style="display:flex;"><span>    <span style="color:#616e87;font-style:italic"># Obtain the list of tokens in the document</span>
+</span></span><span style="display:flex;"><span>    tokens <span style="color:#81a1c1">=</span> <span style="color:#eceff4">[</span>t <span style="color:#81a1c1;font-weight:bold">for</span> t<span style="color:#eceff4">,</span> label <span style="color:#81a1c1;font-weight:bold">in</span> doc<span style="color:#eceff4">]</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#78787e"># Perform POS tagging</span>
-</span></span><span style="display:flex;"><span>    tagged <span style="color:#ff6ac1">=</span> nltk<span style="color:#ff6ac1">.</span>pos_tag(tokens)
+</span></span><span style="display:flex;"><span>    <span style="color:#616e87;font-style:italic"># Perform POS tagging</span>
+</span></span><span style="display:flex;"><span>    tagged <span style="color:#81a1c1">=</span> nltk<span style="color:#81a1c1">.</span>pos_tag<span style="color:#eceff4">(</span>tokens<span style="color:#eceff4">)</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#78787e"># Take the word, POS tag, and its label</span>
-</span></span><span style="display:flex;"><span>    data<span style="color:#ff6ac1">.</span>append([(w, pos, label) <span style="color:#ff6ac1">for</span> (w, label), (word, pos) <span style="color:#ff6ac1">in</span> <span style="color:#ff5c57">zip</span>(doc, tagged)])
+</span></span><span style="display:flex;"><span>    <span style="color:#616e87;font-style:italic"># Take the word, POS tag, and its label</span>
+</span></span><span style="display:flex;"><span>    data<span style="color:#81a1c1">.</span>append<span style="color:#eceff4">([(</span>w<span style="color:#eceff4">,</span> pos<span style="color:#eceff4">,</span> label<span style="color:#eceff4">)</span> <span style="color:#81a1c1;font-weight:bold">for</span> <span style="color:#eceff4">(</span>w<span style="color:#eceff4">,</span> label<span style="color:#eceff4">),</span> <span style="color:#eceff4">(</span>word<span style="color:#eceff4">,</span> pos<span style="color:#eceff4">)</span> <span style="color:#81a1c1;font-weight:bold">in</span> <span style="color:#81a1c1">zip</span><span style="color:#eceff4">(</span>doc<span style="color:#eceff4">,</span> tagged<span style="color:#eceff4">)])</span>
 </span></span></code></pre></div><p>The output of the above process will be a list of documents, each of which is a list of tuples with the word, its POS tag and its label:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ff6ac1">&gt;&gt;&gt;</span> data[<span style="color:#ff9f43">0</span>]
-</span></span><span style="display:flex;"><span>[(<span style="color:#5af78e">&#39;Paxar&#39;</span>, <span style="color:#5af78e">&#39;NNP&#39;</span>, <span style="color:#5af78e">&#39;N&#39;</span>),
-</span></span><span style="display:flex;"><span> (<span style="color:#5af78e">&#39;Corp&#39;</span>, <span style="color:#5af78e">&#39;NNP&#39;</span>, <span style="color:#5af78e">&#39;N&#39;</span>),
-</span></span><span style="display:flex;"><span> (<span style="color:#5af78e">&#39;said&#39;</span>, <span style="color:#5af78e">&#39;VBD&#39;</span>, <span style="color:#5af78e">&#39;I&#39;</span>),
-</span></span><span style="display:flex;"><span> (<span style="color:#5af78e">&#39;it&#39;</span>, <span style="color:#5af78e">&#39;PRP&#39;</span>, <span style="color:#5af78e">&#39;I&#39;</span>),
-</span></span><span style="display:flex;"><span> (<span style="color:#5af78e">&#39;has&#39;</span>, <span style="color:#5af78e">&#39;VBZ&#39;</span>, <span style="color:#5af78e">&#39;I&#39;</span>),
-</span></span><span style="display:flex;"><span> (<span style="color:#5af78e">&#39;acquired&#39;</span>, <span style="color:#5af78e">&#39;VBN&#39;</span>, <span style="color:#5af78e">&#39;I&#39;</span>),
-</span></span><span style="display:flex;"><span> (<span style="color:#5af78e">&#39;Thermo-Print&#39;</span>, <span style="color:#5af78e">&#39;NNP&#39;</span>, <span style="color:#5af78e">&#39;N&#39;</span>),
-</span></span><span style="display:flex;"><span> <span style="color:#ff6ac1">...</span>
+<div class="highlight"><pre tabindex="0" style="color:#d8dee9;background-color:#2e3440;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#81a1c1">&gt;&gt;&gt;</span> data<span style="color:#eceff4">[</span><span style="color:#b48ead">0</span><span style="color:#eceff4">]</span>
+</span></span><span style="display:flex;"><span><span style="color:#eceff4">[(</span><span style="color:#a3be8c">&#39;Paxar&#39;</span><span style="color:#eceff4">,</span> <span style="color:#a3be8c">&#39;NNP&#39;</span><span style="color:#eceff4">,</span> <span style="color:#a3be8c">&#39;N&#39;</span><span style="color:#eceff4">),</span>
+</span></span><span style="display:flex;"><span> <span style="color:#eceff4">(</span><span style="color:#a3be8c">&#39;Corp&#39;</span><span style="color:#eceff4">,</span> <span style="color:#a3be8c">&#39;NNP&#39;</span><span style="color:#eceff4">,</span> <span style="color:#a3be8c">&#39;N&#39;</span><span style="color:#eceff4">),</span>
+</span></span><span style="display:flex;"><span> <span style="color:#eceff4">(</span><span style="color:#a3be8c">&#39;said&#39;</span><span style="color:#eceff4">,</span> <span style="color:#a3be8c">&#39;VBD&#39;</span><span style="color:#eceff4">,</span> <span style="color:#a3be8c">&#39;I&#39;</span><span style="color:#eceff4">),</span>
+</span></span><span style="display:flex;"><span> <span style="color:#eceff4">(</span><span style="color:#a3be8c">&#39;it&#39;</span><span style="color:#eceff4">,</span> <span style="color:#a3be8c">&#39;PRP&#39;</span><span style="color:#eceff4">,</span> <span style="color:#a3be8c">&#39;I&#39;</span><span style="color:#eceff4">),</span>
+</span></span><span style="display:flex;"><span> <span style="color:#eceff4">(</span><span style="color:#a3be8c">&#39;has&#39;</span><span style="color:#eceff4">,</span> <span style="color:#a3be8c">&#39;VBZ&#39;</span><span style="color:#eceff4">,</span> <span style="color:#a3be8c">&#39;I&#39;</span><span style="color:#eceff4">),</span>
+</span></span><span style="display:flex;"><span> <span style="color:#eceff4">(</span><span style="color:#a3be8c">&#39;acquired&#39;</span><span style="color:#eceff4">,</span> <span style="color:#a3be8c">&#39;VBN&#39;</span><span style="color:#eceff4">,</span> <span style="color:#a3be8c">&#39;I&#39;</span><span style="color:#eceff4">),</span>
+</span></span><span style="display:flex;"><span> <span style="color:#eceff4">(</span><span style="color:#a3be8c">&#39;Thermo-Print&#39;</span><span style="color:#eceff4">,</span> <span style="color:#a3be8c">&#39;NNP&#39;</span><span style="color:#eceff4">,</span> <span style="color:#a3be8c">&#39;N&#39;</span><span style="color:#eceff4">),</span>
+</span></span><span style="display:flex;"><span> <span style="color:#81a1c1">...</span>
 </span></span></code></pre></div><h3 id="generating-features" >
 <div>
     <a href="#generating-features">
@@ -570,55 +672,55 @@ Random Fields</a> by Charles Sutton and Andrew McCallum</li>
 <li>Whether $w$ is or contains a special character (e.g. hypen, dollar sign)</li>
 </ul>
 <p>Below is a function for generating features for our documents. It takes a doc (in the form of a listof tuples as shown above), and an index (the $i$th document), and return the documents with features extracted. (A similar example can be found in <a href="https://github.com/scrapinghub/python-crfsuite/blob/master/examples/CoNLL%202002.ipynb">the repository of pyscrfsuite</a>.)</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ff6ac1">def</span> <span style="color:#57c7ff">word2features</span>(doc, i):
-</span></span><span style="display:flex;"><span>    word <span style="color:#ff6ac1">=</span> doc[i][<span style="color:#ff9f43">0</span>]
-</span></span><span style="display:flex;"><span>    postag <span style="color:#ff6ac1">=</span> doc[i][<span style="color:#ff9f43">1</span>]
+<div class="highlight"><pre tabindex="0" style="color:#d8dee9;background-color:#2e3440;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">def</span> <span style="color:#88c0d0">word2features</span><span style="color:#eceff4">(</span>doc<span style="color:#eceff4">,</span> i<span style="color:#eceff4">):</span>
+</span></span><span style="display:flex;"><span>    word <span style="color:#81a1c1">=</span> doc<span style="color:#eceff4">[</span>i<span style="color:#eceff4">][</span><span style="color:#b48ead">0</span><span style="color:#eceff4">]</span>
+</span></span><span style="display:flex;"><span>    postag <span style="color:#81a1c1">=</span> doc<span style="color:#eceff4">[</span>i<span style="color:#eceff4">][</span><span style="color:#b48ead">1</span><span style="color:#eceff4">]</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#78787e"># Common features for all words</span>
-</span></span><span style="display:flex;"><span>    features <span style="color:#ff6ac1">=</span> [
-</span></span><span style="display:flex;"><span>        <span style="color:#5af78e">&#39;bias&#39;</span>,
-</span></span><span style="display:flex;"><span>        <span style="color:#5af78e">&#39;word.lower=&#39;</span> <span style="color:#ff6ac1">+</span> word<span style="color:#ff6ac1">.</span>lower(),
-</span></span><span style="display:flex;"><span>        <span style="color:#5af78e">&#39;word[-3:]=&#39;</span> <span style="color:#ff6ac1">+</span> word[<span style="color:#ff6ac1">-</span><span style="color:#ff9f43">3</span>:],
-</span></span><span style="display:flex;"><span>        <span style="color:#5af78e">&#39;word[-2:]=&#39;</span> <span style="color:#ff6ac1">+</span> word[<span style="color:#ff6ac1">-</span><span style="color:#ff9f43">2</span>:],
-</span></span><span style="display:flex;"><span>        <span style="color:#5af78e">&#39;word.isupper=</span><span style="color:#5af78e">%s</span><span style="color:#5af78e">&#39;</span> <span style="color:#ff6ac1">%</span> word<span style="color:#ff6ac1">.</span>isupper(),
-</span></span><span style="display:flex;"><span>        <span style="color:#5af78e">&#39;word.istitle=</span><span style="color:#5af78e">%s</span><span style="color:#5af78e">&#39;</span> <span style="color:#ff6ac1">%</span> word<span style="color:#ff6ac1">.</span>istitle(),
-</span></span><span style="display:flex;"><span>        <span style="color:#5af78e">&#39;word.isdigit=</span><span style="color:#5af78e">%s</span><span style="color:#5af78e">&#39;</span> <span style="color:#ff6ac1">%</span> word<span style="color:#ff6ac1">.</span>isdigit(),
-</span></span><span style="display:flex;"><span>        <span style="color:#5af78e">&#39;postag=&#39;</span> <span style="color:#ff6ac1">+</span> postag
-</span></span><span style="display:flex;"><span>    ]
+</span></span><span style="display:flex;"><span>    <span style="color:#616e87;font-style:italic"># Common features for all words</span>
+</span></span><span style="display:flex;"><span>    features <span style="color:#81a1c1">=</span> <span style="color:#eceff4">[</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#a3be8c">&#39;bias&#39;</span><span style="color:#eceff4">,</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#a3be8c">&#39;word.lower=&#39;</span> <span style="color:#81a1c1">+</span> word<span style="color:#81a1c1">.</span>lower<span style="color:#eceff4">(),</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#a3be8c">&#39;word[-3:]=&#39;</span> <span style="color:#81a1c1">+</span> word<span style="color:#eceff4">[</span><span style="color:#81a1c1">-</span><span style="color:#b48ead">3</span><span style="color:#eceff4">:],</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#a3be8c">&#39;word[-2:]=&#39;</span> <span style="color:#81a1c1">+</span> word<span style="color:#eceff4">[</span><span style="color:#81a1c1">-</span><span style="color:#b48ead">2</span><span style="color:#eceff4">:],</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#a3be8c">&#39;word.isupper=</span><span style="color:#a3be8c">%s</span><span style="color:#a3be8c">&#39;</span> <span style="color:#81a1c1">%</span> word<span style="color:#81a1c1">.</span>isupper<span style="color:#eceff4">(),</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#a3be8c">&#39;word.istitle=</span><span style="color:#a3be8c">%s</span><span style="color:#a3be8c">&#39;</span> <span style="color:#81a1c1">%</span> word<span style="color:#81a1c1">.</span>istitle<span style="color:#eceff4">(),</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#a3be8c">&#39;word.isdigit=</span><span style="color:#a3be8c">%s</span><span style="color:#a3be8c">&#39;</span> <span style="color:#81a1c1">%</span> word<span style="color:#81a1c1">.</span>isdigit<span style="color:#eceff4">(),</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#a3be8c">&#39;postag=&#39;</span> <span style="color:#81a1c1">+</span> postag
+</span></span><span style="display:flex;"><span>    <span style="color:#eceff4">]</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#78787e"># Features for words that are not</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#78787e"># at the beginning of a document</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">if</span> i <span style="color:#ff6ac1">&gt;</span> <span style="color:#ff9f43">0</span>:
-</span></span><span style="display:flex;"><span>        word1 <span style="color:#ff6ac1">=</span> doc[i<span style="color:#ff6ac1">-</span><span style="color:#ff9f43">1</span>][<span style="color:#ff9f43">0</span>]
-</span></span><span style="display:flex;"><span>        postag1 <span style="color:#ff6ac1">=</span> doc[i<span style="color:#ff6ac1">-</span><span style="color:#ff9f43">1</span>][<span style="color:#ff9f43">1</span>]
-</span></span><span style="display:flex;"><span>        features<span style="color:#ff6ac1">.</span>extend([
-</span></span><span style="display:flex;"><span>            <span style="color:#5af78e">&#39;-1:word.lower=&#39;</span> <span style="color:#ff6ac1">+</span> word1<span style="color:#ff6ac1">.</span>lower(),
-</span></span><span style="display:flex;"><span>            <span style="color:#5af78e">&#39;-1:word.istitle=</span><span style="color:#5af78e">%s</span><span style="color:#5af78e">&#39;</span> <span style="color:#ff6ac1">%</span> word1<span style="color:#ff6ac1">.</span>istitle(),
-</span></span><span style="display:flex;"><span>            <span style="color:#5af78e">&#39;-1:word.isupper=</span><span style="color:#5af78e">%s</span><span style="color:#5af78e">&#39;</span> <span style="color:#ff6ac1">%</span> word1<span style="color:#ff6ac1">.</span>isupper(),
-</span></span><span style="display:flex;"><span>            <span style="color:#5af78e">&#39;-1:word.isdigit=</span><span style="color:#5af78e">%s</span><span style="color:#5af78e">&#39;</span> <span style="color:#ff6ac1">%</span> word1<span style="color:#ff6ac1">.</span>isdigit(),
-</span></span><span style="display:flex;"><span>            <span style="color:#5af78e">&#39;-1:postag=&#39;</span> <span style="color:#ff6ac1">+</span> postag1
-</span></span><span style="display:flex;"><span>        ])
-</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">else</span>:
-</span></span><span style="display:flex;"><span>        <span style="color:#78787e"># Indicate that it is the &#39;beginning of a document&#39;</span>
-</span></span><span style="display:flex;"><span>        features<span style="color:#ff6ac1">.</span>append(<span style="color:#5af78e">&#39;BOS&#39;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#616e87;font-style:italic"># Features for words that are not</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#616e87;font-style:italic"># at the beginning of a document</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#81a1c1;font-weight:bold">if</span> i <span style="color:#81a1c1">&gt;</span> <span style="color:#b48ead">0</span><span style="color:#eceff4">:</span>
+</span></span><span style="display:flex;"><span>        word1 <span style="color:#81a1c1">=</span> doc<span style="color:#eceff4">[</span>i<span style="color:#81a1c1">-</span><span style="color:#b48ead">1</span><span style="color:#eceff4">][</span><span style="color:#b48ead">0</span><span style="color:#eceff4">]</span>
+</span></span><span style="display:flex;"><span>        postag1 <span style="color:#81a1c1">=</span> doc<span style="color:#eceff4">[</span>i<span style="color:#81a1c1">-</span><span style="color:#b48ead">1</span><span style="color:#eceff4">][</span><span style="color:#b48ead">1</span><span style="color:#eceff4">]</span>
+</span></span><span style="display:flex;"><span>        features<span style="color:#81a1c1">.</span>extend<span style="color:#eceff4">([</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#a3be8c">&#39;-1:word.lower=&#39;</span> <span style="color:#81a1c1">+</span> word1<span style="color:#81a1c1">.</span>lower<span style="color:#eceff4">(),</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#a3be8c">&#39;-1:word.istitle=</span><span style="color:#a3be8c">%s</span><span style="color:#a3be8c">&#39;</span> <span style="color:#81a1c1">%</span> word1<span style="color:#81a1c1">.</span>istitle<span style="color:#eceff4">(),</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#a3be8c">&#39;-1:word.isupper=</span><span style="color:#a3be8c">%s</span><span style="color:#a3be8c">&#39;</span> <span style="color:#81a1c1">%</span> word1<span style="color:#81a1c1">.</span>isupper<span style="color:#eceff4">(),</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#a3be8c">&#39;-1:word.isdigit=</span><span style="color:#a3be8c">%s</span><span style="color:#a3be8c">&#39;</span> <span style="color:#81a1c1">%</span> word1<span style="color:#81a1c1">.</span>isdigit<span style="color:#eceff4">(),</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#a3be8c">&#39;-1:postag=&#39;</span> <span style="color:#81a1c1">+</span> postag1
+</span></span><span style="display:flex;"><span>        <span style="color:#eceff4">])</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#81a1c1;font-weight:bold">else</span><span style="color:#eceff4">:</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#616e87;font-style:italic"># Indicate that it is the &#39;beginning of a document&#39;</span>
+</span></span><span style="display:flex;"><span>        features<span style="color:#81a1c1">.</span>append<span style="color:#eceff4">(</span><span style="color:#a3be8c">&#39;BOS&#39;</span><span style="color:#eceff4">)</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#78787e"># Features for words that are not</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#78787e"># at the end of a document</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">if</span> i <span style="color:#ff6ac1">&lt;</span> <span style="color:#ff5c57">len</span>(doc)<span style="color:#ff6ac1">-</span><span style="color:#ff9f43">1</span>:
-</span></span><span style="display:flex;"><span>        word1 <span style="color:#ff6ac1">=</span> doc[i<span style="color:#ff6ac1">+</span><span style="color:#ff9f43">1</span>][<span style="color:#ff9f43">0</span>]
-</span></span><span style="display:flex;"><span>        postag1 <span style="color:#ff6ac1">=</span> doc[i<span style="color:#ff6ac1">+</span><span style="color:#ff9f43">1</span>][<span style="color:#ff9f43">1</span>]
-</span></span><span style="display:flex;"><span>        features<span style="color:#ff6ac1">.</span>extend([
-</span></span><span style="display:flex;"><span>            <span style="color:#5af78e">&#39;+1:word.lower=&#39;</span> <span style="color:#ff6ac1">+</span> word1<span style="color:#ff6ac1">.</span>lower(),
-</span></span><span style="display:flex;"><span>            <span style="color:#5af78e">&#39;+1:word.istitle=</span><span style="color:#5af78e">%s</span><span style="color:#5af78e">&#39;</span> <span style="color:#ff6ac1">%</span> word1<span style="color:#ff6ac1">.</span>istitle(),
-</span></span><span style="display:flex;"><span>            <span style="color:#5af78e">&#39;+1:word.isupper=</span><span style="color:#5af78e">%s</span><span style="color:#5af78e">&#39;</span> <span style="color:#ff6ac1">%</span> word1<span style="color:#ff6ac1">.</span>isupper(),
-</span></span><span style="display:flex;"><span>            <span style="color:#5af78e">&#39;+1:word.isdigit=</span><span style="color:#5af78e">%s</span><span style="color:#5af78e">&#39;</span> <span style="color:#ff6ac1">%</span> word1<span style="color:#ff6ac1">.</span>isdigit(),
-</span></span><span style="display:flex;"><span>            <span style="color:#5af78e">&#39;+1:postag=&#39;</span> <span style="color:#ff6ac1">+</span> postag1
-</span></span><span style="display:flex;"><span>        ])
-</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">else</span>:
-</span></span><span style="display:flex;"><span>        <span style="color:#78787e"># Indicate that it is the &#39;end of a document&#39;</span>
-</span></span><span style="display:flex;"><span>        features<span style="color:#ff6ac1">.</span>append(<span style="color:#5af78e">&#39;EOS&#39;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#616e87;font-style:italic"># Features for words that are not</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#616e87;font-style:italic"># at the end of a document</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#81a1c1;font-weight:bold">if</span> i <span style="color:#81a1c1">&lt;</span> <span style="color:#81a1c1">len</span><span style="color:#eceff4">(</span>doc<span style="color:#eceff4">)</span><span style="color:#81a1c1">-</span><span style="color:#b48ead">1</span><span style="color:#eceff4">:</span>
+</span></span><span style="display:flex;"><span>        word1 <span style="color:#81a1c1">=</span> doc<span style="color:#eceff4">[</span>i<span style="color:#81a1c1">+</span><span style="color:#b48ead">1</span><span style="color:#eceff4">][</span><span style="color:#b48ead">0</span><span style="color:#eceff4">]</span>
+</span></span><span style="display:flex;"><span>        postag1 <span style="color:#81a1c1">=</span> doc<span style="color:#eceff4">[</span>i<span style="color:#81a1c1">+</span><span style="color:#b48ead">1</span><span style="color:#eceff4">][</span><span style="color:#b48ead">1</span><span style="color:#eceff4">]</span>
+</span></span><span style="display:flex;"><span>        features<span style="color:#81a1c1">.</span>extend<span style="color:#eceff4">([</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#a3be8c">&#39;+1:word.lower=&#39;</span> <span style="color:#81a1c1">+</span> word1<span style="color:#81a1c1">.</span>lower<span style="color:#eceff4">(),</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#a3be8c">&#39;+1:word.istitle=</span><span style="color:#a3be8c">%s</span><span style="color:#a3be8c">&#39;</span> <span style="color:#81a1c1">%</span> word1<span style="color:#81a1c1">.</span>istitle<span style="color:#eceff4">(),</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#a3be8c">&#39;+1:word.isupper=</span><span style="color:#a3be8c">%s</span><span style="color:#a3be8c">&#39;</span> <span style="color:#81a1c1">%</span> word1<span style="color:#81a1c1">.</span>isupper<span style="color:#eceff4">(),</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#a3be8c">&#39;+1:word.isdigit=</span><span style="color:#a3be8c">%s</span><span style="color:#a3be8c">&#39;</span> <span style="color:#81a1c1">%</span> word1<span style="color:#81a1c1">.</span>isdigit<span style="color:#eceff4">(),</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#a3be8c">&#39;+1:postag=&#39;</span> <span style="color:#81a1c1">+</span> postag1
+</span></span><span style="display:flex;"><span>        <span style="color:#eceff4">])</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#81a1c1;font-weight:bold">else</span><span style="color:#eceff4">:</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#616e87;font-style:italic"># Indicate that it is the &#39;end of a document&#39;</span>
+</span></span><span style="display:flex;"><span>        features<span style="color:#81a1c1">.</span>append<span style="color:#eceff4">(</span><span style="color:#a3be8c">&#39;EOS&#39;</span><span style="color:#eceff4">)</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">return</span> features
+</span></span><span style="display:flex;"><span>    <span style="color:#81a1c1;font-weight:bold">return</span> features
 </span></span></code></pre></div><h3 id="training-the-model" >
 <div>
     <a href="#training-the-model">
@@ -628,47 +730,47 @@ Random Fields</a> by Charles Sutton and Andrew McCallum</li>
 </div>
 </h3>
 <p>To train the model, we need to first prepare the training data and the corresponding labels. Also, to be able to investigate the accuracy of the model, we need to separate the data into training set and test set. Below are some codes for preparing the training data and test data, using the <a href="http://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html"><code>train_test_split</code> function in scikit-learn</a>.</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ff6ac1">from</span> sklearn.model_selection <span style="color:#ff6ac1">import</span> train_test_split
+<div class="highlight"><pre tabindex="0" style="color:#d8dee9;background-color:#2e3440;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">from</span> <span style="color:#8fbcbb">sklearn.model_selection</span> <span style="color:#81a1c1;font-weight:bold">import</span> train_test_split
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#78787e"># A function for extracting features in documents</span>
-</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">def</span> <span style="color:#57c7ff">extract_features</span>(doc):
-</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">return</span> [word2features(doc, i) <span style="color:#ff6ac1">for</span> i <span style="color:#ff6ac1">in</span> <span style="color:#ff5c57">range</span>(<span style="color:#ff5c57">len</span>(doc))]
+</span></span><span style="display:flex;"><span><span style="color:#616e87;font-style:italic"># A function for extracting features in documents</span>
+</span></span><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">def</span> <span style="color:#88c0d0">extract_features</span><span style="color:#eceff4">(</span>doc<span style="color:#eceff4">):</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#81a1c1;font-weight:bold">return</span> <span style="color:#eceff4">[</span>word2features<span style="color:#eceff4">(</span>doc<span style="color:#eceff4">,</span> i<span style="color:#eceff4">)</span> <span style="color:#81a1c1;font-weight:bold">for</span> i <span style="color:#81a1c1;font-weight:bold">in</span> <span style="color:#81a1c1">range</span><span style="color:#eceff4">(</span><span style="color:#81a1c1">len</span><span style="color:#eceff4">(</span>doc<span style="color:#eceff4">))]</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#78787e"># A function fo generating the list of labels for each document</span>
-</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">def</span> <span style="color:#57c7ff">get_labels</span>(doc):
-</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">return</span> [label <span style="color:#ff6ac1">for</span> (token, postag, label) <span style="color:#ff6ac1">in</span> doc]
+</span></span><span style="display:flex;"><span><span style="color:#616e87;font-style:italic"># A function fo generating the list of labels for each document</span>
+</span></span><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">def</span> <span style="color:#88c0d0">get_labels</span><span style="color:#eceff4">(</span>doc<span style="color:#eceff4">):</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#81a1c1;font-weight:bold">return</span> <span style="color:#eceff4">[</span>label <span style="color:#81a1c1;font-weight:bold">for</span> <span style="color:#eceff4">(</span>token<span style="color:#eceff4">,</span> postag<span style="color:#eceff4">,</span> label<span style="color:#eceff4">)</span> <span style="color:#81a1c1;font-weight:bold">in</span> doc<span style="color:#eceff4">]</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>X <span style="color:#ff6ac1">=</span> [extract_features(doc) <span style="color:#ff6ac1">for</span> doc <span style="color:#ff6ac1">in</span> data]
-</span></span><span style="display:flex;"><span>y <span style="color:#ff6ac1">=</span> [get_labels(doc) <span style="color:#ff6ac1">for</span> doc <span style="color:#ff6ac1">in</span> data]
+</span></span><span style="display:flex;"><span>X <span style="color:#81a1c1">=</span> <span style="color:#eceff4">[</span>extract_features<span style="color:#eceff4">(</span>doc<span style="color:#eceff4">)</span> <span style="color:#81a1c1;font-weight:bold">for</span> doc <span style="color:#81a1c1;font-weight:bold">in</span> data<span style="color:#eceff4">]</span>
+</span></span><span style="display:flex;"><span>y <span style="color:#81a1c1">=</span> <span style="color:#eceff4">[</span>get_labels<span style="color:#eceff4">(</span>doc<span style="color:#eceff4">)</span> <span style="color:#81a1c1;font-weight:bold">for</span> doc <span style="color:#81a1c1;font-weight:bold">in</span> data<span style="color:#eceff4">]</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>X_train, X_test, y_train, y_test <span style="color:#ff6ac1">=</span> train_test_split(X, y, test_size<span style="color:#ff6ac1">=</span><span style="color:#ff9f43">0.2</span>)
+</span></span><span style="display:flex;"><span>X_train<span style="color:#eceff4">,</span> X_test<span style="color:#eceff4">,</span> y_train<span style="color:#eceff4">,</span> y_test <span style="color:#81a1c1">=</span> train_test_split<span style="color:#eceff4">(</span>X<span style="color:#eceff4">,</span> y<span style="color:#eceff4">,</span> test_size<span style="color:#81a1c1">=</span><span style="color:#b48ead">0.2</span><span style="color:#eceff4">)</span>
 </span></span></code></pre></div><p>In <code>pycrfsuite</code>, A CRF model in can be trained by first creating a <strong>trainer</strong>, and then submit the training data and corresponding labels to the trainer. After that, set the parameters and call <code>train()</code> to start the training process. For the complete list of parameters, one can refer to the <a href="http://www.chokkan.org/software/crfsuite/manual.html#idp8849114176">documentation of CRFSuite</a>. With the very small dataset in this example, the training with <code>max_iterations=200</code> can be finished in a few seconds. Below is the code for creating the trainer and start training the model:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ff6ac1">import</span> pycrfsuite
-</span></span><span style="display:flex;"><span>trainer <span style="color:#ff6ac1">=</span> pycrfsuite<span style="color:#ff6ac1">.</span>Trainer(verbose<span style="color:#ff6ac1">=</span><span style="color:#ff6ac1">True</span>)
+<div class="highlight"><pre tabindex="0" style="color:#d8dee9;background-color:#2e3440;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">import</span> <span style="color:#8fbcbb">pycrfsuite</span>
+</span></span><span style="display:flex;"><span>trainer <span style="color:#81a1c1">=</span> pycrfsuite<span style="color:#81a1c1">.</span>Trainer<span style="color:#eceff4">(</span>verbose<span style="color:#81a1c1">=</span><span style="color:#81a1c1;font-weight:bold">True</span><span style="color:#eceff4">)</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#78787e"># Submit training data to the trainer</span>
-</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">for</span> xseq, yseq <span style="color:#ff6ac1">in</span> <span style="color:#ff5c57">zip</span>(X_train, y_train):
-</span></span><span style="display:flex;"><span>    trainer<span style="color:#ff6ac1">.</span>append(xseq, yseq)
+</span></span><span style="display:flex;"><span><span style="color:#616e87;font-style:italic"># Submit training data to the trainer</span>
+</span></span><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">for</span> xseq<span style="color:#eceff4">,</span> yseq <span style="color:#81a1c1;font-weight:bold">in</span> <span style="color:#81a1c1">zip</span><span style="color:#eceff4">(</span>X_train<span style="color:#eceff4">,</span> y_train<span style="color:#eceff4">):</span>
+</span></span><span style="display:flex;"><span>    trainer<span style="color:#81a1c1">.</span>append<span style="color:#eceff4">(</span>xseq<span style="color:#eceff4">,</span> yseq<span style="color:#eceff4">)</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#78787e"># Set the parameters of the model</span>
-</span></span><span style="display:flex;"><span>trainer<span style="color:#ff6ac1">.</span>set_params({
-</span></span><span style="display:flex;"><span>    <span style="color:#78787e"># coefficient for L1 penalty</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#5af78e">&#39;c1&#39;</span>: <span style="color:#ff9f43">0.1</span>,
+</span></span><span style="display:flex;"><span><span style="color:#616e87;font-style:italic"># Set the parameters of the model</span>
+</span></span><span style="display:flex;"><span>trainer<span style="color:#81a1c1">.</span>set_params<span style="color:#eceff4">({</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#616e87;font-style:italic"># coefficient for L1 penalty</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a3be8c">&#39;c1&#39;</span><span style="color:#eceff4">:</span> <span style="color:#b48ead">0.1</span><span style="color:#eceff4">,</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#78787e"># coefficient for L2 penalty</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#5af78e">&#39;c2&#39;</span>: <span style="color:#ff9f43">0.01</span>,  
+</span></span><span style="display:flex;"><span>    <span style="color:#616e87;font-style:italic"># coefficient for L2 penalty</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a3be8c">&#39;c2&#39;</span><span style="color:#eceff4">:</span> <span style="color:#b48ead">0.01</span><span style="color:#eceff4">,</span>  
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#78787e"># maximum number of iterations</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#5af78e">&#39;max_iterations&#39;</span>: <span style="color:#ff9f43">200</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#616e87;font-style:italic"># maximum number of iterations</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a3be8c">&#39;max_iterations&#39;</span><span style="color:#eceff4">:</span> <span style="color:#b48ead">200</span><span style="color:#eceff4">,</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#78787e"># whether to include transitions that</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#78787e"># are possible, but not observed</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#5af78e">&#39;feature.possible_transitions&#39;</span>: <span style="color:#ff6ac1">True</span>
-</span></span><span style="display:flex;"><span>})
+</span></span><span style="display:flex;"><span>    <span style="color:#616e87;font-style:italic"># whether to include transitions that</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#616e87;font-style:italic"># are possible, but not observed</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a3be8c">&#39;feature.possible_transitions&#39;</span><span style="color:#eceff4">:</span> <span style="color:#81a1c1;font-weight:bold">True</span>
+</span></span><span style="display:flex;"><span><span style="color:#eceff4">})</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#78787e"># Provide a file name as a parameter to the train function, such that</span>
-</span></span><span style="display:flex;"><span><span style="color:#78787e"># the model will be saved to the file when training is finished</span>
-</span></span><span style="display:flex;"><span>trainer<span style="color:#ff6ac1">.</span>train(<span style="color:#5af78e">&#39;crf.model&#39;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#616e87;font-style:italic"># Provide a file name as a parameter to the train function, such that</span>
+</span></span><span style="display:flex;"><span><span style="color:#616e87;font-style:italic"># the model will be saved to the file when training is finished</span>
+</span></span><span style="display:flex;"><span>trainer<span style="color:#81a1c1">.</span>train<span style="color:#eceff4">(</span><span style="color:#a3be8c">&#39;crf.model&#39;</span><span style="color:#eceff4">)</span>
 </span></span></code></pre></div><p>If you have set <code>verbose=True</code> when initialising the trainer, the trainer will print out the training progress as it is trained against the provided training data.</p>
 <h3 id="checking-the-results" >
 <div>
@@ -679,51 +781,51 @@ Random Fields</a> by Charles Sutton and Andrew McCallum</li>
 </div>
 </h3>
 <p>Once we have the model trained, we can apply it on our test data and see whether it gives reasonable results. Assuming that the model is saved to a file named <code>crf.model</code>. The following block of code shows how we can load the model into memory, and apply it on to our test data.</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>tagger <span style="color:#ff6ac1">=</span> pycrfsuite<span style="color:#ff6ac1">.</span>Tagger()
-</span></span><span style="display:flex;"><span>tagger<span style="color:#ff6ac1">.</span>open(<span style="color:#5af78e">&#39;crf.model&#39;</span>)
-</span></span><span style="display:flex;"><span>y_pred <span style="color:#ff6ac1">=</span> [tagger<span style="color:#ff6ac1">.</span>tag(xseq) <span style="color:#ff6ac1">for</span> xseq <span style="color:#ff6ac1">in</span> X_test]
+<div class="highlight"><pre tabindex="0" style="color:#d8dee9;background-color:#2e3440;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>tagger <span style="color:#81a1c1">=</span> pycrfsuite<span style="color:#81a1c1">.</span>Tagger<span style="color:#eceff4">()</span>
+</span></span><span style="display:flex;"><span>tagger<span style="color:#81a1c1">.</span>open<span style="color:#eceff4">(</span><span style="color:#a3be8c">&#39;crf.model&#39;</span><span style="color:#eceff4">)</span>
+</span></span><span style="display:flex;"><span>y_pred <span style="color:#81a1c1">=</span> <span style="color:#eceff4">[</span>tagger<span style="color:#81a1c1">.</span>tag<span style="color:#eceff4">(</span>xseq<span style="color:#eceff4">)</span> <span style="color:#81a1c1;font-weight:bold">for</span> xseq <span style="color:#81a1c1;font-weight:bold">in</span> X_test<span style="color:#eceff4">]</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#78787e"># Let&#39;s take a look at a random sample in the testing set</span>
-</span></span><span style="display:flex;"><span>i <span style="color:#ff6ac1">=</span> <span style="color:#ff9f43">12</span>
-</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">for</span> x, y <span style="color:#ff6ac1">in</span> <span style="color:#ff5c57">zip</span>(y_pred[i], [x[<span style="color:#ff9f43">1</span>]<span style="color:#ff6ac1">.</span>split(<span style="color:#5af78e">&#34;=&#34;</span>)[<span style="color:#ff9f43">1</span>] <span style="color:#ff6ac1">for</span> x <span style="color:#ff6ac1">in</span> X_test[i]]):
-</span></span><span style="display:flex;"><span>    <span style="color:#ff5c57">print</span>(<span style="color:#5af78e">&#34;</span><span style="color:#5af78e">%s</span><span style="color:#5af78e"> (</span><span style="color:#5af78e">%s</span><span style="color:#5af78e">)&#34;</span> <span style="color:#ff6ac1">%</span> (y, x))
+</span></span><span style="display:flex;"><span><span style="color:#616e87;font-style:italic"># Let&#39;s take a look at a random sample in the testing set</span>
+</span></span><span style="display:flex;"><span>i <span style="color:#81a1c1">=</span> <span style="color:#b48ead">12</span>
+</span></span><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">for</span> x<span style="color:#eceff4">,</span> y <span style="color:#81a1c1;font-weight:bold">in</span> <span style="color:#81a1c1">zip</span><span style="color:#eceff4">(</span>y_pred<span style="color:#eceff4">[</span>i<span style="color:#eceff4">],</span> <span style="color:#eceff4">[</span>x<span style="color:#eceff4">[</span><span style="color:#b48ead">1</span><span style="color:#eceff4">]</span><span style="color:#81a1c1">.</span>split<span style="color:#eceff4">(</span><span style="color:#a3be8c">&#34;=&#34;</span><span style="color:#eceff4">)[</span><span style="color:#b48ead">1</span><span style="color:#eceff4">]</span> <span style="color:#81a1c1;font-weight:bold">for</span> x <span style="color:#81a1c1;font-weight:bold">in</span> X_test<span style="color:#eceff4">[</span>i<span style="color:#eceff4">]]):</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#81a1c1">print</span><span style="color:#eceff4">(</span><span style="color:#a3be8c">&#34;</span><span style="color:#a3be8c">%s</span><span style="color:#a3be8c"> (</span><span style="color:#a3be8c">%s</span><span style="color:#a3be8c">)&#34;</span> <span style="color:#81a1c1">%</span> <span style="color:#eceff4">(</span>y<span style="color:#eceff4">,</span> x<span style="color:#eceff4">))</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#5af78e">&#39;&#39;&#39;
-</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">The following will be printed:
-</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">
-</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">sci-med (N)
-</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">life (N)
-</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">systems (N)
-</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">inc (N)
-</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">said (I)
-</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">its (I)
-</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">directors (I)
-</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">approved (I)
-</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">a (I)
-</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">previously (I)
-</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">...
-</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">&#39;&#39;&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a3be8c">&#39;&#39;&#39;
+</span></span></span><span style="display:flex;"><span><span style="color:#a3be8c">The following will be printed:
+</span></span></span><span style="display:flex;"><span><span style="color:#a3be8c">
+</span></span></span><span style="display:flex;"><span><span style="color:#a3be8c">sci-med (N)
+</span></span></span><span style="display:flex;"><span><span style="color:#a3be8c">life (N)
+</span></span></span><span style="display:flex;"><span><span style="color:#a3be8c">systems (N)
+</span></span></span><span style="display:flex;"><span><span style="color:#a3be8c">inc (N)
+</span></span></span><span style="display:flex;"><span><span style="color:#a3be8c">said (I)
+</span></span></span><span style="display:flex;"><span><span style="color:#a3be8c">its (I)
+</span></span></span><span style="display:flex;"><span><span style="color:#a3be8c">directors (I)
+</span></span></span><span style="display:flex;"><span><span style="color:#a3be8c">approved (I)
+</span></span></span><span style="display:flex;"><span><span style="color:#a3be8c">a (I)
+</span></span></span><span style="display:flex;"><span><span style="color:#a3be8c">previously (I)
+</span></span></span><span style="display:flex;"><span><span style="color:#a3be8c">...
+</span></span></span><span style="display:flex;"><span><span style="color:#a3be8c">&#39;&#39;&#39;</span>
 </span></span></code></pre></div><p>The result looks reasonable as the first four words are correctly identified as part of a named entity.</p>
 <p>To study the performance of the CRF tagger trained above in a more quantitative way, we can check the <strong>precision</strong> and <strong>recall</strong> on the test data. This can be done very easily using the <a href="http://scikit-learn.org/stable/modules/generated/sklearn.metrics.classification_report.html"><code>classification_report</code> function in scikit-learn</a>. However, given that the predictions are sequences of tags, we need to transform the data into a list of labels before feeding them into the function.</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ff6ac1">import</span> numpy <span style="color:#ff6ac1">as</span> np
-</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">from</span> sklearn.metrics <span style="color:#ff6ac1">import</span> classification_report
+<div class="highlight"><pre tabindex="0" style="color:#d8dee9;background-color:#2e3440;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">import</span> <span style="color:#8fbcbb">numpy</span> <span style="color:#81a1c1;font-weight:bold">as</span> <span style="color:#8fbcbb">np</span>
+</span></span><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">from</span> <span style="color:#8fbcbb">sklearn.metrics</span> <span style="color:#81a1c1;font-weight:bold">import</span> classification_report
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#78787e"># Create a mapping of labels to indices</span>
-</span></span><span style="display:flex;"><span>labels <span style="color:#ff6ac1">=</span> {<span style="color:#5af78e">&#34;N&#34;</span>: <span style="color:#ff9f43">1</span>, <span style="color:#5af78e">&#34;I&#34;</span>: <span style="color:#ff9f43">0</span>}
+</span></span><span style="display:flex;"><span><span style="color:#616e87;font-style:italic"># Create a mapping of labels to indices</span>
+</span></span><span style="display:flex;"><span>labels <span style="color:#81a1c1">=</span> <span style="color:#eceff4">{</span><span style="color:#a3be8c">&#34;N&#34;</span><span style="color:#eceff4">:</span> <span style="color:#b48ead">1</span><span style="color:#eceff4">,</span> <span style="color:#a3be8c">&#34;I&#34;</span><span style="color:#eceff4">:</span> <span style="color:#b48ead">0</span><span style="color:#eceff4">}</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#78787e"># Convert the sequences of tags into a 1-dimensional array</span>
-</span></span><span style="display:flex;"><span>predictions <span style="color:#ff6ac1">=</span> np<span style="color:#ff6ac1">.</span>array([labels[tag] <span style="color:#ff6ac1">for</span> row <span style="color:#ff6ac1">in</span> y_pred <span style="color:#ff6ac1">for</span> tag <span style="color:#ff6ac1">in</span> row])
-</span></span><span style="display:flex;"><span>truths <span style="color:#ff6ac1">=</span> np<span style="color:#ff6ac1">.</span>array([labels[tag] <span style="color:#ff6ac1">for</span> row <span style="color:#ff6ac1">in</span> y_test <span style="color:#ff6ac1">for</span> tag <span style="color:#ff6ac1">in</span> row])
+</span></span><span style="display:flex;"><span><span style="color:#616e87;font-style:italic"># Convert the sequences of tags into a 1-dimensional array</span>
+</span></span><span style="display:flex;"><span>predictions <span style="color:#81a1c1">=</span> np<span style="color:#81a1c1">.</span>array<span style="color:#eceff4">([</span>labels<span style="color:#eceff4">[</span>tag<span style="color:#eceff4">]</span> <span style="color:#81a1c1;font-weight:bold">for</span> row <span style="color:#81a1c1;font-weight:bold">in</span> y_pred <span style="color:#81a1c1;font-weight:bold">for</span> tag <span style="color:#81a1c1;font-weight:bold">in</span> row<span style="color:#eceff4">])</span>
+</span></span><span style="display:flex;"><span>truths <span style="color:#81a1c1">=</span> np<span style="color:#81a1c1">.</span>array<span style="color:#eceff4">([</span>labels<span style="color:#eceff4">[</span>tag<span style="color:#eceff4">]</span> <span style="color:#81a1c1;font-weight:bold">for</span> row <span style="color:#81a1c1;font-weight:bold">in</span> y_test <span style="color:#81a1c1;font-weight:bold">for</span> tag <span style="color:#81a1c1;font-weight:bold">in</span> row<span style="color:#eceff4">])</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#78787e"># Print out the classification report</span>
-</span></span><span style="display:flex;"><span><span style="color:#ff5c57">print</span>(classification_report(
-</span></span><span style="display:flex;"><span>    truths, predictions,
-</span></span><span style="display:flex;"><span>    target_names<span style="color:#ff6ac1">=</span>[<span style="color:#5af78e">&#34;I&#34;</span>, <span style="color:#5af78e">&#34;N&#34;</span>]))
+</span></span><span style="display:flex;"><span><span style="color:#616e87;font-style:italic"># Print out the classification report</span>
+</span></span><span style="display:flex;"><span><span style="color:#81a1c1">print</span><span style="color:#eceff4">(</span>classification_report<span style="color:#eceff4">(</span>
+</span></span><span style="display:flex;"><span>    truths<span style="color:#eceff4">,</span> predictions<span style="color:#eceff4">,</span>
+</span></span><span style="display:flex;"><span>    target_names<span style="color:#81a1c1">=</span><span style="color:#eceff4">[</span><span style="color:#a3be8c">&#34;I&#34;</span><span style="color:#eceff4">,</span> <span style="color:#a3be8c">&#34;N&#34;</span><span style="color:#eceff4">]))</span>
 </span></span></code></pre></div><p>which will prints a report as follows:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>              precision   recall  f1<span style="color:#ff6ac1">-</span>score   support
-</span></span><span style="display:flex;"><span>          I       <span style="color:#ff9f43">0.98</span>      <span style="color:#ff9f43">0.98</span>      <span style="color:#ff9f43">0.98</span>      <span style="color:#ff9f43">3322</span>
-</span></span><span style="display:flex;"><span>          N       <span style="color:#ff9f43">0.85</span>      <span style="color:#ff9f43">0.85</span>      <span style="color:#ff9f43">0.85</span>       <span style="color:#ff9f43">405</span>
-</span></span><span style="display:flex;"><span>avg <span style="color:#ff6ac1">/</span> total       <span style="color:#ff9f43">0.97</span>      <span style="color:#ff9f43">0.97</span>      <span style="color:#ff9f43">0.97</span>      <span style="color:#ff9f43">3727</span>
+<div class="highlight"><pre tabindex="0" style="color:#d8dee9;background-color:#2e3440;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>              precision   recall  f1<span style="color:#81a1c1">-</span>score   support
+</span></span><span style="display:flex;"><span>          I       <span style="color:#b48ead">0.98</span>      <span style="color:#b48ead">0.98</span>      <span style="color:#b48ead">0.98</span>      <span style="color:#b48ead">3322</span>
+</span></span><span style="display:flex;"><span>          N       <span style="color:#b48ead">0.85</span>      <span style="color:#b48ead">0.85</span>      <span style="color:#b48ead">0.85</span>       <span style="color:#b48ead">405</span>
+</span></span><span style="display:flex;"><span>avg <span style="color:#81a1c1">/</span> total       <span style="color:#b48ead">0.97</span>      <span style="color:#b48ead">0.97</span>      <span style="color:#b48ead">0.97</span>      <span style="color:#b48ead">3727</span>
 </span></span></code></pre></div><p>We can see that we have achieved 85% precision and 85% recall in predicting whether a word is part of a named entity. There are several things by which we can improve the performance, including creating better features or tuning the parameters of the CRF model.</p>
 <h3 id="source-codes" >
 <div>

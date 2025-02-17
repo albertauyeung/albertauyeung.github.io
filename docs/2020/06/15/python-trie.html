@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 
 
-    
-
 <html lang="en-us" data-theme="">
 <head>
     
@@ -28,13 +26,27 @@
 
 
 
+
+
     
 
 
 
-    
+<style>
+  body {
+    visibility: hidden;
+    opacity: 0;
+  }
+</style>
 
-
+<noscript>
+  <style>
+    body {
+      visibility: visible;
+      opacity: 1;
+    }
+  </style>
+</noscript>
 
 
 
@@ -108,7 +120,7 @@
 
     
       
-        <link rel="stylesheet" href="/css/style.min.501a18f184de613bbd235ece9218c319166ee042d67b2fc5d5b9cedc01afaffb.css" integrity="sha256-UBoY8YTeYTu9I17OkhjDGRZu4ELWey/F1bnO3AGvr/s=" crossorigin="anonymous">
+        <link rel="stylesheet" href="/css/style.min.bc2ba405e352f0155ca07bcc3b2b20b7d7498bc9a1f2d2d9a146e731ed5342b3.css" integrity="sha256-vCukBeNS8BVcoHvMOysgt9dJi8mh8tLZoUbnMe1TQrM=" crossorigin="anonymous">
       
     
 
@@ -180,13 +192,103 @@ gtag('config', 'G-12LX2RWP72');
 
 
 
+
+
     
 
 
 
     
+        <div class="theme-switcher">
+            <span class="inline-svg">
+
+    
 
 
+    
+    
+    
+    
+    
+
+    <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-sun-high"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14.828 14.828a4 4 0 1 0 -5.656 -5.656a4 4 0 0 0 5.656 5.656z" /><path d="M6.343 17.657l-1.414 1.414" /><path d="M6.343 6.343l-1.414 -1.414" /><path d="M17.657 6.343l1.414 -1.414" /><path d="M17.657 17.657l1.414 1.414" /><path d="M4 12h-2" /><path d="M12 4v-2" /><path d="M20 12h2" /><path d="M12 20v2" /></svg>
+
+
+</span>
+
+        </div>
+    
+
+    <script>
+        const STORAGE_KEY = 'user-color-scheme'
+        const defaultTheme = "light"
+
+        let currentTheme
+        let switchButton
+        let autoDefinedScheme = window.matchMedia('(prefers-color-scheme: dark)')
+
+        function switchTheme(e) {
+            currentTheme = (currentTheme === 'dark') ? 'light' : 'dark';
+            if (localStorage) localStorage.setItem(STORAGE_KEY, currentTheme);
+            document.documentElement.setAttribute('data-theme', currentTheme);
+            changeGiscusTheme(currentTheme);
+            document.body.dispatchEvent(new CustomEvent(currentTheme + "-theme-set"));
+        }
+
+        const autoChangeScheme = e => {
+            currentTheme = e.matches ? 'dark' : 'light'
+            document.documentElement.setAttribute('data-theme', currentTheme);
+            changeGiscusTheme(currentTheme);
+            document.body.dispatchEvent(new CustomEvent(currentTheme + "-theme-set"));
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            switchButton = document.querySelector('.theme-switcher')
+            currentTheme = detectCurrentScheme()
+
+            if (currentTheme === 'auto') {
+                autoChangeScheme(autoDefinedScheme);
+                autoDefinedScheme.addListener(autoChangeScheme);
+            } else {
+                document.documentElement.setAttribute('data-theme', currentTheme)
+            }
+
+            if (switchButton) {
+                switchButton.addEventListener('click', switchTheme, false)
+            }
+
+            showContent();
+        })
+
+        function detectCurrentScheme() {
+            if (localStorage !== null && localStorage.getItem(STORAGE_KEY)) {
+                return localStorage.getItem(STORAGE_KEY)
+            }
+            if (defaultTheme) {
+                return defaultTheme
+            }
+            return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+
+        function showContent() {
+            document.body.style.visibility = 'visible';
+            document.body.style.opacity = 1;
+        }
+
+        function changeGiscusTheme (theme) {
+            function sendMessage(message) {
+              const iframe = document.querySelector('iframe.giscus-frame');
+              if (!iframe) return;
+              iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+            }
+
+            sendMessage({
+              setConfig: {
+                theme: theme
+              }
+            });
+        }
+    </script>
 
 
         <ul class="social-icons noselect">
@@ -478,103 +580,103 @@ gtag('config', 'G-12LX2RWP72');
 </div>
 </h2>
 <p>To implement a trie, we can first create a <code>TrieNode</code> class, which can be used to represent a node in the trie. Below is how this class can be implemented.</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ff6ac1">class</span> <span style="color:#f3f99d">TrieNode</span>:
-</span></span><span style="display:flex;"><span>    <span style="color:#5af78e">&#34;&#34;&#34;A node in the trie structure&#34;&#34;&#34;</span>
+<div class="highlight"><pre tabindex="0" style="color:#d8dee9;background-color:#2e3440;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">class</span> <span style="color:#8fbcbb">TrieNode</span><span style="color:#eceff4">:</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a3be8c">&#34;&#34;&#34;A node in the trie structure&#34;&#34;&#34;</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">def</span> __init__(self, char):
-</span></span><span style="display:flex;"><span>        <span style="color:#78787e"># the character stored in this node</span>
-</span></span><span style="display:flex;"><span>        self<span style="color:#ff6ac1">.</span>char <span style="color:#ff6ac1">=</span> char
+</span></span><span style="display:flex;"><span>    <span style="color:#81a1c1;font-weight:bold">def</span> __init__<span style="color:#eceff4">(</span>self<span style="color:#eceff4">,</span> char<span style="color:#eceff4">):</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#616e87;font-style:italic"># the character stored in this node</span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#81a1c1">.</span>char <span style="color:#81a1c1">=</span> char
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        <span style="color:#78787e"># whether this can be the end of a word</span>
-</span></span><span style="display:flex;"><span>        self<span style="color:#ff6ac1">.</span>is_end <span style="color:#ff6ac1">=</span> <span style="color:#ff6ac1">False</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#616e87;font-style:italic"># whether this can be the end of a word</span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#81a1c1">.</span>is_end <span style="color:#81a1c1">=</span> <span style="color:#81a1c1;font-weight:bold">False</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        <span style="color:#78787e"># a counter indicating how many times a word is inserted</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#78787e"># (if this node&#39;s is_end is True)</span>
-</span></span><span style="display:flex;"><span>        self<span style="color:#ff6ac1">.</span>counter <span style="color:#ff6ac1">=</span> <span style="color:#ff9f43">0</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#616e87;font-style:italic"># a counter indicating how many times a word is inserted</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#616e87;font-style:italic"># (if this node&#39;s is_end is True)</span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#81a1c1">.</span>counter <span style="color:#81a1c1">=</span> <span style="color:#b48ead">0</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        <span style="color:#78787e"># a dictionary of child nodes</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#78787e"># keys are characters, values are nodes</span>
-</span></span><span style="display:flex;"><span>        self<span style="color:#ff6ac1">.</span>children <span style="color:#ff6ac1">=</span> {}
+</span></span><span style="display:flex;"><span>        <span style="color:#616e87;font-style:italic"># a dictionary of child nodes</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#616e87;font-style:italic"># keys are characters, values are nodes</span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#81a1c1">.</span>children <span style="color:#81a1c1">=</span> <span style="color:#eceff4">{}</span>
 </span></span></code></pre></div><p>In this implementation, we want to store also the number of times a word has been inserted into the trie. This allows us to support additional features, such as ranking the words by their popularity.</p>
 <p>Given the <code>TrieNode</code> class, we can go on to implement the <code>Trie</code> class as follows.</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ff6ac1">class</span> <span style="color:#f3f99d">Trie</span>(<span style="color:#ff5c57">object</span>):
-</span></span><span style="display:flex;"><span>    <span style="color:#5af78e">&#34;&#34;&#34;The trie object&#34;&#34;&#34;</span>
+<div class="highlight"><pre tabindex="0" style="color:#d8dee9;background-color:#2e3440;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">class</span> <span style="color:#8fbcbb">Trie</span><span style="color:#eceff4">(</span><span style="color:#81a1c1">object</span><span style="color:#eceff4">):</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a3be8c">&#34;&#34;&#34;The trie object&#34;&#34;&#34;</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">def</span> __init__(self):
-</span></span><span style="display:flex;"><span>        <span style="color:#5af78e">&#34;&#34;&#34;
-</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">        The trie has at least the root node.
-</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">        The root node does not store any character
-</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">        &#34;&#34;&#34;</span>
-</span></span><span style="display:flex;"><span>        self<span style="color:#ff6ac1">.</span>root <span style="color:#ff6ac1">=</span> TrieNode(<span style="color:#5af78e">&#34;&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#81a1c1;font-weight:bold">def</span> __init__<span style="color:#eceff4">(</span>self<span style="color:#eceff4">):</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#a3be8c">&#34;&#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#a3be8c">        The trie has at least the root node.
+</span></span></span><span style="display:flex;"><span><span style="color:#a3be8c">        The root node does not store any character
+</span></span></span><span style="display:flex;"><span><span style="color:#a3be8c">        &#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#81a1c1">.</span>root <span style="color:#81a1c1">=</span> TrieNode<span style="color:#eceff4">(</span><span style="color:#a3be8c">&#34;&#34;</span><span style="color:#eceff4">)</span>
 </span></span><span style="display:flex;"><span>    
-</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">def</span> <span style="color:#57c7ff">insert</span>(self, word):
-</span></span><span style="display:flex;"><span>        <span style="color:#5af78e">&#34;&#34;&#34;Insert a word into the trie&#34;&#34;&#34;</span>
-</span></span><span style="display:flex;"><span>        node <span style="color:#ff6ac1">=</span> self<span style="color:#ff6ac1">.</span>root
+</span></span><span style="display:flex;"><span>    <span style="color:#81a1c1;font-weight:bold">def</span> <span style="color:#88c0d0">insert</span><span style="color:#eceff4">(</span>self<span style="color:#eceff4">,</span> word<span style="color:#eceff4">):</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#a3be8c">&#34;&#34;&#34;Insert a word into the trie&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        node <span style="color:#81a1c1">=</span> self<span style="color:#81a1c1">.</span>root
 </span></span><span style="display:flex;"><span>        
-</span></span><span style="display:flex;"><span>        <span style="color:#78787e"># Loop through each character in the word</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#78787e"># Check if there is no child containing the character, create a new child for the current node</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">for</span> char <span style="color:#ff6ac1">in</span> word:
-</span></span><span style="display:flex;"><span>            <span style="color:#ff6ac1">if</span> char <span style="color:#ff6ac1">in</span> node<span style="color:#ff6ac1">.</span>children:
-</span></span><span style="display:flex;"><span>                node <span style="color:#ff6ac1">=</span> node<span style="color:#ff6ac1">.</span>children[char]
-</span></span><span style="display:flex;"><span>            <span style="color:#ff6ac1">else</span>:
-</span></span><span style="display:flex;"><span>                <span style="color:#78787e"># If a character is not found,</span>
-</span></span><span style="display:flex;"><span>                <span style="color:#78787e"># create a new node in the trie</span>
-</span></span><span style="display:flex;"><span>                new_node <span style="color:#ff6ac1">=</span> TrieNode(char)
-</span></span><span style="display:flex;"><span>                node<span style="color:#ff6ac1">.</span>children[char] <span style="color:#ff6ac1">=</span> new_node
-</span></span><span style="display:flex;"><span>                node <span style="color:#ff6ac1">=</span> new_node
+</span></span><span style="display:flex;"><span>        <span style="color:#616e87;font-style:italic"># Loop through each character in the word</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#616e87;font-style:italic"># Check if there is no child containing the character, create a new child for the current node</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#81a1c1;font-weight:bold">for</span> char <span style="color:#81a1c1;font-weight:bold">in</span> word<span style="color:#eceff4">:</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#81a1c1;font-weight:bold">if</span> char <span style="color:#81a1c1;font-weight:bold">in</span> node<span style="color:#81a1c1">.</span>children<span style="color:#eceff4">:</span>
+</span></span><span style="display:flex;"><span>                node <span style="color:#81a1c1">=</span> node<span style="color:#81a1c1">.</span>children<span style="color:#eceff4">[</span>char<span style="color:#eceff4">]</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#81a1c1;font-weight:bold">else</span><span style="color:#eceff4">:</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#616e87;font-style:italic"># If a character is not found,</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#616e87;font-style:italic"># create a new node in the trie</span>
+</span></span><span style="display:flex;"><span>                new_node <span style="color:#81a1c1">=</span> TrieNode<span style="color:#eceff4">(</span>char<span style="color:#eceff4">)</span>
+</span></span><span style="display:flex;"><span>                node<span style="color:#81a1c1">.</span>children<span style="color:#eceff4">[</span>char<span style="color:#eceff4">]</span> <span style="color:#81a1c1">=</span> new_node
+</span></span><span style="display:flex;"><span>                node <span style="color:#81a1c1">=</span> new_node
 </span></span><span style="display:flex;"><span>        
-</span></span><span style="display:flex;"><span>        <span style="color:#78787e"># Mark the end of a word</span>
-</span></span><span style="display:flex;"><span>        node<span style="color:#ff6ac1">.</span>is_end <span style="color:#ff6ac1">=</span> <span style="color:#ff6ac1">True</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#616e87;font-style:italic"># Mark the end of a word</span>
+</span></span><span style="display:flex;"><span>        node<span style="color:#81a1c1">.</span>is_end <span style="color:#81a1c1">=</span> <span style="color:#81a1c1;font-weight:bold">True</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        <span style="color:#78787e"># Increment the counter to indicate that we see this word once more</span>
-</span></span><span style="display:flex;"><span>        node<span style="color:#ff6ac1">.</span>counter <span style="color:#ff6ac1">+=</span> <span style="color:#ff9f43">1</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#616e87;font-style:italic"># Increment the counter to indicate that we see this word once more</span>
+</span></span><span style="display:flex;"><span>        node<span style="color:#81a1c1">.</span>counter <span style="color:#81a1c1">+=</span> <span style="color:#b48ead">1</span>
 </span></span><span style="display:flex;"><span>        
-</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">def</span> <span style="color:#57c7ff">dfs</span>(self, node, prefix):
-</span></span><span style="display:flex;"><span>        <span style="color:#5af78e">&#34;&#34;&#34;Depth-first traversal of the trie
-</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">        
-</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">        Args:
-</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">            - node: the node to start with
-</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">            - prefix: the current prefix, for tracing a
-</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">                word while traversing the trie
-</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">        &#34;&#34;&#34;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">if</span> node<span style="color:#ff6ac1">.</span>is_end:
-</span></span><span style="display:flex;"><span>            self<span style="color:#ff6ac1">.</span>output<span style="color:#ff6ac1">.</span>append((prefix <span style="color:#ff6ac1">+</span> node<span style="color:#ff6ac1">.</span>char, node<span style="color:#ff6ac1">.</span>counter))
+</span></span><span style="display:flex;"><span>    <span style="color:#81a1c1;font-weight:bold">def</span> <span style="color:#88c0d0">dfs</span><span style="color:#eceff4">(</span>self<span style="color:#eceff4">,</span> node<span style="color:#eceff4">,</span> prefix<span style="color:#eceff4">):</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#a3be8c">&#34;&#34;&#34;Depth-first traversal of the trie
+</span></span></span><span style="display:flex;"><span><span style="color:#a3be8c">        
+</span></span></span><span style="display:flex;"><span><span style="color:#a3be8c">        Args:
+</span></span></span><span style="display:flex;"><span><span style="color:#a3be8c">            - node: the node to start with
+</span></span></span><span style="display:flex;"><span><span style="color:#a3be8c">            - prefix: the current prefix, for tracing a
+</span></span></span><span style="display:flex;"><span><span style="color:#a3be8c">                word while traversing the trie
+</span></span></span><span style="display:flex;"><span><span style="color:#a3be8c">        &#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#81a1c1;font-weight:bold">if</span> node<span style="color:#81a1c1">.</span>is_end<span style="color:#eceff4">:</span>
+</span></span><span style="display:flex;"><span>            self<span style="color:#81a1c1">.</span>output<span style="color:#81a1c1">.</span>append<span style="color:#eceff4">((</span>prefix <span style="color:#81a1c1">+</span> node<span style="color:#81a1c1">.</span>char<span style="color:#eceff4">,</span> node<span style="color:#81a1c1">.</span>counter<span style="color:#eceff4">))</span>
 </span></span><span style="display:flex;"><span>        
-</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">for</span> child <span style="color:#ff6ac1">in</span> node<span style="color:#ff6ac1">.</span>children<span style="color:#ff6ac1">.</span>values():
-</span></span><span style="display:flex;"><span>            self<span style="color:#ff6ac1">.</span>dfs(child, prefix <span style="color:#ff6ac1">+</span> node<span style="color:#ff6ac1">.</span>char)
+</span></span><span style="display:flex;"><span>        <span style="color:#81a1c1;font-weight:bold">for</span> child <span style="color:#81a1c1;font-weight:bold">in</span> node<span style="color:#81a1c1">.</span>children<span style="color:#81a1c1">.</span>values<span style="color:#eceff4">():</span>
+</span></span><span style="display:flex;"><span>            self<span style="color:#81a1c1">.</span>dfs<span style="color:#eceff4">(</span>child<span style="color:#eceff4">,</span> prefix <span style="color:#81a1c1">+</span> node<span style="color:#81a1c1">.</span>char<span style="color:#eceff4">)</span>
 </span></span><span style="display:flex;"><span>        
-</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">def</span> <span style="color:#57c7ff">query</span>(self, x):
-</span></span><span style="display:flex;"><span>        <span style="color:#5af78e">&#34;&#34;&#34;Given an input (a prefix), retrieve all words stored in
-</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">        the trie with that prefix, sort the words by the number of 
-</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">        times they have been inserted
-</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">        &#34;&#34;&#34;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#78787e"># Use a variable within the class to keep all possible outputs</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#78787e"># As there can be more than one word with such prefix</span>
-</span></span><span style="display:flex;"><span>        self<span style="color:#ff6ac1">.</span>output <span style="color:#ff6ac1">=</span> []
-</span></span><span style="display:flex;"><span>        node <span style="color:#ff6ac1">=</span> self<span style="color:#ff6ac1">.</span>root
+</span></span><span style="display:flex;"><span>    <span style="color:#81a1c1;font-weight:bold">def</span> <span style="color:#88c0d0">query</span><span style="color:#eceff4">(</span>self<span style="color:#eceff4">,</span> x<span style="color:#eceff4">):</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#a3be8c">&#34;&#34;&#34;Given an input (a prefix), retrieve all words stored in
+</span></span></span><span style="display:flex;"><span><span style="color:#a3be8c">        the trie with that prefix, sort the words by the number of 
+</span></span></span><span style="display:flex;"><span><span style="color:#a3be8c">        times they have been inserted
+</span></span></span><span style="display:flex;"><span><span style="color:#a3be8c">        &#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#616e87;font-style:italic"># Use a variable within the class to keep all possible outputs</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#616e87;font-style:italic"># As there can be more than one word with such prefix</span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#81a1c1">.</span>output <span style="color:#81a1c1">=</span> <span style="color:#eceff4">[]</span>
+</span></span><span style="display:flex;"><span>        node <span style="color:#81a1c1">=</span> self<span style="color:#81a1c1">.</span>root
 </span></span><span style="display:flex;"><span>        
-</span></span><span style="display:flex;"><span>        <span style="color:#78787e"># Check if the prefix is in the trie</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">for</span> char <span style="color:#ff6ac1">in</span> x:
-</span></span><span style="display:flex;"><span>            <span style="color:#ff6ac1">if</span> char <span style="color:#ff6ac1">in</span> node<span style="color:#ff6ac1">.</span>children:
-</span></span><span style="display:flex;"><span>                node <span style="color:#ff6ac1">=</span> node<span style="color:#ff6ac1">.</span>children[char]
-</span></span><span style="display:flex;"><span>            <span style="color:#ff6ac1">else</span>:
-</span></span><span style="display:flex;"><span>                <span style="color:#78787e"># cannot found the prefix, return empty list</span>
-</span></span><span style="display:flex;"><span>                <span style="color:#ff6ac1">return</span> []
+</span></span><span style="display:flex;"><span>        <span style="color:#616e87;font-style:italic"># Check if the prefix is in the trie</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#81a1c1;font-weight:bold">for</span> char <span style="color:#81a1c1;font-weight:bold">in</span> x<span style="color:#eceff4">:</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#81a1c1;font-weight:bold">if</span> char <span style="color:#81a1c1;font-weight:bold">in</span> node<span style="color:#81a1c1">.</span>children<span style="color:#eceff4">:</span>
+</span></span><span style="display:flex;"><span>                node <span style="color:#81a1c1">=</span> node<span style="color:#81a1c1">.</span>children<span style="color:#eceff4">[</span>char<span style="color:#eceff4">]</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#81a1c1;font-weight:bold">else</span><span style="color:#eceff4">:</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#616e87;font-style:italic"># cannot found the prefix, return empty list</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#81a1c1;font-weight:bold">return</span> <span style="color:#eceff4">[]</span>
 </span></span><span style="display:flex;"><span>        
-</span></span><span style="display:flex;"><span>        <span style="color:#78787e"># Traverse the trie to get all candidates</span>
-</span></span><span style="display:flex;"><span>        self<span style="color:#ff6ac1">.</span>dfs(node, x[:<span style="color:#ff6ac1">-</span><span style="color:#ff9f43">1</span>])
+</span></span><span style="display:flex;"><span>        <span style="color:#616e87;font-style:italic"># Traverse the trie to get all candidates</span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#81a1c1">.</span>dfs<span style="color:#eceff4">(</span>node<span style="color:#eceff4">,</span> x<span style="color:#eceff4">[:</span><span style="color:#81a1c1">-</span><span style="color:#b48ead">1</span><span style="color:#eceff4">])</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        <span style="color:#78787e"># Sort the results in reverse order and return</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">return</span> <span style="color:#ff5c57">sorted</span>(self<span style="color:#ff6ac1">.</span>output, key<span style="color:#ff6ac1">=</span><span style="color:#ff6ac1">lambda</span> x: x[<span style="color:#ff9f43">1</span>], reverse<span style="color:#ff6ac1">=</span><span style="color:#ff6ac1">True</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#616e87;font-style:italic"># Sort the results in reverse order and return</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#81a1c1;font-weight:bold">return</span> <span style="color:#81a1c1">sorted</span><span style="color:#eceff4">(</span>self<span style="color:#81a1c1">.</span>output<span style="color:#eceff4">,</span> key<span style="color:#81a1c1">=</span><span style="color:#81a1c1;font-weight:bold">lambda</span> x<span style="color:#eceff4">:</span> x<span style="color:#eceff4">[</span><span style="color:#b48ead">1</span><span style="color:#eceff4">],</span> reverse<span style="color:#81a1c1">=</span><span style="color:#81a1c1;font-weight:bold">True</span><span style="color:#eceff4">)</span>
 </span></span></code></pre></div><p>Below is an example of how this <code>Trie</code> class can be used:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ff6ac1">&gt;&gt;&gt;</span> t <span style="color:#ff6ac1">=</span> Trie()
-</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">&gt;&gt;&gt;</span> t<span style="color:#ff6ac1">.</span>insert(<span style="color:#5af78e">&#34;was&#34;</span>)
-</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">&gt;&gt;&gt;</span> t<span style="color:#ff6ac1">.</span>insert(<span style="color:#5af78e">&#34;word&#34;</span>)
-</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">&gt;&gt;&gt;</span> t<span style="color:#ff6ac1">.</span>insert(<span style="color:#5af78e">&#34;war&#34;</span>)
-</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">&gt;&gt;&gt;</span> t<span style="color:#ff6ac1">.</span>insert(<span style="color:#5af78e">&#34;what&#34;</span>)
-</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">&gt;&gt;&gt;</span> t<span style="color:#ff6ac1">.</span>insert(<span style="color:#5af78e">&#34;where&#34;</span>)
-</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">&gt;&gt;&gt;</span> t<span style="color:#ff6ac1">.</span>query(<span style="color:#5af78e">&#34;wh&#34;</span>)
-</span></span><span style="display:flex;"><span>[(<span style="color:#5af78e">&#39;what&#39;</span>, <span style="color:#ff9f43">1</span>), (<span style="color:#5af78e">&#39;where&#39;</span>, <span style="color:#ff9f43">1</span>)]
+<div class="highlight"><pre tabindex="0" style="color:#d8dee9;background-color:#2e3440;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#81a1c1">&gt;&gt;&gt;</span> t <span style="color:#81a1c1">=</span> Trie<span style="color:#eceff4">()</span>
+</span></span><span style="display:flex;"><span><span style="color:#81a1c1">&gt;&gt;&gt;</span> t<span style="color:#81a1c1">.</span>insert<span style="color:#eceff4">(</span><span style="color:#a3be8c">&#34;was&#34;</span><span style="color:#eceff4">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#81a1c1">&gt;&gt;&gt;</span> t<span style="color:#81a1c1">.</span>insert<span style="color:#eceff4">(</span><span style="color:#a3be8c">&#34;word&#34;</span><span style="color:#eceff4">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#81a1c1">&gt;&gt;&gt;</span> t<span style="color:#81a1c1">.</span>insert<span style="color:#eceff4">(</span><span style="color:#a3be8c">&#34;war&#34;</span><span style="color:#eceff4">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#81a1c1">&gt;&gt;&gt;</span> t<span style="color:#81a1c1">.</span>insert<span style="color:#eceff4">(</span><span style="color:#a3be8c">&#34;what&#34;</span><span style="color:#eceff4">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#81a1c1">&gt;&gt;&gt;</span> t<span style="color:#81a1c1">.</span>insert<span style="color:#eceff4">(</span><span style="color:#a3be8c">&#34;where&#34;</span><span style="color:#eceff4">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#81a1c1">&gt;&gt;&gt;</span> t<span style="color:#81a1c1">.</span>query<span style="color:#eceff4">(</span><span style="color:#a3be8c">&#34;wh&#34;</span><span style="color:#eceff4">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#eceff4">[(</span><span style="color:#a3be8c">&#39;what&#39;</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">1</span><span style="color:#eceff4">),</span> <span style="color:#eceff4">(</span><span style="color:#a3be8c">&#39;where&#39;</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">1</span><span style="color:#eceff4">)]</span>
 </span></span></code></pre></div><h2 id="references" >
 <div>
     <a href="#references">

@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 
 
-    
-
 <html lang="en-us" data-theme="">
 <head>
     
@@ -28,13 +26,27 @@
 
 
 
+
+
     
 
 
 
-    
+<style>
+  body {
+    visibility: hidden;
+    opacity: 0;
+  }
+</style>
 
-
+<noscript>
+  <style>
+    body {
+      visibility: visible;
+      opacity: 1;
+    }
+  </style>
+</noscript>
 
 
 
@@ -108,7 +120,7 @@
 
     
       
-        <link rel="stylesheet" href="/css/style.min.501a18f184de613bbd235ece9218c319166ee042d67b2fc5d5b9cedc01afaffb.css" integrity="sha256-UBoY8YTeYTu9I17OkhjDGRZu4ELWey/F1bnO3AGvr/s=" crossorigin="anonymous">
+        <link rel="stylesheet" href="/css/style.min.bc2ba405e352f0155ca07bcc3b2b20b7d7498bc9a1f2d2d9a146e731ed5342b3.css" integrity="sha256-vCukBeNS8BVcoHvMOysgt9dJi8mh8tLZoUbnMe1TQrM=" crossorigin="anonymous">
       
     
 
@@ -180,13 +192,103 @@ gtag('config', 'G-12LX2RWP72');
 
 
 
+
+
     
 
 
 
     
+        <div class="theme-switcher">
+            <span class="inline-svg">
+
+    
 
 
+    
+    
+    
+    
+    
+
+    <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-sun-high"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14.828 14.828a4 4 0 1 0 -5.656 -5.656a4 4 0 0 0 5.656 5.656z" /><path d="M6.343 17.657l-1.414 1.414" /><path d="M6.343 6.343l-1.414 -1.414" /><path d="M17.657 6.343l1.414 -1.414" /><path d="M17.657 17.657l1.414 1.414" /><path d="M4 12h-2" /><path d="M12 4v-2" /><path d="M20 12h2" /><path d="M12 20v2" /></svg>
+
+
+</span>
+
+        </div>
+    
+
+    <script>
+        const STORAGE_KEY = 'user-color-scheme'
+        const defaultTheme = "light"
+
+        let currentTheme
+        let switchButton
+        let autoDefinedScheme = window.matchMedia('(prefers-color-scheme: dark)')
+
+        function switchTheme(e) {
+            currentTheme = (currentTheme === 'dark') ? 'light' : 'dark';
+            if (localStorage) localStorage.setItem(STORAGE_KEY, currentTheme);
+            document.documentElement.setAttribute('data-theme', currentTheme);
+            changeGiscusTheme(currentTheme);
+            document.body.dispatchEvent(new CustomEvent(currentTheme + "-theme-set"));
+        }
+
+        const autoChangeScheme = e => {
+            currentTheme = e.matches ? 'dark' : 'light'
+            document.documentElement.setAttribute('data-theme', currentTheme);
+            changeGiscusTheme(currentTheme);
+            document.body.dispatchEvent(new CustomEvent(currentTheme + "-theme-set"));
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            switchButton = document.querySelector('.theme-switcher')
+            currentTheme = detectCurrentScheme()
+
+            if (currentTheme === 'auto') {
+                autoChangeScheme(autoDefinedScheme);
+                autoDefinedScheme.addListener(autoChangeScheme);
+            } else {
+                document.documentElement.setAttribute('data-theme', currentTheme)
+            }
+
+            if (switchButton) {
+                switchButton.addEventListener('click', switchTheme, false)
+            }
+
+            showContent();
+        })
+
+        function detectCurrentScheme() {
+            if (localStorage !== null && localStorage.getItem(STORAGE_KEY)) {
+                return localStorage.getItem(STORAGE_KEY)
+            }
+            if (defaultTheme) {
+                return defaultTheme
+            }
+            return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+
+        function showContent() {
+            document.body.style.visibility = 'visible';
+            document.body.style.opacity = 1;
+        }
+
+        function changeGiscusTheme (theme) {
+            function sendMessage(message) {
+              const iframe = document.querySelector('iframe.giscus-frame');
+              if (!iframe) return;
+              iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+            }
+
+            sendMessage({
+              setConfig: {
+                theme: theme
+              }
+            });
+        }
+    </script>
 
 
         <ul class="social-icons noselect">
@@ -415,42 +517,42 @@ gtag('config', 'G-12LX2RWP72');
 </h2>
 <p>pyenv works on macOS and Linux, but not Windows (except inside the Windows Subsystem for Linux). Windows users might want to check out <a href="https://github.com/pyenv-win/pyenv-win">pyenv-win</a> for further information.</p>
 <p>On macOS, it can be installed using Homebrew:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ brew update
+<div class="highlight"><pre tabindex="0" style="color:#d8dee9;background-color:#2e3440;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ brew update
 </span></span><span style="display:flex;"><span>$ brew install pyenv
 </span></span></code></pre></div><p>On both macOS and Linux, it can also be installed by checking out the latest version of pyenv. For details of installing pyenv this way, refer to the offical installation guidelines here: <a href="https://github.com/pyenv/pyenv#installation">https://github.com/pyenv/pyenv#installation</a>.</p>
 <p>After installation, add the following line to your <code>.bashrc</code> (or <code>.zshrc</code>) file:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#ff5c57">eval</span> <span style="color:#5af78e">&#34;</span><span style="color:#ff6ac1">$(</span>pyenv init -<span style="color:#ff6ac1">)</span><span style="color:#5af78e">&#34;</span>
+<div class="highlight"><pre tabindex="0" style="color:#d8dee9;background-color:#2e3440;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#81a1c1">eval</span> <span style="color:#a3be8c">&#34;</span><span style="color:#81a1c1;font-weight:bold">$(</span>pyenv init -<span style="color:#81a1c1;font-weight:bold">)</span><span style="color:#a3be8c">&#34;</span>
 </span></span></code></pre></div><p>Once you have pyenv installed, you can do a few things like below:</p>
 <p><strong>Installing a Python version</strong></p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#78787e"># List all available Python versions</span>
+<div class="highlight"><pre tabindex="0" style="color:#d8dee9;background-color:#2e3440;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#616e87;font-style:italic"># List all available Python versions</span>
 </span></span><span style="display:flex;"><span>$ pyenv install --list
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#78787e"># Install a specific Python version (3.7.8)</span>
+</span></span><span style="display:flex;"><span><span style="color:#616e87;font-style:italic"># Install a specific Python version (3.7.8)</span>
 </span></span><span style="display:flex;"><span>$ pyenv install 3.7.8
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#78787e"># List Python version installed</span>
+</span></span><span style="display:flex;"><span><span style="color:#616e87;font-style:italic"># List Python version installed</span>
 </span></span><span style="display:flex;"><span>$ pyenv versions
-</span></span><span style="display:flex;"><span>* system <span style="color:#ff6ac1">(</span><span style="color:#ff5c57">set</span> by /Users/....<span style="color:#ff6ac1">)</span>
+</span></span><span style="display:flex;"><span>* system <span style="color:#81a1c1">(</span><span style="color:#81a1c1">set</span> by /Users/....<span style="color:#81a1c1">)</span>
 </span></span><span style="display:flex;"><span>  3.7.8
 </span></span></code></pre></div><p><strong>Setting a local Python version</strong></p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#78787e"># Set the Python version for the current directory</span>
-</span></span><span style="display:flex;"><span>$ pyenv <span style="color:#ff5c57">local</span> 3.7.8
+<div class="highlight"><pre tabindex="0" style="color:#d8dee9;background-color:#2e3440;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#616e87;font-style:italic"># Set the Python version for the current directory</span>
+</span></span><span style="display:flex;"><span>$ pyenv <span style="color:#81a1c1">local</span> 3.7.8
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#78787e"># Now by default you will be using Python 3.7.8</span>
+</span></span><span style="display:flex;"><span><span style="color:#616e87;font-style:italic"># Now by default you will be using Python 3.7.8</span>
 </span></span><span style="display:flex;"><span>$ python
-</span></span><span style="display:flex;"><span>Python 3.7.8 <span style="color:#ff6ac1">(</span>default, Aug <span style="color:#ff9f43">17</span> 2020, 11:05:21<span style="color:#ff6ac1">)</span>
+</span></span><span style="display:flex;"><span>Python 3.7.8 <span style="color:#81a1c1">(</span>default, Aug <span style="color:#b48ead">17</span> 2020, 11:05:21<span style="color:#81a1c1">)</span>
 </span></span><span style="display:flex;"><span>&gt;&gt;&gt;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#78787e"># Unset it and change back to system default</span>
-</span></span><span style="display:flex;"><span>$ pyenv <span style="color:#ff5c57">local</span> --unset
+</span></span><span style="display:flex;"><span><span style="color:#616e87;font-style:italic"># Unset it and change back to system default</span>
+</span></span><span style="display:flex;"><span>$ pyenv <span style="color:#81a1c1">local</span> --unset
 </span></span></code></pre></div><p><strong>Setting a global Python version</strong></p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#78787e"># Install a new version and set it as system default</span>
+<div class="highlight"><pre tabindex="0" style="color:#d8dee9;background-color:#2e3440;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#616e87;font-style:italic"># Install a new version and set it as system default</span>
 </span></span><span style="display:flex;"><span>$ pyenv install 2.7.6
 </span></span><span style="display:flex;"><span>$ pyenv global 2.7.6
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#78787e"># Now you have 2.7.6 as the default Python version</span>
+</span></span><span style="display:flex;"><span><span style="color:#616e87;font-style:italic"># Now you have 2.7.6 as the default Python version</span>
 </span></span><span style="display:flex;"><span>$ python
-</span></span><span style="display:flex;"><span>Python 2.7.6 <span style="color:#ff6ac1">(</span>default, Aug <span style="color:#ff9f43">17</span> 2020, 11:08:23<span style="color:#ff6ac1">)</span>
+</span></span><span style="display:flex;"><span>Python 2.7.6 <span style="color:#81a1c1">(</span>default, Aug <span style="color:#b48ead">17</span> 2020, 11:08:23<span style="color:#81a1c1">)</span>
 </span></span><span style="display:flex;"><span>&gt;&gt;&gt;
 </span></span></code></pre></div><h2 id="using-virtualenv-with-pyenv" >
 <div>
@@ -462,25 +564,25 @@ gtag('config', 'G-12LX2RWP72');
 </h2>
 <p>pyenv by itself only allows you to switch between different Python versions. To create an isolated environment with a set of dependencies, we will need <a href="https://virtualenv.pypa.io/en/latest/">virtualenv</a> too. You can follow the steps below to set up your computer to use pyenv and virtualenv together.</p>
 <p>Firstly, we need ot install virtualenv:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ pip3 install virtualenv
+<div class="highlight"><pre tabindex="0" style="color:#d8dee9;background-color:#2e3440;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ pip3 install virtualenv
 </span></span><span style="display:flex;"><span>$ pip3 install virtualenvwrapper
 </span></span></code></pre></div><p>Next, we need to install pyenv-virtualenv. This can be done on macOS by using brew as follows (or follow the instructions on <a href="https://github.com/pyenv/pyenv-virtualenv">this page</a> if you are not using macOS):</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ brew install pyenv-virtualenv
+<div class="highlight"><pre tabindex="0" style="color:#d8dee9;background-color:#2e3440;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ brew install pyenv-virtualenv
 </span></span></code></pre></div><p>Finally, add the following line to your <code>.bashrc</code> or <code>.zshrc</code> file:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#ff5c57">eval</span> <span style="color:#5af78e">&#34;</span><span style="color:#ff6ac1">$(</span>pyenv virtualenv-init -<span style="color:#ff6ac1">)</span><span style="color:#5af78e">&#34;</span>
+<div class="highlight"><pre tabindex="0" style="color:#d8dee9;background-color:#2e3440;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#81a1c1">eval</span> <span style="color:#a3be8c">&#34;</span><span style="color:#81a1c1;font-weight:bold">$(</span>pyenv virtualenv-init -<span style="color:#81a1c1;font-weight:bold">)</span><span style="color:#a3be8c">&#34;</span>
 </span></span></code></pre></div><p>Once you are done with the steps above, you can create new virtual environments as follows:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#78787e"># Install a new Python version</span>
+<div class="highlight"><pre tabindex="0" style="color:#d8dee9;background-color:#2e3440;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#616e87;font-style:italic"># Install a new Python version</span>
 </span></span><span style="display:flex;"><span>$ pyenv install 3.7.4
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#78787e"># Create a new virtualenv named myenv with Python 3.7.4</span>
+</span></span><span style="display:flex;"><span><span style="color:#616e87;font-style:italic"># Create a new virtualenv named myenv with Python 3.7.4</span>
 </span></span><span style="display:flex;"><span>$ pyenv virtualenv 3.7.4 tf1.15
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#78787e"># Go to the project directory, and set its local environment</span>
-</span></span><span style="display:flex;"><span>$ <span style="color:#ff5c57">cd</span> ~/repo/my-project
-</span></span><span style="display:flex;"><span>$ pyenv <span style="color:#ff5c57">local</span> tf1.15
+</span></span><span style="display:flex;"><span><span style="color:#616e87;font-style:italic"># Go to the project directory, and set its local environment</span>
+</span></span><span style="display:flex;"><span>$ <span style="color:#81a1c1">cd</span> ~/repo/my-project
+</span></span><span style="display:flex;"><span>$ pyenv <span style="color:#81a1c1">local</span> tf1.15
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#78787e"># Install dependencies as needed</span>
-</span></span><span style="display:flex;"><span>$ pip3 install <span style="color:#ff5c57">tensorflow</span><span style="color:#ff6ac1">==</span>1.15
+</span></span><span style="display:flex;"><span><span style="color:#616e87;font-style:italic"># Install dependencies as needed</span>
+</span></span><span style="display:flex;"><span>$ pip3 install tensorflow<span style="color:#81a1c1">==</span>1.15
 </span></span></code></pre></div><h2 id="adding-kernels-to-jupyter" >
 <div>
     <a href="#adding-kernels-to-jupyter">
@@ -491,9 +593,9 @@ gtag('config', 'G-12LX2RWP72');
 </h2>
 <p>It is also common that we use Jupyter for quick prototyping and testing. It would be convenient if we can invoke different virtual environments in Jupyter to test our source codes. In fact, it is very easy to create new kernels of different virtual environments in Jupyter.</p>
 <p>Firstly, you have to check the paths of your Juypyter installation. (Note that it does not matter which environment you are using to run your Jupyter notebook or Jupyter lab.) You can check the paths using the following command:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ jupyter --paths
+<div class="highlight"><pre tabindex="0" style="color:#d8dee9;background-color:#2e3440;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ jupyter --paths
 </span></span></code></pre></div><p>On my computer, it is something like below. What we need to note here is the <code>data</code> path.</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>config:
+<div class="highlight"><pre tabindex="0" style="color:#d8dee9;background-color:#2e3440;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>config:
 </span></span><span style="display:flex;"><span>    /Users/albert/.jupyter
 </span></span><span style="display:flex;"><span>    /usr/local/Cellar/python@3.8/3.8.4/Frameworks/Python.framework/Versions/3.8/etc/jupyter
 </span></span><span style="display:flex;"><span>    /usr/local/etc/jupyter
@@ -506,27 +608,27 @@ gtag('config', 'G-12LX2RWP72');
 </span></span><span style="display:flex;"><span>runtime:
 </span></span><span style="display:flex;"><span>    /Users/ayeung/Library/Jupyter/runtime
 </span></span></code></pre></div><p>Next, we will need to check the path to the Python interpreter of the virtual environment:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#78787e"># Activate your virtualenv</span>
+<div class="highlight"><pre tabindex="0" style="color:#d8dee9;background-color:#2e3440;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#616e87;font-style:italic"># Activate your virtualenv</span>
 </span></span><span style="display:flex;"><span>$ pyenv activate tf1.15
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#78787e"># Check path of the Python interpreter</span>
+</span></span><span style="display:flex;"><span><span style="color:#616e87;font-style:italic"># Check path of the Python interpreter</span>
 </span></span><span style="display:flex;"><span>$ pyenv which python
 </span></span><span style="display:flex;"><span>/Users/albert/.pyenv/versions/tf1.15/bin/python
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#78787e"># Deactivate the virtualenv</span>
+</span></span><span style="display:flex;"><span><span style="color:#616e87;font-style:italic"># Deactivate the virtualenv</span>
 </span></span><span style="display:flex;"><span>$ pyenv deactivate
 </span></span></code></pre></div><p>Finally, we create a new folder under the <code>kernels</code> directory:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ mkdir /User/albert/Library/Jupyter/kernels/tf1.15
+<div class="highlight"><pre tabindex="0" style="color:#d8dee9;background-color:#2e3440;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ mkdir /User/albert/Library/Jupyter/kernels/tf1.15
 </span></span></code></pre></div><p>and add a new file named <code>kernel.json</code> in that directory with the following content:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>{
-</span></span><span style="display:flex;"><span>  <span style="color:#5af78e">&#34;argv&#34;</span>: [
-</span></span><span style="display:flex;"><span>    <span style="color:#5af78e">&#34;/User/albert/.pyenv/versions/tf1.15/bin/python&#34;</span>,
-</span></span><span style="display:flex;"><span>    <span style="color:#5af78e">&#34;-m&#34;</span>, <span style="color:#5af78e">&#34;ipykernel&#34;</span>,
-</span></span><span style="display:flex;"><span>    <span style="color:#5af78e">&#34;-f&#34;</span>, <span style="color:#5af78e">&#34;</span><span style="color:#5af78e">{connection_file}</span><span style="color:#5af78e">&#34;</span>
-</span></span><span style="display:flex;"><span>  ],
-</span></span><span style="display:flex;"><span>  <span style="color:#5af78e">&#34;display_name&#34;</span>: <span style="color:#5af78e">&#34;tf1.15&#34;</span>,
-</span></span><span style="display:flex;"><span>  <span style="color:#5af78e">&#34;language&#34;</span>: <span style="color:#5af78e">&#34;python&#34;</span>
-</span></span><span style="display:flex;"><span>}
+<div class="highlight"><pre tabindex="0" style="color:#d8dee9;background-color:#2e3440;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#eceff4">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a3be8c">&#34;argv&#34;</span><span style="color:#eceff4">:</span> <span style="color:#eceff4">[</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a3be8c">&#34;/User/albert/.pyenv/versions/tf1.15/bin/python&#34;</span><span style="color:#eceff4">,</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a3be8c">&#34;-m&#34;</span><span style="color:#eceff4">,</span> <span style="color:#a3be8c">&#34;ipykernel&#34;</span><span style="color:#eceff4">,</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a3be8c">&#34;-f&#34;</span><span style="color:#eceff4">,</span> <span style="color:#a3be8c">&#34;</span><span style="color:#a3be8c">{connection_file}</span><span style="color:#a3be8c">&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#eceff4">],</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a3be8c">&#34;display_name&#34;</span><span style="color:#eceff4">:</span> <span style="color:#a3be8c">&#34;tf1.15&#34;</span><span style="color:#eceff4">,</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a3be8c">&#34;language&#34;</span><span style="color:#eceff4">:</span> <span style="color:#a3be8c">&#34;python&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#eceff4">}</span>
 </span></span></code></pre></div><p>Once this is done, you will be able to use the kernel in Jupyter.</p>
         </div>
 

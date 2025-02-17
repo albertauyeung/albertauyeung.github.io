@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 
 
-    
-
 <html lang="en-us" data-theme="">
 <head>
     
@@ -28,13 +26,27 @@
 
 
 
+
+
     
 
 
 
-    
+<style>
+  body {
+    visibility: hidden;
+    opacity: 0;
+  }
+</style>
 
-
+<noscript>
+  <style>
+    body {
+      visibility: visible;
+      opacity: 1;
+    }
+  </style>
+</noscript>
 
 
 
@@ -108,7 +120,7 @@
 
     
       
-        <link rel="stylesheet" href="/css/style.min.501a18f184de613bbd235ece9218c319166ee042d67b2fc5d5b9cedc01afaffb.css" integrity="sha256-UBoY8YTeYTu9I17OkhjDGRZu4ELWey/F1bnO3AGvr/s=" crossorigin="anonymous">
+        <link rel="stylesheet" href="/css/style.min.bc2ba405e352f0155ca07bcc3b2b20b7d7498bc9a1f2d2d9a146e731ed5342b3.css" integrity="sha256-vCukBeNS8BVcoHvMOysgt9dJi8mh8tLZoUbnMe1TQrM=" crossorigin="anonymous">
       
     
 
@@ -180,13 +192,103 @@ gtag('config', 'G-12LX2RWP72');
 
 
 
+
+
     
 
 
 
     
+        <div class="theme-switcher">
+            <span class="inline-svg">
+
+    
 
 
+    
+    
+    
+    
+    
+
+    <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-sun-high"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14.828 14.828a4 4 0 1 0 -5.656 -5.656a4 4 0 0 0 5.656 5.656z" /><path d="M6.343 17.657l-1.414 1.414" /><path d="M6.343 6.343l-1.414 -1.414" /><path d="M17.657 6.343l1.414 -1.414" /><path d="M17.657 17.657l1.414 1.414" /><path d="M4 12h-2" /><path d="M12 4v-2" /><path d="M20 12h2" /><path d="M12 20v2" /></svg>
+
+
+</span>
+
+        </div>
+    
+
+    <script>
+        const STORAGE_KEY = 'user-color-scheme'
+        const defaultTheme = "light"
+
+        let currentTheme
+        let switchButton
+        let autoDefinedScheme = window.matchMedia('(prefers-color-scheme: dark)')
+
+        function switchTheme(e) {
+            currentTheme = (currentTheme === 'dark') ? 'light' : 'dark';
+            if (localStorage) localStorage.setItem(STORAGE_KEY, currentTheme);
+            document.documentElement.setAttribute('data-theme', currentTheme);
+            changeGiscusTheme(currentTheme);
+            document.body.dispatchEvent(new CustomEvent(currentTheme + "-theme-set"));
+        }
+
+        const autoChangeScheme = e => {
+            currentTheme = e.matches ? 'dark' : 'light'
+            document.documentElement.setAttribute('data-theme', currentTheme);
+            changeGiscusTheme(currentTheme);
+            document.body.dispatchEvent(new CustomEvent(currentTheme + "-theme-set"));
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            switchButton = document.querySelector('.theme-switcher')
+            currentTheme = detectCurrentScheme()
+
+            if (currentTheme === 'auto') {
+                autoChangeScheme(autoDefinedScheme);
+                autoDefinedScheme.addListener(autoChangeScheme);
+            } else {
+                document.documentElement.setAttribute('data-theme', currentTheme)
+            }
+
+            if (switchButton) {
+                switchButton.addEventListener('click', switchTheme, false)
+            }
+
+            showContent();
+        })
+
+        function detectCurrentScheme() {
+            if (localStorage !== null && localStorage.getItem(STORAGE_KEY)) {
+                return localStorage.getItem(STORAGE_KEY)
+            }
+            if (defaultTheme) {
+                return defaultTheme
+            }
+            return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+
+        function showContent() {
+            document.body.style.visibility = 'visible';
+            document.body.style.opacity = 1;
+        }
+
+        function changeGiscusTheme (theme) {
+            function sendMessage(message) {
+              const iframe = document.querySelector('iframe.giscus-frame');
+              if (!iframe) return;
+              iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+            }
+
+            sendMessage({
+              setConfig: {
+                theme: theme
+              }
+            });
+        }
+    </script>
 
 
         <ul class="social-icons noselect">
@@ -536,115 +638,115 @@ $\hat{r}_{ij} = b + bu_i + bd_j + \sum_{k=1}^k{p_{ik} q_{kj}}$
 </div>
 </h2>
 <p>Once we have derived the update rules as described above, it actually becomes very straightforward to implement the algorithm. The following is a function that implements the algorithm in Python using the <a href="https://en.wikipedia.org/wiki/Stochastic_gradient_descent"><strong>stochastic gradient descent</strong></a> algorithm. Note that this implementation requires the <a href="http://numpy.scipy.org/"><strong>Numpy</strong></a> module.</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ff6ac1">import</span> numpy <span style="color:#ff6ac1">as</span> np
+<div class="highlight"><pre tabindex="0" style="color:#d8dee9;background-color:#2e3440;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">import</span> <span style="color:#8fbcbb">numpy</span> <span style="color:#81a1c1;font-weight:bold">as</span> <span style="color:#8fbcbb">np</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">class</span> <span style="color:#f3f99d">MF</span>():
+</span></span><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">class</span> <span style="color:#8fbcbb">MF</span><span style="color:#eceff4">():</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">def</span> __init__(self, R, K, alpha, beta, iterations):
-</span></span><span style="display:flex;"><span>        <span style="color:#5af78e">&#34;&#34;&#34;
-</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">        Perform matrix factorization to predict empty
-</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">        entries in a matrix.
-</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">
-</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">        Arguments
-</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">        - R (ndarray)   : user-item rating matrix
-</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">        - K (int)       : number of latent dimensions
-</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">        - alpha (float) : learning rate
-</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">        - beta (float)  : regularization parameter
-</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">        &#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#81a1c1;font-weight:bold">def</span> __init__<span style="color:#eceff4">(</span>self<span style="color:#eceff4">,</span> R<span style="color:#eceff4">,</span> K<span style="color:#eceff4">,</span> alpha<span style="color:#eceff4">,</span> beta<span style="color:#eceff4">,</span> iterations<span style="color:#eceff4">):</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#a3be8c">&#34;&#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#a3be8c">        Perform matrix factorization to predict empty
+</span></span></span><span style="display:flex;"><span><span style="color:#a3be8c">        entries in a matrix.
+</span></span></span><span style="display:flex;"><span><span style="color:#a3be8c">
+</span></span></span><span style="display:flex;"><span><span style="color:#a3be8c">        Arguments
+</span></span></span><span style="display:flex;"><span><span style="color:#a3be8c">        - R (ndarray)   : user-item rating matrix
+</span></span></span><span style="display:flex;"><span><span style="color:#a3be8c">        - K (int)       : number of latent dimensions
+</span></span></span><span style="display:flex;"><span><span style="color:#a3be8c">        - alpha (float) : learning rate
+</span></span></span><span style="display:flex;"><span><span style="color:#a3be8c">        - beta (float)  : regularization parameter
+</span></span></span><span style="display:flex;"><span><span style="color:#a3be8c">        &#34;&#34;&#34;</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        self<span style="color:#ff6ac1">.</span>R <span style="color:#ff6ac1">=</span> R
-</span></span><span style="display:flex;"><span>        self<span style="color:#ff6ac1">.</span>num_users, self<span style="color:#ff6ac1">.</span>num_items <span style="color:#ff6ac1">=</span> R<span style="color:#ff6ac1">.</span>shape
-</span></span><span style="display:flex;"><span>        self<span style="color:#ff6ac1">.</span>K <span style="color:#ff6ac1">=</span> K
-</span></span><span style="display:flex;"><span>        self<span style="color:#ff6ac1">.</span>alpha <span style="color:#ff6ac1">=</span> alpha
-</span></span><span style="display:flex;"><span>        self<span style="color:#ff6ac1">.</span>beta <span style="color:#ff6ac1">=</span> beta
-</span></span><span style="display:flex;"><span>        self<span style="color:#ff6ac1">.</span>iterations <span style="color:#ff6ac1">=</span> iterations
+</span></span><span style="display:flex;"><span>        self<span style="color:#81a1c1">.</span>R <span style="color:#81a1c1">=</span> R
+</span></span><span style="display:flex;"><span>        self<span style="color:#81a1c1">.</span>num_users<span style="color:#eceff4">,</span> self<span style="color:#81a1c1">.</span>num_items <span style="color:#81a1c1">=</span> R<span style="color:#81a1c1">.</span>shape
+</span></span><span style="display:flex;"><span>        self<span style="color:#81a1c1">.</span>K <span style="color:#81a1c1">=</span> K
+</span></span><span style="display:flex;"><span>        self<span style="color:#81a1c1">.</span>alpha <span style="color:#81a1c1">=</span> alpha
+</span></span><span style="display:flex;"><span>        self<span style="color:#81a1c1">.</span>beta <span style="color:#81a1c1">=</span> beta
+</span></span><span style="display:flex;"><span>        self<span style="color:#81a1c1">.</span>iterations <span style="color:#81a1c1">=</span> iterations
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">def</span> <span style="color:#57c7ff">train</span>(self):
-</span></span><span style="display:flex;"><span>        <span style="color:#78787e"># Initialize user and item latent feature matrice</span>
-</span></span><span style="display:flex;"><span>        self<span style="color:#ff6ac1">.</span>P <span style="color:#ff6ac1">=</span> np<span style="color:#ff6ac1">.</span>random<span style="color:#ff6ac1">.</span>normal(scale<span style="color:#ff6ac1">=</span><span style="color:#ff9f43">1.</span><span style="color:#ff6ac1">/</span>self<span style="color:#ff6ac1">.</span>K, size<span style="color:#ff6ac1">=</span>(self<span style="color:#ff6ac1">.</span>num_users, self<span style="color:#ff6ac1">.</span>K))
-</span></span><span style="display:flex;"><span>        self<span style="color:#ff6ac1">.</span>Q <span style="color:#ff6ac1">=</span> np<span style="color:#ff6ac1">.</span>random<span style="color:#ff6ac1">.</span>normal(scale<span style="color:#ff6ac1">=</span><span style="color:#ff9f43">1.</span><span style="color:#ff6ac1">/</span>self<span style="color:#ff6ac1">.</span>K, size<span style="color:#ff6ac1">=</span>(self<span style="color:#ff6ac1">.</span>num_items, self<span style="color:#ff6ac1">.</span>K))
+</span></span><span style="display:flex;"><span>    <span style="color:#81a1c1;font-weight:bold">def</span> <span style="color:#88c0d0">train</span><span style="color:#eceff4">(</span>self<span style="color:#eceff4">):</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#616e87;font-style:italic"># Initialize user and item latent feature matrice</span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#81a1c1">.</span>P <span style="color:#81a1c1">=</span> np<span style="color:#81a1c1">.</span>random<span style="color:#81a1c1">.</span>normal<span style="color:#eceff4">(</span>scale<span style="color:#81a1c1">=</span><span style="color:#b48ead">1.</span><span style="color:#81a1c1">/</span>self<span style="color:#81a1c1">.</span>K<span style="color:#eceff4">,</span> size<span style="color:#81a1c1">=</span><span style="color:#eceff4">(</span>self<span style="color:#81a1c1">.</span>num_users<span style="color:#eceff4">,</span> self<span style="color:#81a1c1">.</span>K<span style="color:#eceff4">))</span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#81a1c1">.</span>Q <span style="color:#81a1c1">=</span> np<span style="color:#81a1c1">.</span>random<span style="color:#81a1c1">.</span>normal<span style="color:#eceff4">(</span>scale<span style="color:#81a1c1">=</span><span style="color:#b48ead">1.</span><span style="color:#81a1c1">/</span>self<span style="color:#81a1c1">.</span>K<span style="color:#eceff4">,</span> size<span style="color:#81a1c1">=</span><span style="color:#eceff4">(</span>self<span style="color:#81a1c1">.</span>num_items<span style="color:#eceff4">,</span> self<span style="color:#81a1c1">.</span>K<span style="color:#eceff4">))</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        <span style="color:#78787e"># Initialize the biases</span>
-</span></span><span style="display:flex;"><span>        self<span style="color:#ff6ac1">.</span>b_u <span style="color:#ff6ac1">=</span> np<span style="color:#ff6ac1">.</span>zeros(self<span style="color:#ff6ac1">.</span>num_users)
-</span></span><span style="display:flex;"><span>        self<span style="color:#ff6ac1">.</span>b_i <span style="color:#ff6ac1">=</span> np<span style="color:#ff6ac1">.</span>zeros(self<span style="color:#ff6ac1">.</span>num_items)
-</span></span><span style="display:flex;"><span>        self<span style="color:#ff6ac1">.</span>b <span style="color:#ff6ac1">=</span> np<span style="color:#ff6ac1">.</span>mean(self<span style="color:#ff6ac1">.</span>R[np<span style="color:#ff6ac1">.</span>where(self<span style="color:#ff6ac1">.</span>R <span style="color:#ff6ac1">!=</span> <span style="color:#ff9f43">0</span>)])
+</span></span><span style="display:flex;"><span>        <span style="color:#616e87;font-style:italic"># Initialize the biases</span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#81a1c1">.</span>b_u <span style="color:#81a1c1">=</span> np<span style="color:#81a1c1">.</span>zeros<span style="color:#eceff4">(</span>self<span style="color:#81a1c1">.</span>num_users<span style="color:#eceff4">)</span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#81a1c1">.</span>b_i <span style="color:#81a1c1">=</span> np<span style="color:#81a1c1">.</span>zeros<span style="color:#eceff4">(</span>self<span style="color:#81a1c1">.</span>num_items<span style="color:#eceff4">)</span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#81a1c1">.</span>b <span style="color:#81a1c1">=</span> np<span style="color:#81a1c1">.</span>mean<span style="color:#eceff4">(</span>self<span style="color:#81a1c1">.</span>R<span style="color:#eceff4">[</span>np<span style="color:#81a1c1">.</span>where<span style="color:#eceff4">(</span>self<span style="color:#81a1c1">.</span>R <span style="color:#81a1c1">!=</span> <span style="color:#b48ead">0</span><span style="color:#eceff4">)])</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        <span style="color:#78787e"># Create a list of training samples</span>
-</span></span><span style="display:flex;"><span>        self<span style="color:#ff6ac1">.</span>samples <span style="color:#ff6ac1">=</span> [
-</span></span><span style="display:flex;"><span>            (i, j, self<span style="color:#ff6ac1">.</span>R[i, j])
-</span></span><span style="display:flex;"><span>            <span style="color:#ff6ac1">for</span> i <span style="color:#ff6ac1">in</span> <span style="color:#ff5c57">range</span>(self<span style="color:#ff6ac1">.</span>num_users)
-</span></span><span style="display:flex;"><span>            <span style="color:#ff6ac1">for</span> j <span style="color:#ff6ac1">in</span> <span style="color:#ff5c57">range</span>(self<span style="color:#ff6ac1">.</span>num_items)
-</span></span><span style="display:flex;"><span>            <span style="color:#ff6ac1">if</span> self<span style="color:#ff6ac1">.</span>R[i, j] <span style="color:#ff6ac1">&gt;</span> <span style="color:#ff9f43">0</span>
-</span></span><span style="display:flex;"><span>        ]
+</span></span><span style="display:flex;"><span>        <span style="color:#616e87;font-style:italic"># Create a list of training samples</span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#81a1c1">.</span>samples <span style="color:#81a1c1">=</span> <span style="color:#eceff4">[</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#eceff4">(</span>i<span style="color:#eceff4">,</span> j<span style="color:#eceff4">,</span> self<span style="color:#81a1c1">.</span>R<span style="color:#eceff4">[</span>i<span style="color:#eceff4">,</span> j<span style="color:#eceff4">])</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#81a1c1;font-weight:bold">for</span> i <span style="color:#81a1c1;font-weight:bold">in</span> <span style="color:#81a1c1">range</span><span style="color:#eceff4">(</span>self<span style="color:#81a1c1">.</span>num_users<span style="color:#eceff4">)</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#81a1c1;font-weight:bold">for</span> j <span style="color:#81a1c1;font-weight:bold">in</span> <span style="color:#81a1c1">range</span><span style="color:#eceff4">(</span>self<span style="color:#81a1c1">.</span>num_items<span style="color:#eceff4">)</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#81a1c1;font-weight:bold">if</span> self<span style="color:#81a1c1">.</span>R<span style="color:#eceff4">[</span>i<span style="color:#eceff4">,</span> j<span style="color:#eceff4">]</span> <span style="color:#81a1c1">&gt;</span> <span style="color:#b48ead">0</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#eceff4">]</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        <span style="color:#78787e"># Perform stochastic gradient descent for number of iterations</span>
-</span></span><span style="display:flex;"><span>        training_process <span style="color:#ff6ac1">=</span> []
-</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">for</span> i <span style="color:#ff6ac1">in</span> <span style="color:#ff5c57">range</span>(self<span style="color:#ff6ac1">.</span>iterations):
-</span></span><span style="display:flex;"><span>            np<span style="color:#ff6ac1">.</span>random<span style="color:#ff6ac1">.</span>shuffle(self<span style="color:#ff6ac1">.</span>samples)
-</span></span><span style="display:flex;"><span>            self<span style="color:#ff6ac1">.</span>sgd()
-</span></span><span style="display:flex;"><span>            mse <span style="color:#ff6ac1">=</span> self<span style="color:#ff6ac1">.</span>mse()
-</span></span><span style="display:flex;"><span>            training_process<span style="color:#ff6ac1">.</span>append((i, mse))
-</span></span><span style="display:flex;"><span>            <span style="color:#ff6ac1">if</span> (i<span style="color:#ff6ac1">+</span><span style="color:#ff9f43">1</span>) <span style="color:#ff6ac1">%</span> <span style="color:#ff9f43">10</span> <span style="color:#ff6ac1">==</span> <span style="color:#ff9f43">0</span>:
-</span></span><span style="display:flex;"><span>                <span style="color:#ff5c57">print</span>(<span style="color:#5af78e">&#34;Iteration: </span><span style="color:#5af78e">%d</span><span style="color:#5af78e"> ; error = </span><span style="color:#5af78e">%.4f</span><span style="color:#5af78e">&#34;</span> <span style="color:#ff6ac1">%</span> (i<span style="color:#ff6ac1">+</span><span style="color:#ff9f43">1</span>, mse))
+</span></span><span style="display:flex;"><span>        <span style="color:#616e87;font-style:italic"># Perform stochastic gradient descent for number of iterations</span>
+</span></span><span style="display:flex;"><span>        training_process <span style="color:#81a1c1">=</span> <span style="color:#eceff4">[]</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#81a1c1;font-weight:bold">for</span> i <span style="color:#81a1c1;font-weight:bold">in</span> <span style="color:#81a1c1">range</span><span style="color:#eceff4">(</span>self<span style="color:#81a1c1">.</span>iterations<span style="color:#eceff4">):</span>
+</span></span><span style="display:flex;"><span>            np<span style="color:#81a1c1">.</span>random<span style="color:#81a1c1">.</span>shuffle<span style="color:#eceff4">(</span>self<span style="color:#81a1c1">.</span>samples<span style="color:#eceff4">)</span>
+</span></span><span style="display:flex;"><span>            self<span style="color:#81a1c1">.</span>sgd<span style="color:#eceff4">()</span>
+</span></span><span style="display:flex;"><span>            mse <span style="color:#81a1c1">=</span> self<span style="color:#81a1c1">.</span>mse<span style="color:#eceff4">()</span>
+</span></span><span style="display:flex;"><span>            training_process<span style="color:#81a1c1">.</span>append<span style="color:#eceff4">((</span>i<span style="color:#eceff4">,</span> mse<span style="color:#eceff4">))</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#81a1c1;font-weight:bold">if</span> <span style="color:#eceff4">(</span>i<span style="color:#81a1c1">+</span><span style="color:#b48ead">1</span><span style="color:#eceff4">)</span> <span style="color:#81a1c1">%</span> <span style="color:#b48ead">10</span> <span style="color:#81a1c1">==</span> <span style="color:#b48ead">0</span><span style="color:#eceff4">:</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#81a1c1">print</span><span style="color:#eceff4">(</span><span style="color:#a3be8c">&#34;Iteration: </span><span style="color:#a3be8c">%d</span><span style="color:#a3be8c"> ; error = </span><span style="color:#a3be8c">%.4f</span><span style="color:#a3be8c">&#34;</span> <span style="color:#81a1c1">%</span> <span style="color:#eceff4">(</span>i<span style="color:#81a1c1">+</span><span style="color:#b48ead">1</span><span style="color:#eceff4">,</span> mse<span style="color:#eceff4">))</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">return</span> training_process
+</span></span><span style="display:flex;"><span>        <span style="color:#81a1c1;font-weight:bold">return</span> training_process
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">def</span> <span style="color:#57c7ff">mse</span>(self):
-</span></span><span style="display:flex;"><span>        <span style="color:#5af78e">&#34;&#34;&#34;
-</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">        A function to compute the total mean square error
-</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">        &#34;&#34;&#34;</span>
-</span></span><span style="display:flex;"><span>        xs, ys <span style="color:#ff6ac1">=</span> self<span style="color:#ff6ac1">.</span>R<span style="color:#ff6ac1">.</span>nonzero()
-</span></span><span style="display:flex;"><span>        predicted <span style="color:#ff6ac1">=</span> self<span style="color:#ff6ac1">.</span>full_matrix()
-</span></span><span style="display:flex;"><span>        error <span style="color:#ff6ac1">=</span> <span style="color:#ff9f43">0</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">for</span> x, y <span style="color:#ff6ac1">in</span> <span style="color:#ff5c57">zip</span>(xs, ys):
-</span></span><span style="display:flex;"><span>            error <span style="color:#ff6ac1">+=</span> <span style="color:#ff5c57">pow</span>(self<span style="color:#ff6ac1">.</span>R[x, y] <span style="color:#ff6ac1">-</span> predicted[x, y], <span style="color:#ff9f43">2</span>)
-</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">return</span> np<span style="color:#ff6ac1">.</span>sqrt(error)
+</span></span><span style="display:flex;"><span>    <span style="color:#81a1c1;font-weight:bold">def</span> <span style="color:#88c0d0">mse</span><span style="color:#eceff4">(</span>self<span style="color:#eceff4">):</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#a3be8c">&#34;&#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#a3be8c">        A function to compute the total mean square error
+</span></span></span><span style="display:flex;"><span><span style="color:#a3be8c">        &#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        xs<span style="color:#eceff4">,</span> ys <span style="color:#81a1c1">=</span> self<span style="color:#81a1c1">.</span>R<span style="color:#81a1c1">.</span>nonzero<span style="color:#eceff4">()</span>
+</span></span><span style="display:flex;"><span>        predicted <span style="color:#81a1c1">=</span> self<span style="color:#81a1c1">.</span>full_matrix<span style="color:#eceff4">()</span>
+</span></span><span style="display:flex;"><span>        error <span style="color:#81a1c1">=</span> <span style="color:#b48ead">0</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#81a1c1;font-weight:bold">for</span> x<span style="color:#eceff4">,</span> y <span style="color:#81a1c1;font-weight:bold">in</span> <span style="color:#81a1c1">zip</span><span style="color:#eceff4">(</span>xs<span style="color:#eceff4">,</span> ys<span style="color:#eceff4">):</span>
+</span></span><span style="display:flex;"><span>            error <span style="color:#81a1c1">+=</span> <span style="color:#81a1c1">pow</span><span style="color:#eceff4">(</span>self<span style="color:#81a1c1">.</span>R<span style="color:#eceff4">[</span>x<span style="color:#eceff4">,</span> y<span style="color:#eceff4">]</span> <span style="color:#81a1c1">-</span> predicted<span style="color:#eceff4">[</span>x<span style="color:#eceff4">,</span> y<span style="color:#eceff4">],</span> <span style="color:#b48ead">2</span><span style="color:#eceff4">)</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#81a1c1;font-weight:bold">return</span> np<span style="color:#81a1c1">.</span>sqrt<span style="color:#eceff4">(</span>error<span style="color:#eceff4">)</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">def</span> <span style="color:#57c7ff">sgd</span>(self):
-</span></span><span style="display:flex;"><span>        <span style="color:#5af78e">&#34;&#34;&#34;
-</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">        Perform stochastic graident descent
-</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">        &#34;&#34;&#34;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">for</span> i, j, r <span style="color:#ff6ac1">in</span> self<span style="color:#ff6ac1">.</span>samples:
-</span></span><span style="display:flex;"><span>            <span style="color:#78787e"># Computer prediction and error</span>
-</span></span><span style="display:flex;"><span>            prediction <span style="color:#ff6ac1">=</span> self<span style="color:#ff6ac1">.</span>get_rating(i, j)
-</span></span><span style="display:flex;"><span>            e <span style="color:#ff6ac1">=</span> (r <span style="color:#ff6ac1">-</span> prediction)
+</span></span><span style="display:flex;"><span>    <span style="color:#81a1c1;font-weight:bold">def</span> <span style="color:#88c0d0">sgd</span><span style="color:#eceff4">(</span>self<span style="color:#eceff4">):</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#a3be8c">&#34;&#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#a3be8c">        Perform stochastic graident descent
+</span></span></span><span style="display:flex;"><span><span style="color:#a3be8c">        &#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#81a1c1;font-weight:bold">for</span> i<span style="color:#eceff4">,</span> j<span style="color:#eceff4">,</span> r <span style="color:#81a1c1;font-weight:bold">in</span> self<span style="color:#81a1c1">.</span>samples<span style="color:#eceff4">:</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#616e87;font-style:italic"># Computer prediction and error</span>
+</span></span><span style="display:flex;"><span>            prediction <span style="color:#81a1c1">=</span> self<span style="color:#81a1c1">.</span>get_rating<span style="color:#eceff4">(</span>i<span style="color:#eceff4">,</span> j<span style="color:#eceff4">)</span>
+</span></span><span style="display:flex;"><span>            e <span style="color:#81a1c1">=</span> <span style="color:#eceff4">(</span>r <span style="color:#81a1c1">-</span> prediction<span style="color:#eceff4">)</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>            <span style="color:#78787e"># Update biases</span>
-</span></span><span style="display:flex;"><span>            self<span style="color:#ff6ac1">.</span>b_u[i] <span style="color:#ff6ac1">+=</span> self<span style="color:#ff6ac1">.</span>alpha <span style="color:#ff6ac1">*</span> (e <span style="color:#ff6ac1">-</span> self<span style="color:#ff6ac1">.</span>beta <span style="color:#ff6ac1">*</span> self<span style="color:#ff6ac1">.</span>b_u[i])
-</span></span><span style="display:flex;"><span>            self<span style="color:#ff6ac1">.</span>b_i[j] <span style="color:#ff6ac1">+=</span> self<span style="color:#ff6ac1">.</span>alpha <span style="color:#ff6ac1">*</span> (e <span style="color:#ff6ac1">-</span> self<span style="color:#ff6ac1">.</span>beta <span style="color:#ff6ac1">*</span> self<span style="color:#ff6ac1">.</span>b_i[j])
+</span></span><span style="display:flex;"><span>            <span style="color:#616e87;font-style:italic"># Update biases</span>
+</span></span><span style="display:flex;"><span>            self<span style="color:#81a1c1">.</span>b_u<span style="color:#eceff4">[</span>i<span style="color:#eceff4">]</span> <span style="color:#81a1c1">+=</span> self<span style="color:#81a1c1">.</span>alpha <span style="color:#81a1c1">*</span> <span style="color:#eceff4">(</span>e <span style="color:#81a1c1">-</span> self<span style="color:#81a1c1">.</span>beta <span style="color:#81a1c1">*</span> self<span style="color:#81a1c1">.</span>b_u<span style="color:#eceff4">[</span>i<span style="color:#eceff4">])</span>
+</span></span><span style="display:flex;"><span>            self<span style="color:#81a1c1">.</span>b_i<span style="color:#eceff4">[</span>j<span style="color:#eceff4">]</span> <span style="color:#81a1c1">+=</span> self<span style="color:#81a1c1">.</span>alpha <span style="color:#81a1c1">*</span> <span style="color:#eceff4">(</span>e <span style="color:#81a1c1">-</span> self<span style="color:#81a1c1">.</span>beta <span style="color:#81a1c1">*</span> self<span style="color:#81a1c1">.</span>b_i<span style="color:#eceff4">[</span>j<span style="color:#eceff4">])</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>            <span style="color:#78787e"># Update user and item latent feature matrices</span>
-</span></span><span style="display:flex;"><span>            self<span style="color:#ff6ac1">.</span>P[i, :] <span style="color:#ff6ac1">+=</span> self<span style="color:#ff6ac1">.</span>alpha <span style="color:#ff6ac1">*</span> (e <span style="color:#ff6ac1">*</span> self<span style="color:#ff6ac1">.</span>Q[j, :] <span style="color:#ff6ac1">-</span> self<span style="color:#ff6ac1">.</span>beta <span style="color:#ff6ac1">*</span> self<span style="color:#ff6ac1">.</span>P[i,:])
-</span></span><span style="display:flex;"><span>            self<span style="color:#ff6ac1">.</span>Q[j, :] <span style="color:#ff6ac1">+=</span> self<span style="color:#ff6ac1">.</span>alpha <span style="color:#ff6ac1">*</span> (e <span style="color:#ff6ac1">*</span> self<span style="color:#ff6ac1">.</span>P[i, :] <span style="color:#ff6ac1">-</span> self<span style="color:#ff6ac1">.</span>beta <span style="color:#ff6ac1">*</span> self<span style="color:#ff6ac1">.</span>Q[j,:])
+</span></span><span style="display:flex;"><span>            <span style="color:#616e87;font-style:italic"># Update user and item latent feature matrices</span>
+</span></span><span style="display:flex;"><span>            self<span style="color:#81a1c1">.</span>P<span style="color:#eceff4">[</span>i<span style="color:#eceff4">,</span> <span style="color:#eceff4">:]</span> <span style="color:#81a1c1">+=</span> self<span style="color:#81a1c1">.</span>alpha <span style="color:#81a1c1">*</span> <span style="color:#eceff4">(</span>e <span style="color:#81a1c1">*</span> self<span style="color:#81a1c1">.</span>Q<span style="color:#eceff4">[</span>j<span style="color:#eceff4">,</span> <span style="color:#eceff4">:]</span> <span style="color:#81a1c1">-</span> self<span style="color:#81a1c1">.</span>beta <span style="color:#81a1c1">*</span> self<span style="color:#81a1c1">.</span>P<span style="color:#eceff4">[</span>i<span style="color:#eceff4">,:])</span>
+</span></span><span style="display:flex;"><span>            self<span style="color:#81a1c1">.</span>Q<span style="color:#eceff4">[</span>j<span style="color:#eceff4">,</span> <span style="color:#eceff4">:]</span> <span style="color:#81a1c1">+=</span> self<span style="color:#81a1c1">.</span>alpha <span style="color:#81a1c1">*</span> <span style="color:#eceff4">(</span>e <span style="color:#81a1c1">*</span> self<span style="color:#81a1c1">.</span>P<span style="color:#eceff4">[</span>i<span style="color:#eceff4">,</span> <span style="color:#eceff4">:]</span> <span style="color:#81a1c1">-</span> self<span style="color:#81a1c1">.</span>beta <span style="color:#81a1c1">*</span> self<span style="color:#81a1c1">.</span>Q<span style="color:#eceff4">[</span>j<span style="color:#eceff4">,:])</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">def</span> <span style="color:#57c7ff">get_rating</span>(self, i, j):
-</span></span><span style="display:flex;"><span>        <span style="color:#5af78e">&#34;&#34;&#34;
-</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">        Get the predicted rating of user i and item j
-</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">        &#34;&#34;&#34;</span>
-</span></span><span style="display:flex;"><span>        prediction <span style="color:#ff6ac1">=</span> self<span style="color:#ff6ac1">.</span>b <span style="color:#ff6ac1">+</span> self<span style="color:#ff6ac1">.</span>b_u[i] <span style="color:#ff6ac1">+</span> self<span style="color:#ff6ac1">.</span>b_i[j] <span style="color:#ff6ac1">+</span> self<span style="color:#ff6ac1">.</span>P[i, :]<span style="color:#ff6ac1">.</span>dot(self<span style="color:#ff6ac1">.</span>Q[j, :]<span style="color:#ff6ac1">.</span>T)
-</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">return</span> prediction
+</span></span><span style="display:flex;"><span>    <span style="color:#81a1c1;font-weight:bold">def</span> <span style="color:#88c0d0">get_rating</span><span style="color:#eceff4">(</span>self<span style="color:#eceff4">,</span> i<span style="color:#eceff4">,</span> j<span style="color:#eceff4">):</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#a3be8c">&#34;&#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#a3be8c">        Get the predicted rating of user i and item j
+</span></span></span><span style="display:flex;"><span><span style="color:#a3be8c">        &#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        prediction <span style="color:#81a1c1">=</span> self<span style="color:#81a1c1">.</span>b <span style="color:#81a1c1">+</span> self<span style="color:#81a1c1">.</span>b_u<span style="color:#eceff4">[</span>i<span style="color:#eceff4">]</span> <span style="color:#81a1c1">+</span> self<span style="color:#81a1c1">.</span>b_i<span style="color:#eceff4">[</span>j<span style="color:#eceff4">]</span> <span style="color:#81a1c1">+</span> self<span style="color:#81a1c1">.</span>P<span style="color:#eceff4">[</span>i<span style="color:#eceff4">,</span> <span style="color:#eceff4">:]</span><span style="color:#81a1c1">.</span>dot<span style="color:#eceff4">(</span>self<span style="color:#81a1c1">.</span>Q<span style="color:#eceff4">[</span>j<span style="color:#eceff4">,</span> <span style="color:#eceff4">:]</span><span style="color:#81a1c1">.</span>T<span style="color:#eceff4">)</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#81a1c1;font-weight:bold">return</span> prediction
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">def</span> <span style="color:#57c7ff">full_matrix</span>(self):
-</span></span><span style="display:flex;"><span>        <span style="color:#5af78e">&#34;&#34;&#34;
-</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">        Computer the full matrix using the resultant biases, P and Q
-</span></span></span><span style="display:flex;"><span><span style="color:#5af78e">        &#34;&#34;&#34;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">return</span> self<span style="color:#ff6ac1">.</span>b <span style="color:#ff6ac1">+</span> self<span style="color:#ff6ac1">.</span>b_u[:,np<span style="color:#ff6ac1">.</span>newaxis] <span style="color:#ff6ac1">+</span> self<span style="color:#ff6ac1">.</span>b_i[np<span style="color:#ff6ac1">.</span>newaxis:,] <span style="color:#ff6ac1">+</span> self<span style="color:#ff6ac1">.</span>P<span style="color:#ff6ac1">.</span>dot(self<span style="color:#ff6ac1">.</span>Q<span style="color:#ff6ac1">.</span>T)
+</span></span><span style="display:flex;"><span>    <span style="color:#81a1c1;font-weight:bold">def</span> <span style="color:#88c0d0">full_matrix</span><span style="color:#eceff4">(</span>self<span style="color:#eceff4">):</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#a3be8c">&#34;&#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#a3be8c">        Computer the full matrix using the resultant biases, P and Q
+</span></span></span><span style="display:flex;"><span><span style="color:#a3be8c">        &#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#81a1c1;font-weight:bold">return</span> self<span style="color:#81a1c1">.</span>b <span style="color:#81a1c1">+</span> self<span style="color:#81a1c1">.</span>b_u<span style="color:#eceff4">[:,</span>np<span style="color:#81a1c1">.</span>newaxis<span style="color:#eceff4">]</span> <span style="color:#81a1c1">+</span> self<span style="color:#81a1c1">.</span>b_i<span style="color:#eceff4">[</span>np<span style="color:#81a1c1">.</span>newaxis<span style="color:#eceff4">:,]</span> <span style="color:#81a1c1">+</span> self<span style="color:#81a1c1">.</span>P<span style="color:#81a1c1">.</span>dot<span style="color:#eceff4">(</span>self<span style="color:#81a1c1">.</span>Q<span style="color:#81a1c1">.</span>T<span style="color:#eceff4">)</span>
 </span></span></code></pre></div><p>We can try to apply it to our example mentioned above and see what we would get. Below is a code snippet in Python for running the example.</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>R <span style="color:#ff6ac1">=</span> np<span style="color:#ff6ac1">.</span>array([
-</span></span><span style="display:flex;"><span>    [<span style="color:#ff9f43">5</span>, <span style="color:#ff9f43">3</span>, <span style="color:#ff9f43">0</span>, <span style="color:#ff9f43">1</span>],
-</span></span><span style="display:flex;"><span>    [<span style="color:#ff9f43">4</span>, <span style="color:#ff9f43">0</span>, <span style="color:#ff9f43">0</span>, <span style="color:#ff9f43">1</span>],
-</span></span><span style="display:flex;"><span>    [<span style="color:#ff9f43">1</span>, <span style="color:#ff9f43">1</span>, <span style="color:#ff9f43">0</span>, <span style="color:#ff9f43">5</span>],
-</span></span><span style="display:flex;"><span>    [<span style="color:#ff9f43">1</span>, <span style="color:#ff9f43">0</span>, <span style="color:#ff9f43">0</span>, <span style="color:#ff9f43">4</span>],
-</span></span><span style="display:flex;"><span>    [<span style="color:#ff9f43">0</span>, <span style="color:#ff9f43">1</span>, <span style="color:#ff9f43">5</span>, <span style="color:#ff9f43">4</span>],
-</span></span><span style="display:flex;"><span>])
+<div class="highlight"><pre tabindex="0" style="color:#d8dee9;background-color:#2e3440;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>R <span style="color:#81a1c1">=</span> np<span style="color:#81a1c1">.</span>array<span style="color:#eceff4">([</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#eceff4">[</span><span style="color:#b48ead">5</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">3</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">1</span><span style="color:#eceff4">],</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#eceff4">[</span><span style="color:#b48ead">4</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">1</span><span style="color:#eceff4">],</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#eceff4">[</span><span style="color:#b48ead">1</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">1</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">5</span><span style="color:#eceff4">],</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#eceff4">[</span><span style="color:#b48ead">1</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">4</span><span style="color:#eceff4">],</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#eceff4">[</span><span style="color:#b48ead">0</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">1</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">5</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">4</span><span style="color:#eceff4">],</span>
+</span></span><span style="display:flex;"><span><span style="color:#eceff4">])</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>mf <span style="color:#ff6ac1">=</span> MF(R, K<span style="color:#ff6ac1">=</span><span style="color:#ff9f43">2</span>, alpha<span style="color:#ff6ac1">=</span><span style="color:#ff9f43">0.1</span>, beta<span style="color:#ff6ac1">=</span><span style="color:#ff9f43">0.01</span>, iterations<span style="color:#ff6ac1">=</span><span style="color:#ff9f43">20</span>)
+</span></span><span style="display:flex;"><span>mf <span style="color:#81a1c1">=</span> MF<span style="color:#eceff4">(</span>R<span style="color:#eceff4">,</span> K<span style="color:#81a1c1">=</span><span style="color:#b48ead">2</span><span style="color:#eceff4">,</span> alpha<span style="color:#81a1c1">=</span><span style="color:#b48ead">0.1</span><span style="color:#eceff4">,</span> beta<span style="color:#81a1c1">=</span><span style="color:#b48ead">0.01</span><span style="color:#eceff4">,</span> iterations<span style="color:#81a1c1">=</span><span style="color:#b48ead">20</span><span style="color:#eceff4">)</span>
 </span></span></code></pre></div><p>And the matrix obtained from the above process would look something like this:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>[[ <span style="color:#ff9f43">4.99</span>  <span style="color:#ff9f43">3.</span>    <span style="color:#ff9f43">3.34</span>  <span style="color:#ff9f43">1.01</span>]
-</span></span><span style="display:flex;"><span> [ <span style="color:#ff9f43">4.</span>    <span style="color:#ff9f43">3.18</span>  <span style="color:#ff9f43">2.98</span>  <span style="color:#ff9f43">1.01</span>]
-</span></span><span style="display:flex;"><span> [ <span style="color:#ff9f43">1.02</span>  <span style="color:#ff9f43">0.96</span>  <span style="color:#ff9f43">5.54</span>  <span style="color:#ff9f43">4.97</span>]
-</span></span><span style="display:flex;"><span> [ <span style="color:#ff9f43">1.</span>    <span style="color:#ff9f43">0.6</span>   <span style="color:#ff9f43">4.78</span>  <span style="color:#ff9f43">3.97</span>]
-</span></span><span style="display:flex;"><span> [ <span style="color:#ff9f43">1.53</span>  <span style="color:#ff9f43">1.05</span>  <span style="color:#ff9f43">4.94</span>  <span style="color:#ff9f43">4.03</span>]]
+<div class="highlight"><pre tabindex="0" style="color:#d8dee9;background-color:#2e3440;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#eceff4">[[</span> <span style="color:#b48ead">4.99</span>  <span style="color:#b48ead">3.</span>    <span style="color:#b48ead">3.34</span>  <span style="color:#b48ead">1.01</span><span style="color:#eceff4">]</span>
+</span></span><span style="display:flex;"><span> <span style="color:#eceff4">[</span> <span style="color:#b48ead">4.</span>    <span style="color:#b48ead">3.18</span>  <span style="color:#b48ead">2.98</span>  <span style="color:#b48ead">1.01</span><span style="color:#eceff4">]</span>
+</span></span><span style="display:flex;"><span> <span style="color:#eceff4">[</span> <span style="color:#b48ead">1.02</span>  <span style="color:#b48ead">0.96</span>  <span style="color:#b48ead">5.54</span>  <span style="color:#b48ead">4.97</span><span style="color:#eceff4">]</span>
+</span></span><span style="display:flex;"><span> <span style="color:#eceff4">[</span> <span style="color:#b48ead">1.</span>    <span style="color:#b48ead">0.6</span>   <span style="color:#b48ead">4.78</span>  <span style="color:#b48ead">3.97</span><span style="color:#eceff4">]</span>
+</span></span><span style="display:flex;"><span> <span style="color:#eceff4">[</span> <span style="color:#b48ead">1.53</span>  <span style="color:#b48ead">1.05</span>  <span style="color:#b48ead">4.94</span>  <span style="color:#b48ead">4.03</span><span style="color:#eceff4">]]</span>
 </span></span></code></pre></div><p>We can see that for existing ratings we have the approximations very close to the true values, and we also get some &lsquo;predictions&rsquo; of the unknown values. In this simple example, we can easily see that $U1$ and $U2$ have similar taste and they both rated $D1$ and $D2$ high, while the rest of the users preferred $D3$, $D4$ and $D5$. When the number of features ($K$ in the Python code) is 2, the algorithm is able to associate the users and items to two different features, and the predictions also follow these associations. For example, we can see that the predicted rating of $U4$ on $D3$ is 4.78, because $U4$ and $U5$ both rated $D4$ high.</p>
 <h2 id="further-information" >
 <div>

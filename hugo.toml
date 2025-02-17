@@ -18,8 +18,7 @@ readMore = true
 toc = false
 math = true
 
-colorTheme = "light"
-colorThemeSwitcher = false
+colorThemeSwitcher = true
 
 customCSS = ["custom-css/style.css"]
 
@@ -62,4 +61,4 @@ weight = 5
 unsafe = true
 
 [markup.highlight]
-style = "base16-snazzy"
+style = "nord"

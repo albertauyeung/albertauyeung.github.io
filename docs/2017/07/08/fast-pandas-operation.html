@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 
 
-    
-
 <html lang="en-us" data-theme="">
 <head>
     
@@ -28,13 +26,27 @@
 
 
 
+
+
     
 
 
 
-    
+<style>
+  body {
+    visibility: hidden;
+    opacity: 0;
+  }
+</style>
 
-
+<noscript>
+  <style>
+    body {
+      visibility: visible;
+      opacity: 1;
+    }
+  </style>
+</noscript>
 
 
 
@@ -108,7 +120,7 @@
 
     
       
-        <link rel="stylesheet" href="/css/style.min.501a18f184de613bbd235ece9218c319166ee042d67b2fc5d5b9cedc01afaffb.css" integrity="sha256-UBoY8YTeYTu9I17OkhjDGRZu4ELWey/F1bnO3AGvr/s=" crossorigin="anonymous">
+        <link rel="stylesheet" href="/css/style.min.bc2ba405e352f0155ca07bcc3b2b20b7d7498bc9a1f2d2d9a146e731ed5342b3.css" integrity="sha256-vCukBeNS8BVcoHvMOysgt9dJi8mh8tLZoUbnMe1TQrM=" crossorigin="anonymous">
       
     
 
@@ -180,13 +192,103 @@ gtag('config', 'G-12LX2RWP72');
 
 
 
+
+
     
 
 
 
     
+        <div class="theme-switcher">
+            <span class="inline-svg">
+
+    
 
 
+    
+    
+    
+    
+    
+
+    <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-sun-high"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14.828 14.828a4 4 0 1 0 -5.656 -5.656a4 4 0 0 0 5.656 5.656z" /><path d="M6.343 17.657l-1.414 1.414" /><path d="M6.343 6.343l-1.414 -1.414" /><path d="M17.657 6.343l1.414 -1.414" /><path d="M17.657 17.657l1.414 1.414" /><path d="M4 12h-2" /><path d="M12 4v-2" /><path d="M20 12h2" /><path d="M12 20v2" /></svg>
+
+
+</span>
+
+        </div>
+    
+
+    <script>
+        const STORAGE_KEY = 'user-color-scheme'
+        const defaultTheme = "light"
+
+        let currentTheme
+        let switchButton
+        let autoDefinedScheme = window.matchMedia('(prefers-color-scheme: dark)')
+
+        function switchTheme(e) {
+            currentTheme = (currentTheme === 'dark') ? 'light' : 'dark';
+            if (localStorage) localStorage.setItem(STORAGE_KEY, currentTheme);
+            document.documentElement.setAttribute('data-theme', currentTheme);
+            changeGiscusTheme(currentTheme);
+            document.body.dispatchEvent(new CustomEvent(currentTheme + "-theme-set"));
+        }
+
+        const autoChangeScheme = e => {
+            currentTheme = e.matches ? 'dark' : 'light'
+            document.documentElement.setAttribute('data-theme', currentTheme);
+            changeGiscusTheme(currentTheme);
+            document.body.dispatchEvent(new CustomEvent(currentTheme + "-theme-set"));
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            switchButton = document.querySelector('.theme-switcher')
+            currentTheme = detectCurrentScheme()
+
+            if (currentTheme === 'auto') {
+                autoChangeScheme(autoDefinedScheme);
+                autoDefinedScheme.addListener(autoChangeScheme);
+            } else {
+                document.documentElement.setAttribute('data-theme', currentTheme)
+            }
+
+            if (switchButton) {
+                switchButton.addEventListener('click', switchTheme, false)
+            }
+
+            showContent();
+        })
+
+        function detectCurrentScheme() {
+            if (localStorage !== null && localStorage.getItem(STORAGE_KEY)) {
+                return localStorage.getItem(STORAGE_KEY)
+            }
+            if (defaultTheme) {
+                return defaultTheme
+            }
+            return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+
+        function showContent() {
+            document.body.style.visibility = 'visible';
+            document.body.style.opacity = 1;
+        }
+
+        function changeGiscusTheme (theme) {
+            function sendMessage(message) {
+              const iframe = document.querySelector('iframe.giscus-frame');
+              if (!iframe) return;
+              iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+            }
+
+            sendMessage({
+              setConfig: {
+                theme: theme
+              }
+            });
+        }
+    </script>
 
 
         <ul class="social-icons noselect">
@@ -406,20 +508,20 @@ gtag('config', 'G-12LX2RWP72');
 </div>
 </h2>
 <p>To demonstrate the differences, let&rsquo;s generate some random data first. The following block of code will generate a <code>DataFrame</code> with 5,000 rows and 3 columns (<code>A</code>, <code>B</code> and <code>C</code>) with values ranging from -10 to 10.</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>In [<span style="color:#ff9f43">1</span>]: <span style="color:#ff6ac1">import</span> pandas <span style="color:#ff6ac1">as</span> pd
-</span></span><span style="display:flex;"><span>In [<span style="color:#ff9f43">2</span>]: <span style="color:#ff6ac1">import</span> numpy <span style="color:#ff6ac1">as</span> np
-</span></span><span style="display:flex;"><span>In [<span style="color:#ff9f43">3</span>]: data <span style="color:#ff6ac1">=</span> np<span style="color:#ff6ac1">.</span>random<span style="color:#ff6ac1">.</span>randint(<span style="color:#ff6ac1">-</span><span style="color:#ff9f43">10</span>, <span style="color:#ff9f43">10</span>, (<span style="color:#ff9f43">5000</span>, <span style="color:#ff9f43">3</span>))
-</span></span><span style="display:flex;"><span>In [<span style="color:#ff9f43">4</span>]: df <span style="color:#ff6ac1">=</span> pd<span style="color:#ff6ac1">.</span>DataFrame(data<span style="color:#ff6ac1">=</span>data, columns<span style="color:#ff6ac1">=</span>[<span style="color:#5af78e">&#34;A&#34;</span>, <span style="color:#5af78e">&#34;B&#34;</span>, <span style="color:#5af78e">&#34;C&#34;</span>], index<span style="color:#ff6ac1">=</span><span style="color:#ff6ac1">None</span>)
+<div class="highlight"><pre tabindex="0" style="color:#d8dee9;background-color:#2e3440;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>In <span style="color:#eceff4">[</span><span style="color:#b48ead">1</span><span style="color:#eceff4">]:</span> <span style="color:#81a1c1;font-weight:bold">import</span> <span style="color:#8fbcbb">pandas</span> <span style="color:#81a1c1;font-weight:bold">as</span> <span style="color:#8fbcbb">pd</span>
+</span></span><span style="display:flex;"><span>In <span style="color:#eceff4">[</span><span style="color:#b48ead">2</span><span style="color:#eceff4">]:</span> <span style="color:#81a1c1;font-weight:bold">import</span> <span style="color:#8fbcbb">numpy</span> <span style="color:#81a1c1;font-weight:bold">as</span> <span style="color:#8fbcbb">np</span>
+</span></span><span style="display:flex;"><span>In <span style="color:#eceff4">[</span><span style="color:#b48ead">3</span><span style="color:#eceff4">]:</span> data <span style="color:#81a1c1">=</span> np<span style="color:#81a1c1">.</span>random<span style="color:#81a1c1">.</span>randint<span style="color:#eceff4">(</span><span style="color:#81a1c1">-</span><span style="color:#b48ead">10</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">10</span><span style="color:#eceff4">,</span> <span style="color:#eceff4">(</span><span style="color:#b48ead">5000</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">3</span><span style="color:#eceff4">))</span>
+</span></span><span style="display:flex;"><span>In <span style="color:#eceff4">[</span><span style="color:#b48ead">4</span><span style="color:#eceff4">]:</span> df <span style="color:#81a1c1">=</span> pd<span style="color:#81a1c1">.</span>DataFrame<span style="color:#eceff4">(</span>data<span style="color:#81a1c1">=</span>data<span style="color:#eceff4">,</span> columns<span style="color:#81a1c1">=</span><span style="color:#eceff4">[</span><span style="color:#a3be8c">&#34;A&#34;</span><span style="color:#eceff4">,</span> <span style="color:#a3be8c">&#34;B&#34;</span><span style="color:#eceff4">,</span> <span style="color:#a3be8c">&#34;C&#34;</span><span style="color:#eceff4">],</span> index<span style="color:#81a1c1">=</span><span style="color:#81a1c1;font-weight:bold">None</span><span style="color:#eceff4">)</span>
 </span></span></code></pre></div><p>To track the time required to finish an operation, we can make use of the IPython magic function <a href="https://ipython.org/ipython-doc/3/interactive/magics.html#magic-timeit"><code>%timeit</code></a> to measure the time required to execute a line in Python.</p>
 <p>To start with, let&rsquo;s consider a simple task of creating a new column in the DataFrame, whose values depend on whether the sum of the values in other columns are greater than zero. First, let&rsquo;s try using the <code>apply</code> function of the DataFrame:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>In [<span style="color:#ff9f43">5</span>]: <span style="color:#ff6ac1">%</span>timeit df[<span style="color:#5af78e">&#34;D&#34;</span>] <span style="color:#ff6ac1">=</span> df<span style="color:#ff6ac1">.</span>apply(<span style="color:#ff6ac1">lambda</span> x: <span style="color:#ff9f43">1</span> <span style="color:#ff6ac1">if</span> x[<span style="color:#5af78e">&#34;A&#34;</span>] <span style="color:#ff6ac1">+</span> x[<span style="color:#5af78e">&#34;B&#34;</span>] <span style="color:#ff6ac1">+</span> x[<span style="color:#5af78e">&#34;C&#34;</span>] <span style="color:#ff6ac1">&gt;</span> <span style="color:#ff9f43">0</span> <span style="color:#ff6ac1">else</span> <span style="color:#ff9f43">0</span>, axis<span style="color:#ff6ac1">=</span><span style="color:#ff9f43">1</span>)
-</span></span><span style="display:flex;"><span><span style="color:#ff9f43">134</span> ms <span style="color:#ff5c57">±</span> <span style="color:#ff9f43">1.59</span> ms per loop (mean <span style="color:#ff5c57">±</span> std<span style="color:#ff6ac1">.</span> dev<span style="color:#ff6ac1">.</span> of <span style="color:#ff9f43">7</span> runs, <span style="color:#ff9f43">10</span> loops each)
+<div class="highlight"><pre tabindex="0" style="color:#d8dee9;background-color:#2e3440;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>In <span style="color:#eceff4">[</span><span style="color:#b48ead">5</span><span style="color:#eceff4">]:</span> <span style="color:#81a1c1">%</span>timeit df<span style="color:#eceff4">[</span><span style="color:#a3be8c">&#34;D&#34;</span><span style="color:#eceff4">]</span> <span style="color:#81a1c1">=</span> df<span style="color:#81a1c1">.</span>apply<span style="color:#eceff4">(</span><span style="color:#81a1c1;font-weight:bold">lambda</span> x<span style="color:#eceff4">:</span> <span style="color:#b48ead">1</span> <span style="color:#81a1c1;font-weight:bold">if</span> x<span style="color:#eceff4">[</span><span style="color:#a3be8c">&#34;A&#34;</span><span style="color:#eceff4">]</span> <span style="color:#81a1c1">+</span> x<span style="color:#eceff4">[</span><span style="color:#a3be8c">&#34;B&#34;</span><span style="color:#eceff4">]</span> <span style="color:#81a1c1">+</span> x<span style="color:#eceff4">[</span><span style="color:#a3be8c">&#34;C&#34;</span><span style="color:#eceff4">]</span> <span style="color:#81a1c1">&gt;</span> <span style="color:#b48ead">0</span> <span style="color:#81a1c1;font-weight:bold">else</span> <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span> axis<span style="color:#81a1c1">=</span><span style="color:#b48ead">1</span><span style="color:#eceff4">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#b48ead">134</span> ms <span style="color:#bf616a">±</span> <span style="color:#b48ead">1.59</span> ms per loop <span style="color:#eceff4">(</span>mean <span style="color:#bf616a">±</span> std<span style="color:#81a1c1">.</span> dev<span style="color:#81a1c1">.</span> of <span style="color:#b48ead">7</span> runs<span style="color:#eceff4">,</span> <span style="color:#b48ead">10</span> loops each<span style="color:#eceff4">)</span>
 </span></span></code></pre></div><p>It takes about 134ms to finish the operation, which seems quite fast. However, if we take another approach by using numpy&rsquo;s <code>where()</code> function, we can actually be much faster:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>In [<span style="color:#ff9f43">6</span>]: <span style="color:#ff6ac1">%</span>timeit df[<span style="color:#5af78e">&#34;E&#34;</span>] <span style="color:#ff6ac1">=</span> np<span style="color:#ff6ac1">.</span>where(df[<span style="color:#5af78e">&#34;A&#34;</span>] <span style="color:#ff6ac1">+</span> df[<span style="color:#5af78e">&#34;B&#34;</span>] <span style="color:#ff6ac1">+</span> df[<span style="color:#5af78e">&#34;C&#34;</span>] <span style="color:#ff6ac1">&gt;</span> <span style="color:#ff9f43">0</span>, <span style="color:#ff9f43">1</span>, <span style="color:#ff9f43">0</span>)
-</span></span><span style="display:flex;"><span><span style="color:#ff9f43">757</span> µs <span style="color:#ff5c57">±</span> <span style="color:#ff9f43">38.8</span> µs per loop (mean <span style="color:#ff5c57">±</span> std<span style="color:#ff6ac1">.</span> dev<span style="color:#ff6ac1">.</span> of <span style="color:#ff9f43">7</span> runs, <span style="color:#ff9f43">1000</span> loops each)
+<div class="highlight"><pre tabindex="0" style="color:#d8dee9;background-color:#2e3440;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>In <span style="color:#eceff4">[</span><span style="color:#b48ead">6</span><span style="color:#eceff4">]:</span> <span style="color:#81a1c1">%</span>timeit df<span style="color:#eceff4">[</span><span style="color:#a3be8c">&#34;E&#34;</span><span style="color:#eceff4">]</span> <span style="color:#81a1c1">=</span> np<span style="color:#81a1c1">.</span>where<span style="color:#eceff4">(</span>df<span style="color:#eceff4">[</span><span style="color:#a3be8c">&#34;A&#34;</span><span style="color:#eceff4">]</span> <span style="color:#81a1c1">+</span> df<span style="color:#eceff4">[</span><span style="color:#a3be8c">&#34;B&#34;</span><span style="color:#eceff4">]</span> <span style="color:#81a1c1">+</span> df<span style="color:#eceff4">[</span><span style="color:#a3be8c">&#34;C&#34;</span><span style="color:#eceff4">]</span> <span style="color:#81a1c1">&gt;</span> <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">1</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">0</span><span style="color:#eceff4">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#b48ead">757</span> µs <span style="color:#bf616a">±</span> <span style="color:#b48ead">38.8</span> µs per loop <span style="color:#eceff4">(</span>mean <span style="color:#bf616a">±</span> std<span style="color:#81a1c1">.</span> dev<span style="color:#81a1c1">.</span> of <span style="color:#b48ead">7</span> runs<span style="color:#eceff4">,</span> <span style="color:#b48ead">1000</span> loops each<span style="color:#eceff4">)</span>
 </span></span></code></pre></div><p>This is ~170 times faster! We can verified that the two methods actually give the same results as follows. (<code>np.any</code> checks if any of the values in a list is <code>True</code>).</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>In [<span style="color:#ff9f43">7</span>]: np<span style="color:#ff6ac1">.</span>any(df[<span style="color:#5af78e">&#34;D&#34;</span>] <span style="color:#ff6ac1">!=</span> df[<span style="color:#5af78e">&#34;E&#34;</span>])
-</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">False</span>
+<div class="highlight"><pre tabindex="0" style="color:#d8dee9;background-color:#2e3440;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>In <span style="color:#eceff4">[</span><span style="color:#b48ead">7</span><span style="color:#eceff4">]:</span> np<span style="color:#81a1c1">.</span>any<span style="color:#eceff4">(</span>df<span style="color:#eceff4">[</span><span style="color:#a3be8c">&#34;D&#34;</span><span style="color:#eceff4">]</span> <span style="color:#81a1c1">!=</span> df<span style="color:#eceff4">[</span><span style="color:#a3be8c">&#34;E&#34;</span><span style="color:#eceff4">])</span>
+</span></span><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">False</span>
 </span></span></code></pre></div><h2 id="string-operations" >
 <div>
     <a href="#string-operations">
@@ -429,13 +531,13 @@ gtag('config', 'G-12LX2RWP72');
 </div>
 </h2>
 <p>As another example, let&rsquo;s try searching substrings in a column. Firstly, let&rsquo;s generate some random text data in a new column:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>In [<span style="color:#ff9f43">8</span>]: df[<span style="color:#5af78e">&#34;F&#34;</span>] <span style="color:#ff6ac1">=</span> np<span style="color:#ff6ac1">.</span>random<span style="color:#ff6ac1">.</span>choice([<span style="color:#5af78e">&#34;apple&#34;</span>, <span style="color:#5af78e">&#34;banana&#34;</span>, <span style="color:#5af78e">&#34;orange&#34;</span>, <span style="color:#5af78e">&#34;pear&#34;</span>], <span style="color:#ff9f43">5000</span>)
+<div class="highlight"><pre tabindex="0" style="color:#d8dee9;background-color:#2e3440;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>In <span style="color:#eceff4">[</span><span style="color:#b48ead">8</span><span style="color:#eceff4">]:</span> df<span style="color:#eceff4">[</span><span style="color:#a3be8c">&#34;F&#34;</span><span style="color:#eceff4">]</span> <span style="color:#81a1c1">=</span> np<span style="color:#81a1c1">.</span>random<span style="color:#81a1c1">.</span>choice<span style="color:#eceff4">([</span><span style="color:#a3be8c">&#34;apple&#34;</span><span style="color:#eceff4">,</span> <span style="color:#a3be8c">&#34;banana&#34;</span><span style="color:#eceff4">,</span> <span style="color:#a3be8c">&#34;orange&#34;</span><span style="color:#eceff4">,</span> <span style="color:#a3be8c">&#34;pear&#34;</span><span style="color:#eceff4">],</span> <span style="color:#b48ead">5000</span><span style="color:#eceff4">)</span>
 </span></span></code></pre></div><p>Let&rsquo;s say we want to create a new column, whose values depend on whether Column <code>F</code> contains the substring <strong>an</strong>. Firstly, let&rsquo;s try the <code>apply</code> function:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>In [<span style="color:#ff9f43">9</span>]: <span style="color:#ff6ac1">%</span>timeit df[<span style="color:#5af78e">&#34;G&#34;</span>] <span style="color:#ff6ac1">=</span> df<span style="color:#ff6ac1">.</span>apply(<span style="color:#ff6ac1">lambda</span> x: <span style="color:#ff9f43">1</span> <span style="color:#ff6ac1">if</span> <span style="color:#5af78e">&#34;an&#34;</span> <span style="color:#ff6ac1">in</span> x[<span style="color:#5af78e">&#34;F&#34;</span>] <span style="color:#ff6ac1">else</span> <span style="color:#ff9f43">0</span>, axis<span style="color:#ff6ac1">=</span><span style="color:#ff9f43">1</span>)
-</span></span><span style="display:flex;"><span><span style="color:#ff9f43">61.1</span> ms <span style="color:#ff5c57">±</span> <span style="color:#ff9f43">685</span> µs per loop (mean <span style="color:#ff5c57">±</span> std<span style="color:#ff6ac1">.</span> dev<span style="color:#ff6ac1">.</span> of <span style="color:#ff9f43">7</span> runs, <span style="color:#ff9f43">10</span> loops each)
+<div class="highlight"><pre tabindex="0" style="color:#d8dee9;background-color:#2e3440;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>In <span style="color:#eceff4">[</span><span style="color:#b48ead">9</span><span style="color:#eceff4">]:</span> <span style="color:#81a1c1">%</span>timeit df<span style="color:#eceff4">[</span><span style="color:#a3be8c">&#34;G&#34;</span><span style="color:#eceff4">]</span> <span style="color:#81a1c1">=</span> df<span style="color:#81a1c1">.</span>apply<span style="color:#eceff4">(</span><span style="color:#81a1c1;font-weight:bold">lambda</span> x<span style="color:#eceff4">:</span> <span style="color:#b48ead">1</span> <span style="color:#81a1c1;font-weight:bold">if</span> <span style="color:#a3be8c">&#34;an&#34;</span> <span style="color:#81a1c1;font-weight:bold">in</span> x<span style="color:#eceff4">[</span><span style="color:#a3be8c">&#34;F&#34;</span><span style="color:#eceff4">]</span> <span style="color:#81a1c1;font-weight:bold">else</span> <span style="color:#b48ead">0</span><span style="color:#eceff4">,</span> axis<span style="color:#81a1c1">=</span><span style="color:#b48ead">1</span><span style="color:#eceff4">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#b48ead">61.1</span> ms <span style="color:#bf616a">±</span> <span style="color:#b48ead">685</span> µs per loop <span style="color:#eceff4">(</span>mean <span style="color:#bf616a">±</span> std<span style="color:#81a1c1">.</span> dev<span style="color:#81a1c1">.</span> of <span style="color:#b48ead">7</span> runs<span style="color:#eceff4">,</span> <span style="color:#b48ead">10</span> loops each<span style="color:#eceff4">)</span>
 </span></span></code></pre></div><p>Now, if we use the second approach:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>In [<span style="color:#ff9f43">10</span>]: <span style="color:#ff6ac1">%</span>timeit df[<span style="color:#5af78e">&#34;H&#34;</span>] <span style="color:#ff6ac1">=</span> np<span style="color:#ff6ac1">.</span>where(df[<span style="color:#5af78e">&#34;F&#34;</span>]<span style="color:#ff6ac1">.</span>str<span style="color:#ff6ac1">.</span>contains(<span style="color:#5af78e">&#34;an&#34;</span>), <span style="color:#ff9f43">1</span>, <span style="color:#ff9f43">0</span>)
-</span></span><span style="display:flex;"><span><span style="color:#ff9f43">2.65</span> ms <span style="color:#ff5c57">±</span> <span style="color:#ff9f43">40.9</span> µs per loop (mean <span style="color:#ff5c57">±</span> std<span style="color:#ff6ac1">.</span> dev<span style="color:#ff6ac1">.</span> of <span style="color:#ff9f43">7</span> runs, <span style="color:#ff9f43">100</span> loops each)
+<div class="highlight"><pre tabindex="0" style="color:#d8dee9;background-color:#2e3440;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>In <span style="color:#eceff4">[</span><span style="color:#b48ead">10</span><span style="color:#eceff4">]:</span> <span style="color:#81a1c1">%</span>timeit df<span style="color:#eceff4">[</span><span style="color:#a3be8c">&#34;H&#34;</span><span style="color:#eceff4">]</span> <span style="color:#81a1c1">=</span> np<span style="color:#81a1c1">.</span>where<span style="color:#eceff4">(</span>df<span style="color:#eceff4">[</span><span style="color:#a3be8c">&#34;F&#34;</span><span style="color:#eceff4">]</span><span style="color:#81a1c1">.</span>str<span style="color:#81a1c1">.</span>contains<span style="color:#eceff4">(</span><span style="color:#a3be8c">&#34;an&#34;</span><span style="color:#eceff4">),</span> <span style="color:#b48ead">1</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">0</span><span style="color:#eceff4">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#b48ead">2.65</span> ms <span style="color:#bf616a">±</span> <span style="color:#b48ead">40.9</span> µs per loop <span style="color:#eceff4">(</span>mean <span style="color:#bf616a">±</span> std<span style="color:#81a1c1">.</span> dev<span style="color:#81a1c1">.</span> of <span style="color:#b48ead">7</span> runs<span style="color:#eceff4">,</span> <span style="color:#b48ead">100</span> loops each<span style="color:#eceff4">)</span>
 </span></span></code></pre></div><p>which is ~30 times faster.</p>
 <p>The conclusion is that whenever we can operate on the whole column, we should avoid using <code>apply</code>, which is looping over every row of the DataFrame, and is not able to take advantage of numpy vectorization when performing the calculation.</p>
         </div>

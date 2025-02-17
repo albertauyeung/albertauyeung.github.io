@@ -16,13 +16,9 @@ p {
 }
 .post-date {
     font-size: 1.2em;
-    color: #111111;
 }
 p, li, .u-url {
     font-size: 0.9em;
-}
-.post-card {
-    background-color: #FFFFFF;
 }
 .terms li {
     display: inline-block;

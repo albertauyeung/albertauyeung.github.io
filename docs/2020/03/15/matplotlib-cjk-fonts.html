@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 
 
-    
-
 <html lang="en-us" data-theme="">
 <head>
     
@@ -28,13 +26,27 @@
 
 
 
+
+
     
 
 
 
-    
+<style>
+  body {
+    visibility: hidden;
+    opacity: 0;
+  }
+</style>
 
-
+<noscript>
+  <style>
+    body {
+      visibility: visible;
+      opacity: 1;
+    }
+  </style>
+</noscript>
 
 
 
@@ -108,7 +120,7 @@
 
     
       
-        <link rel="stylesheet" href="/css/style.min.501a18f184de613bbd235ece9218c319166ee042d67b2fc5d5b9cedc01afaffb.css" integrity="sha256-UBoY8YTeYTu9I17OkhjDGRZu4ELWey/F1bnO3AGvr/s=" crossorigin="anonymous">
+        <link rel="stylesheet" href="/css/style.min.bc2ba405e352f0155ca07bcc3b2b20b7d7498bc9a1f2d2d9a146e731ed5342b3.css" integrity="sha256-vCukBeNS8BVcoHvMOysgt9dJi8mh8tLZoUbnMe1TQrM=" crossorigin="anonymous">
       
     
 
@@ -180,13 +192,103 @@ gtag('config', 'G-12LX2RWP72');
 
 
 
+
+
     
 
 
 
     
+        <div class="theme-switcher">
+            <span class="inline-svg">
+
+    
 
 
+    
+    
+    
+    
+    
+
+    <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-sun-high"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14.828 14.828a4 4 0 1 0 -5.656 -5.656a4 4 0 0 0 5.656 5.656z" /><path d="M6.343 17.657l-1.414 1.414" /><path d="M6.343 6.343l-1.414 -1.414" /><path d="M17.657 6.343l1.414 -1.414" /><path d="M17.657 17.657l1.414 1.414" /><path d="M4 12h-2" /><path d="M12 4v-2" /><path d="M20 12h2" /><path d="M12 20v2" /></svg>
+
+
+</span>
+
+        </div>
+    
+
+    <script>
+        const STORAGE_KEY = 'user-color-scheme'
+        const defaultTheme = "light"
+
+        let currentTheme
+        let switchButton
+        let autoDefinedScheme = window.matchMedia('(prefers-color-scheme: dark)')
+
+        function switchTheme(e) {
+            currentTheme = (currentTheme === 'dark') ? 'light' : 'dark';
+            if (localStorage) localStorage.setItem(STORAGE_KEY, currentTheme);
+            document.documentElement.setAttribute('data-theme', currentTheme);
+            changeGiscusTheme(currentTheme);
+            document.body.dispatchEvent(new CustomEvent(currentTheme + "-theme-set"));
+        }
+
+        const autoChangeScheme = e => {
+            currentTheme = e.matches ? 'dark' : 'light'
+            document.documentElement.setAttribute('data-theme', currentTheme);
+            changeGiscusTheme(currentTheme);
+            document.body.dispatchEvent(new CustomEvent(currentTheme + "-theme-set"));
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            switchButton = document.querySelector('.theme-switcher')
+            currentTheme = detectCurrentScheme()
+
+            if (currentTheme === 'auto') {
+                autoChangeScheme(autoDefinedScheme);
+                autoDefinedScheme.addListener(autoChangeScheme);
+            } else {
+                document.documentElement.setAttribute('data-theme', currentTheme)
+            }
+
+            if (switchButton) {
+                switchButton.addEventListener('click', switchTheme, false)
+            }
+
+            showContent();
+        })
+
+        function detectCurrentScheme() {
+            if (localStorage !== null && localStorage.getItem(STORAGE_KEY)) {
+                return localStorage.getItem(STORAGE_KEY)
+            }
+            if (defaultTheme) {
+                return defaultTheme
+            }
+            return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+
+        function showContent() {
+            document.body.style.visibility = 'visible';
+            document.body.style.opacity = 1;
+        }
+
+        function changeGiscusTheme (theme) {
+            function sendMessage(message) {
+              const iframe = document.querySelector('iframe.giscus-frame');
+              if (!iframe) return;
+              iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+            }
+
+            sendMessage({
+              setConfig: {
+                theme: theme
+              }
+            });
+        }
+    </script>
 
 
         <ul class="social-icons noselect">
@@ -414,22 +516,22 @@ gtag('config', 'G-12LX2RWP72');
 </h2>
 <p>If you have a font file that support displaying CJK characters, you can directly provide the path to the font file using the <code>FontProperties</code> class in Matplotlib. This font file can be a <code>.ttf</code> file (TrueType Font) or a <code>.otf</code> file (OpenType Font). For example, you can download a OTF font that supports displaying CJK characters from <a href="https://fonts.google.com/">Google Fonts</a>.</p>
 <p>Once we have the font file, we can create a <code>FontProperties</code> instance as follows:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ff6ac1">import</span> matplotlib.font_manager <span style="color:#ff6ac1">as</span> fm
-</span></span><span style="display:flex;"><span>fprop <span style="color:#ff6ac1">=</span> fm<span style="color:#ff6ac1">.</span>FontProperties(fname<span style="color:#ff6ac1">=</span><span style="color:#5af78e">&#39;NotoSansCJKtc-Regular.otf&#39;</span>)
+<div class="highlight"><pre tabindex="0" style="color:#d8dee9;background-color:#2e3440;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">import</span> <span style="color:#8fbcbb">matplotlib.font_manager</span> <span style="color:#81a1c1;font-weight:bold">as</span> <span style="color:#8fbcbb">fm</span>
+</span></span><span style="display:flex;"><span>fprop <span style="color:#81a1c1">=</span> fm<span style="color:#81a1c1">.</span>FontProperties<span style="color:#eceff4">(</span>fname<span style="color:#81a1c1">=</span><span style="color:#a3be8c">&#39;NotoSansCJKtc-Regular.otf&#39;</span><span style="color:#eceff4">)</span>
 </span></span></code></pre></div><p>When plotting a graph, we can provide this <code>FonProperties</code> instance as an argument to functions that control what words are displayed in the graph. The example below shows how to set the font for the title and the labels on the X-axis.</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ff6ac1">import</span> matplotlib.pyplot <span style="color:#ff6ac1">as</span> plt
+<div class="highlight"><pre tabindex="0" style="color:#d8dee9;background-color:#2e3440;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">import</span> <span style="color:#8fbcbb">matplotlib.pyplot</span> <span style="color:#81a1c1;font-weight:bold">as</span> <span style="color:#8fbcbb">plt</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#78787e"># Prepare some data</span>
-</span></span><span style="display:flex;"><span>x <span style="color:#ff6ac1">=</span> <span style="color:#ff5c57">list</span>(<span style="color:#ff5c57">range</span>(<span style="color:#ff9f43">20</span>))
-</span></span><span style="display:flex;"><span>xticks <span style="color:#ff6ac1">=</span> [<span style="color:#5af78e">&#34;類別</span><span style="color:#5af78e">{:d}</span><span style="color:#5af78e">&#34;</span><span style="color:#ff6ac1">.</span>format(i) <span style="color:#ff6ac1">for</span> i <span style="color:#ff6ac1">in</span> x]
-</span></span><span style="display:flex;"><span>y <span style="color:#ff6ac1">=</span> [random<span style="color:#ff6ac1">.</span>randint(<span style="color:#ff9f43">10</span>,<span style="color:#ff9f43">99</span>) <span style="color:#ff6ac1">for</span> i <span style="color:#ff6ac1">in</span> x]
+</span></span><span style="display:flex;"><span><span style="color:#616e87;font-style:italic"># Prepare some data</span>
+</span></span><span style="display:flex;"><span>x <span style="color:#81a1c1">=</span> <span style="color:#81a1c1">list</span><span style="color:#eceff4">(</span><span style="color:#81a1c1">range</span><span style="color:#eceff4">(</span><span style="color:#b48ead">20</span><span style="color:#eceff4">))</span>
+</span></span><span style="display:flex;"><span>xticks <span style="color:#81a1c1">=</span> <span style="color:#eceff4">[</span><span style="color:#a3be8c">&#34;類別</span><span style="color:#a3be8c">{:d}</span><span style="color:#a3be8c">&#34;</span><span style="color:#81a1c1">.</span>format<span style="color:#eceff4">(</span>i<span style="color:#eceff4">)</span> <span style="color:#81a1c1;font-weight:bold">for</span> i <span style="color:#81a1c1;font-weight:bold">in</span> x<span style="color:#eceff4">]</span>
+</span></span><span style="display:flex;"><span>y <span style="color:#81a1c1">=</span> <span style="color:#eceff4">[</span>random<span style="color:#81a1c1">.</span>randint<span style="color:#eceff4">(</span><span style="color:#b48ead">10</span><span style="color:#eceff4">,</span><span style="color:#b48ead">99</span><span style="color:#eceff4">)</span> <span style="color:#81a1c1;font-weight:bold">for</span> i <span style="color:#81a1c1;font-weight:bold">in</span> x<span style="color:#eceff4">]</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#78787e"># Plot the graph</span>
-</span></span><span style="display:flex;"><span>plt<span style="color:#ff6ac1">.</span>figure(figsize<span style="color:#ff6ac1">=</span>(<span style="color:#ff9f43">8</span>, <span style="color:#ff9f43">2</span>))
-</span></span><span style="display:flex;"><span>plt<span style="color:#ff6ac1">.</span>bar(x, y)
-</span></span><span style="display:flex;"><span>plt<span style="color:#ff6ac1">.</span>xticks(x, xticks, fontproperties<span style="color:#ff6ac1">=</span>fprop, fontsize<span style="color:#ff6ac1">=</span><span style="color:#ff9f43">12</span>, rotation<span style="color:#ff6ac1">=</span><span style="color:#ff9f43">45</span>)
-</span></span><span style="display:flex;"><span>plt<span style="color:#ff6ac1">.</span>title(<span style="color:#5af78e">&#34;圖1&#34;</span>, fontproperties<span style="color:#ff6ac1">=</span>fprop, fontsize<span style="color:#ff6ac1">=</span><span style="color:#ff9f43">18</span>)
-</span></span><span style="display:flex;"><span>plt<span style="color:#ff6ac1">.</span>show()
+</span></span><span style="display:flex;"><span><span style="color:#616e87;font-style:italic"># Plot the graph</span>
+</span></span><span style="display:flex;"><span>plt<span style="color:#81a1c1">.</span>figure<span style="color:#eceff4">(</span>figsize<span style="color:#81a1c1">=</span><span style="color:#eceff4">(</span><span style="color:#b48ead">8</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">2</span><span style="color:#eceff4">))</span>
+</span></span><span style="display:flex;"><span>plt<span style="color:#81a1c1">.</span>bar<span style="color:#eceff4">(</span>x<span style="color:#eceff4">,</span> y<span style="color:#eceff4">)</span>
+</span></span><span style="display:flex;"><span>plt<span style="color:#81a1c1">.</span>xticks<span style="color:#eceff4">(</span>x<span style="color:#eceff4">,</span> xticks<span style="color:#eceff4">,</span> fontproperties<span style="color:#81a1c1">=</span>fprop<span style="color:#eceff4">,</span> fontsize<span style="color:#81a1c1">=</span><span style="color:#b48ead">12</span><span style="color:#eceff4">,</span> rotation<span style="color:#81a1c1">=</span><span style="color:#b48ead">45</span><span style="color:#eceff4">)</span>
+</span></span><span style="display:flex;"><span>plt<span style="color:#81a1c1">.</span>title<span style="color:#eceff4">(</span><span style="color:#a3be8c">&#34;圖1&#34;</span><span style="color:#eceff4">,</span> fontproperties<span style="color:#81a1c1">=</span>fprop<span style="color:#eceff4">,</span> fontsize<span style="color:#81a1c1">=</span><span style="color:#b48ead">18</span><span style="color:#eceff4">)</span>
+</span></span><span style="display:flex;"><span>plt<span style="color:#81a1c1">.</span>show<span style="color:#eceff4">()</span>
 </span></span></code></pre></div><p>The effect will be as follows:</p>
 <p><img src="/images/20200315_graph1.png" alt="Graph 1"></p>
 <h2 id="using-fonts-in-the-font-folder" >
@@ -442,31 +544,31 @@ gtag('config', 'G-12LX2RWP72');
 </h2>
 <p>Another way of using a custom font is to install the font into Matplotlib&rsquo;s font folder, and update the font manager.</p>
 <p>Firstly, we need to know the path to the font folder. We can first use the following command to check the location of the Matplotlib installation:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ff5c57">print</span>(matplotlib<span style="color:#ff6ac1">.</span>matplotlib_fname())
+<div class="highlight"><pre tabindex="0" style="color:#d8dee9;background-color:#2e3440;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#81a1c1">print</span><span style="color:#eceff4">(</span>matplotlib<span style="color:#81a1c1">.</span>matplotlib_fname<span style="color:#eceff4">())</span>
 </span></span></code></pre></div><p>On my computer the above command will print:</p>
 <pre tabindex="0"><code>/usr/local/lib/python3.7/site-packages/matplotlib/mpl-data/matplotlibrc
 </code></pre><p>The full path to the font folder can be obtained by replacing <code>/mpl-data/matplotlibrc</code> with <code>/mpl-data/fonts/ttf</code>:</p>
 <pre tabindex="0"><code>/usr/local/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf
 </code></pre><p>Next, you can put the font file you would like to use into the font folder, and then update Matplotlib&rsquo;s font manager:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ff6ac1">import</span> matplotlib.font_manager <span style="color:#ff6ac1">as</span> fm
-</span></span><span style="display:flex;"><span>fm<span style="color:#ff6ac1">.</span>_rebuild()
+<div class="highlight"><pre tabindex="0" style="color:#d8dee9;background-color:#2e3440;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">import</span> <span style="color:#8fbcbb">matplotlib.font_manager</span> <span style="color:#81a1c1;font-weight:bold">as</span> <span style="color:#8fbcbb">fm</span>
+</span></span><span style="display:flex;"><span>fm<span style="color:#81a1c1">.</span>_rebuild<span style="color:#eceff4">()</span>
 </span></span></code></pre></div><p>Once this is done, you can check the name of the font you have installed using the following statement. In this example, I have downloaded the font <code>NotoSansCJKtc-Regular.otf</code> from Google Font, and placed it in the file folder.</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>[f <span style="color:#ff6ac1">for</span> f <span style="color:#ff6ac1">in</span> fm<span style="color:#ff6ac1">.</span>fontManager<span style="color:#ff6ac1">.</span>ttflist <span style="color:#ff6ac1">if</span> <span style="color:#5af78e">&#39;Noto&#39;</span> <span style="color:#ff6ac1">in</span> f<span style="color:#ff6ac1">.</span>name]
+<div class="highlight"><pre tabindex="0" style="color:#d8dee9;background-color:#2e3440;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#eceff4">[</span>f <span style="color:#81a1c1;font-weight:bold">for</span> f <span style="color:#81a1c1;font-weight:bold">in</span> fm<span style="color:#81a1c1">.</span>fontManager<span style="color:#81a1c1">.</span>ttflist <span style="color:#81a1c1;font-weight:bold">if</span> <span style="color:#a3be8c">&#39;Noto&#39;</span> <span style="color:#81a1c1;font-weight:bold">in</span> f<span style="color:#81a1c1">.</span>name<span style="color:#eceff4">]</span>
 </span></span></code></pre></div><p>And the following is the output:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>[<span style="color:#ff6ac1">&lt;</span>Font <span style="color:#5af78e">&#39;Noto Sans CJK TC&#39;</span> (NotoSansCJKtc<span style="color:#ff6ac1">-</span>Regular<span style="color:#ff6ac1">.</span>otf) normal normal <span style="color:#ff9f43">400</span> normal<span style="color:#ff6ac1">&gt;</span>,
-</span></span><span style="display:flex;"><span> <span style="color:#ff6ac1">&lt;</span>Font <span style="color:#5af78e">&#39;Noto Sans Tagalog&#39;</span> (NotoSansTagalog<span style="color:#ff6ac1">-</span>Regular<span style="color:#ff6ac1">.</span>ttf) normal normal <span style="color:#ff9f43">400</span> normal<span style="color:#ff6ac1">&gt;</span>,
-</span></span><span style="display:flex;"><span> <span style="color:#ff6ac1">&lt;</span>Font <span style="color:#5af78e">&#39;Noto Sans Kayah Li&#39;</span> (NotoSansKayahLi<span style="color:#ff6ac1">-</span>Regular<span style="color:#ff6ac1">.</span>ttf) normal normal <span style="color:#ff9f43">400</span> normal<span style="color:#ff6ac1">&gt;</span>,
-</span></span><span style="display:flex;"><span> <span style="color:#ff6ac1">&lt;</span>Font <span style="color:#5af78e">&#39;Noto Sans Tai Tham&#39;</span> (NotoSansTaiTham<span style="color:#ff6ac1">-</span>Regular<span style="color:#ff6ac1">.</span>ttf) normal normal <span style="color:#ff9f43">400</span> normal<span style="color:#ff6ac1">&gt;</span>,
-</span></span><span style="display:flex;"><span> <span style="color:#ff6ac1">&lt;</span>Font <span style="color:#5af78e">&#39;Noto Sans Ol Chiki&#39;</span> (NotoSansOlChiki<span style="color:#ff6ac1">-</span>Regular<span style="color:#ff6ac1">.</span>ttf) normal normal <span style="color:#ff9f43">400</span> normal<span style="color:#ff6ac1">&gt;</span>,
-</span></span><span style="display:flex;"><span> <span style="color:#ff6ac1">...</span>
+<div class="highlight"><pre tabindex="0" style="color:#d8dee9;background-color:#2e3440;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#eceff4">[</span><span style="color:#81a1c1">&lt;</span>Font <span style="color:#a3be8c">&#39;Noto Sans CJK TC&#39;</span> <span style="color:#eceff4">(</span>NotoSansCJKtc<span style="color:#81a1c1">-</span>Regular<span style="color:#81a1c1">.</span>otf<span style="color:#eceff4">)</span> normal normal <span style="color:#b48ead">400</span> normal<span style="color:#81a1c1">&gt;</span><span style="color:#eceff4">,</span>
+</span></span><span style="display:flex;"><span> <span style="color:#81a1c1">&lt;</span>Font <span style="color:#a3be8c">&#39;Noto Sans Tagalog&#39;</span> <span style="color:#eceff4">(</span>NotoSansTagalog<span style="color:#81a1c1">-</span>Regular<span style="color:#81a1c1">.</span>ttf<span style="color:#eceff4">)</span> normal normal <span style="color:#b48ead">400</span> normal<span style="color:#81a1c1">&gt;</span><span style="color:#eceff4">,</span>
+</span></span><span style="display:flex;"><span> <span style="color:#81a1c1">&lt;</span>Font <span style="color:#a3be8c">&#39;Noto Sans Kayah Li&#39;</span> <span style="color:#eceff4">(</span>NotoSansKayahLi<span style="color:#81a1c1">-</span>Regular<span style="color:#81a1c1">.</span>ttf<span style="color:#eceff4">)</span> normal normal <span style="color:#b48ead">400</span> normal<span style="color:#81a1c1">&gt;</span><span style="color:#eceff4">,</span>
+</span></span><span style="display:flex;"><span> <span style="color:#81a1c1">&lt;</span>Font <span style="color:#a3be8c">&#39;Noto Sans Tai Tham&#39;</span> <span style="color:#eceff4">(</span>NotoSansTaiTham<span style="color:#81a1c1">-</span>Regular<span style="color:#81a1c1">.</span>ttf<span style="color:#eceff4">)</span> normal normal <span style="color:#b48ead">400</span> normal<span style="color:#81a1c1">&gt;</span><span style="color:#eceff4">,</span>
+</span></span><span style="display:flex;"><span> <span style="color:#81a1c1">&lt;</span>Font <span style="color:#a3be8c">&#39;Noto Sans Ol Chiki&#39;</span> <span style="color:#eceff4">(</span>NotoSansOlChiki<span style="color:#81a1c1">-</span>Regular<span style="color:#81a1c1">.</span>ttf<span style="color:#eceff4">)</span> normal normal <span style="color:#b48ead">400</span> normal<span style="color:#81a1c1">&gt;</span><span style="color:#eceff4">,</span>
+</span></span><span style="display:flex;"><span> <span style="color:#81a1c1">...</span>
 </span></span></code></pre></div><p>Here, the name of the font is &ldquo;<code>Noto Sans CJK TC</code>&rdquo;. We can then configure Matplotlib to use this font in our graphs:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>matplotlib<span style="color:#ff6ac1">.</span>rcParams[<span style="color:#5af78e">&#39;font.family&#39;</span>] <span style="color:#ff6ac1">=</span> [<span style="color:#5af78e">&#39;Noto Sans CJK TC&#39;</span>]
+<div class="highlight"><pre tabindex="0" style="color:#d8dee9;background-color:#2e3440;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>matplotlib<span style="color:#81a1c1">.</span>rcParams<span style="color:#eceff4">[</span><span style="color:#a3be8c">&#39;font.family&#39;</span><span style="color:#eceff4">]</span> <span style="color:#81a1c1">=</span> <span style="color:#eceff4">[</span><span style="color:#a3be8c">&#39;Noto Sans CJK TC&#39;</span><span style="color:#eceff4">]</span>
 </span></span></code></pre></div><p>Below is an example:</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>plt<span style="color:#ff6ac1">.</span>figure(figsize<span style="color:#ff6ac1">=</span>(<span style="color:#ff9f43">8</span>, <span style="color:#ff9f43">2</span>))
-</span></span><span style="display:flex;"><span>plt<span style="color:#ff6ac1">.</span>bar(x, y)
-</span></span><span style="display:flex;"><span>plt<span style="color:#ff6ac1">.</span>xticks(x, xticks, fontsize<span style="color:#ff6ac1">=</span><span style="color:#ff9f43">12</span>, rotation<span style="color:#ff6ac1">=</span><span style="color:#ff9f43">45</span>)
-</span></span><span style="display:flex;"><span>plt<span style="color:#ff6ac1">.</span>title(<span style="color:#5af78e">&#34;圖1&#34;</span>, fontsize<span style="color:#ff6ac1">=</span><span style="color:#ff9f43">18</span>)
-</span></span><span style="display:flex;"><span>plt<span style="color:#ff6ac1">.</span>show()
+<div class="highlight"><pre tabindex="0" style="color:#d8dee9;background-color:#2e3440;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>plt<span style="color:#81a1c1">.</span>figure<span style="color:#eceff4">(</span>figsize<span style="color:#81a1c1">=</span><span style="color:#eceff4">(</span><span style="color:#b48ead">8</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">2</span><span style="color:#eceff4">))</span>
+</span></span><span style="display:flex;"><span>plt<span style="color:#81a1c1">.</span>bar<span style="color:#eceff4">(</span>x<span style="color:#eceff4">,</span> y<span style="color:#eceff4">)</span>
+</span></span><span style="display:flex;"><span>plt<span style="color:#81a1c1">.</span>xticks<span style="color:#eceff4">(</span>x<span style="color:#eceff4">,</span> xticks<span style="color:#eceff4">,</span> fontsize<span style="color:#81a1c1">=</span><span style="color:#b48ead">12</span><span style="color:#eceff4">,</span> rotation<span style="color:#81a1c1">=</span><span style="color:#b48ead">45</span><span style="color:#eceff4">)</span>
+</span></span><span style="display:flex;"><span>plt<span style="color:#81a1c1">.</span>title<span style="color:#eceff4">(</span><span style="color:#a3be8c">&#34;圖1&#34;</span><span style="color:#eceff4">,</span> fontsize<span style="color:#81a1c1">=</span><span style="color:#b48ead">18</span><span style="color:#eceff4">)</span>
+</span></span><span style="display:flex;"><span>plt<span style="color:#81a1c1">.</span>show<span style="color:#eceff4">()</span>
 </span></span></code></pre></div><p>which will produce the same graph as above:</p>
 <p><img src="/images/20200315_graph1.png" alt="Graph 1"></p>
 <h2 id="using-custom-fonts-in-seaborn" >
@@ -478,14 +580,14 @@ gtag('config', 'G-12LX2RWP72');
 </div>
 </h2>
 <p>Choosing the second method described above allowing you to use the font in Seaborn too. Below is an example that shows how you can configure the font to be used in Seaborn.</p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ff6ac1">import</span> seaborn <span style="color:#ff6ac1">as</span> sns
-</span></span><span style="display:flex;"><span>colour <span style="color:#ff6ac1">=</span> sns<span style="color:#ff6ac1">.</span>color_palette(<span style="color:#5af78e">&#34;GnBu_d&#34;</span>)
-</span></span><span style="display:flex;"><span>sns<span style="color:#ff6ac1">.</span>set(rc<span style="color:#ff6ac1">=</span>{<span style="color:#5af78e">&#39;figure.figsize&#39;</span>:(<span style="color:#ff9f43">8</span>, <span style="color:#ff9f43">2</span>), <span style="color:#5af78e">&#39;figure.dpi&#39;</span>:<span style="color:#ff9f43">120</span>})
-</span></span><span style="display:flex;"><span>sns<span style="color:#ff6ac1">.</span>set(font<span style="color:#ff6ac1">=</span><span style="color:#5af78e">&#39;Noto Sans CJK TC&#39;</span>)
-</span></span><span style="display:flex;"><span>ax <span style="color:#ff6ac1">=</span> sns<span style="color:#ff6ac1">.</span>barplot(xticks, y, palette<span style="color:#ff6ac1">=</span>colour)
-</span></span><span style="display:flex;"><span>ax<span style="color:#ff6ac1">.</span>set_xticklabels(xticks, rotation<span style="color:#ff6ac1">=</span><span style="color:#ff9f43">45</span>, fontsize<span style="color:#ff6ac1">=</span><span style="color:#ff9f43">9</span>)
-</span></span><span style="display:flex;"><span>ax<span style="color:#ff6ac1">.</span>set_title(<span style="color:#5af78e">&#34;圖表1&#34;</span>)
-</span></span><span style="display:flex;"><span>ax<span style="color:#ff6ac1">.</span>grid()
+<div class="highlight"><pre tabindex="0" style="color:#d8dee9;background-color:#2e3440;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">import</span> <span style="color:#8fbcbb">seaborn</span> <span style="color:#81a1c1;font-weight:bold">as</span> <span style="color:#8fbcbb">sns</span>
+</span></span><span style="display:flex;"><span>colour <span style="color:#81a1c1">=</span> sns<span style="color:#81a1c1">.</span>color_palette<span style="color:#eceff4">(</span><span style="color:#a3be8c">&#34;GnBu_d&#34;</span><span style="color:#eceff4">)</span>
+</span></span><span style="display:flex;"><span>sns<span style="color:#81a1c1">.</span>set<span style="color:#eceff4">(</span>rc<span style="color:#81a1c1">=</span><span style="color:#eceff4">{</span><span style="color:#a3be8c">&#39;figure.figsize&#39;</span><span style="color:#eceff4">:(</span><span style="color:#b48ead">8</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">2</span><span style="color:#eceff4">),</span> <span style="color:#a3be8c">&#39;figure.dpi&#39;</span><span style="color:#eceff4">:</span><span style="color:#b48ead">120</span><span style="color:#eceff4">})</span>
+</span></span><span style="display:flex;"><span>sns<span style="color:#81a1c1">.</span>set<span style="color:#eceff4">(</span>font<span style="color:#81a1c1">=</span><span style="color:#a3be8c">&#39;Noto Sans CJK TC&#39;</span><span style="color:#eceff4">)</span>
+</span></span><span style="display:flex;"><span>ax <span style="color:#81a1c1">=</span> sns<span style="color:#81a1c1">.</span>barplot<span style="color:#eceff4">(</span>xticks<span style="color:#eceff4">,</span> y<span style="color:#eceff4">,</span> palette<span style="color:#81a1c1">=</span>colour<span style="color:#eceff4">)</span>
+</span></span><span style="display:flex;"><span>ax<span style="color:#81a1c1">.</span>set_xticklabels<span style="color:#eceff4">(</span>xticks<span style="color:#eceff4">,</span> rotation<span style="color:#81a1c1">=</span><span style="color:#b48ead">45</span><span style="color:#eceff4">,</span> fontsize<span style="color:#81a1c1">=</span><span style="color:#b48ead">9</span><span style="color:#eceff4">)</span>
+</span></span><span style="display:flex;"><span>ax<span style="color:#81a1c1">.</span>set_title<span style="color:#eceff4">(</span><span style="color:#a3be8c">&#34;圖表1&#34;</span><span style="color:#eceff4">)</span>
+</span></span><span style="display:flex;"><span>ax<span style="color:#81a1c1">.</span>grid<span style="color:#eceff4">()</span>
 </span></span></code></pre></div><p>And the following graph will be produced:</p>
 <p><img src="/images/20200315_graph2.png" alt="Graph 2"></p>
         </div>
