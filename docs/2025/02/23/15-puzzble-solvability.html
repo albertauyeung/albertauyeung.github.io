@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+
+
+<html lang="en-us" data-theme="">
+<head>
+    
+        
+<meta charset="utf-8">
+<meta name="HandheldFriendly" content="True">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer-when-downgrade">
+
+<title>🧩 Determining if a 15 Puzzle is solvable - ayeung.dev</title>
+
+<meta name="description" content="I recently became interested in how we can programmatically solve the 15 puzzle. The 15 puzzle is a sliding puzzle that consists of a 4 x 4 board of tiles numbered from 1 to 15, with one empty space. The tiles are shuffled and the goal is to slide the tiles around until they are in order, i.e. the numbered tiles will run from 1 to 15 starting from the top left corner from left to right and top to bottom, with the empty space at the bottom right corner.">
+
+
+
+
+
+<link rel="icon" type="image/x-icon" href="https://ayeung.dev/favicon.ico">
+<link rel="apple-touch-icon-precomposed" href="https://ayeung.dev/favicon.png">
+
+
+
+
+
+
+
+
+    
+
+
+
+<style>
+  body {
+    visibility: hidden;
+    opacity: 0;
+  }
+</style>
+
+<noscript>
+  <style>
+    body {
+      visibility: visible;
+      opacity: 1;
+    }
+  </style>
+</noscript>
+
+
+
+
+    
+
+
+
+
+
+    
+    
+        
+    
+    
+
+    
+        <link rel="stylesheet" href="/css/style.min.44f8240afd8df81b52565c4119ac5ae247776c77fc6d7ccf6e101a6c98abfa7a.css" integrity="sha256-RPgkCv2N&#43;BtSVlxBGaxa4kd3bHf8bXzPbhAabJir&#43;no=">
+    
+
+
+
+
+
+    
+
+
+
+
+
+    
+    
+        
+    
+    
+
+    
+        <link rel="stylesheet" href="/css/style.min.c4c04b3ef88e3d619ad4c7ee5e03048422bc55c4fefdc1f07657c1133670aa22.css" integrity="sha256-xMBLPviOPWGa1MfuXgMEhCK8VcT&#43;/cHwdlfBEzZwqiI=">
+    
+
+
+
+
+
+    
+
+
+
+
+
+    
+    
+        
+    
+    
+
+    
+        <link rel="stylesheet" href="/css/style.min.21c5d8fe0a79d623b0adc1ce4bd4f6dd2c05cd939c9aaaa966ba7186b1464f4d.css" integrity="sha256-IcXY/gp51iOwrcHOS9T23SwFzZOcmqqpZrpxhrFGT00=">
+    
+
+
+
+
+
+
+
+    
+    
+      
+    
+
+    
+      
+        <link rel="stylesheet" href="/css/style.min.bc2ba405e352f0155ca07bcc3b2b20b7d7498bc9a1f2d2d9a146e731ed5342b3.css" integrity="sha256-vCukBeNS8BVcoHvMOysgt9dJi8mh8tLZoUbnMe1TQrM=" crossorigin="anonymous">
+      
+    
+
+
+
+
+
+
+    
+
+    
+
+
+
+
+
+    
+    
+        
+    
+    
+
+    
+        <script src="/js/script.min.08f04d96386c73c9bf4d160333f8f448c05a6e01c06770542ee0e013954ce930.js" type="text/javascript" charset="utf-8" integrity="sha256-CPBNljhsc8m/TRYDM/j0SMBabgHAZ3BULuDgE5VM6TA="></script>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+</head>
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-12LX2RWP72"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-12LX2RWP72');
+</script>
+
+<body>
+    <a class="skip-main" href="#main">Skip to main content</a>
+    <div class="container">
+        <header class="common-header">
+            
+                <div class="header-top">
+    <div class="header-top-left">
+        <h1 class="site-title noselect">
+    <a href="/">ayeung.dev</a>
+</h1>
+
+        
+
+
+
+
+
+    
+
+
+
+    
+        <div class="theme-switcher">
+            <span class="inline-svg">
+
+    
+
+
+    
+    
+    
+    
+    
+
+    <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-sun-high"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14.828 14.828a4 4 0 1 0 -5.656 -5.656a4 4 0 0 0 5.656 5.656z" /><path d="M6.343 17.657l-1.414 1.414" /><path d="M6.343 6.343l-1.414 -1.414" /><path d="M17.657 6.343l1.414 -1.414" /><path d="M17.657 17.657l1.414 1.414" /><path d="M4 12h-2" /><path d="M12 4v-2" /><path d="M20 12h2" /><path d="M12 20v2" /></svg>
+
+
+</span>
+
+        </div>
+    
+
+    <script>
+        const STORAGE_KEY = 'user-color-scheme'
+        const defaultTheme = "light"
+
+        let currentTheme
+        let switchButton
+        let autoDefinedScheme = window.matchMedia('(prefers-color-scheme: dark)')
+
+        function switchTheme(e) {
+            currentTheme = (currentTheme === 'dark') ? 'light' : 'dark';
+            if (localStorage) localStorage.setItem(STORAGE_KEY, currentTheme);
+            document.documentElement.setAttribute('data-theme', currentTheme);
+            changeGiscusTheme(currentTheme);
+            document.body.dispatchEvent(new CustomEvent(currentTheme + "-theme-set"));
+        }
+
+        const autoChangeScheme = e => {
+            currentTheme = e.matches ? 'dark' : 'light'
+            document.documentElement.setAttribute('data-theme', currentTheme);
+            changeGiscusTheme(currentTheme);
+            document.body.dispatchEvent(new CustomEvent(currentTheme + "-theme-set"));
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            switchButton = document.querySelector('.theme-switcher')
+            currentTheme = detectCurrentScheme()
+
+            if (currentTheme === 'auto') {
+                autoChangeScheme(autoDefinedScheme);
+                autoDefinedScheme.addListener(autoChangeScheme);
+            } else {
+                document.documentElement.setAttribute('data-theme', currentTheme)
+            }
+
+            if (switchButton) {
+                switchButton.addEventListener('click', switchTheme, false)
+            }
+
+            showContent();
+        })
+
+        function detectCurrentScheme() {
+            if (localStorage !== null && localStorage.getItem(STORAGE_KEY)) {
+                return localStorage.getItem(STORAGE_KEY)
+            }
+            if (defaultTheme) {
+                return defaultTheme
+            }
+            return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+
+        function showContent() {
+            document.body.style.visibility = 'visible';
+            document.body.style.opacity = 1;
+        }
+
+        function changeGiscusTheme (theme) {
+            function sendMessage(message) {
+              const iframe = document.querySelector('iframe.giscus-frame');
+              if (!iframe) return;
+              iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+            }
+
+            sendMessage({
+              setConfig: {
+                theme: theme
+              }
+            });
+        }
+    </script>
+
+
+        <ul class="social-icons noselect">
+
+
+    
+        <li>
+            <a href="https://github.com/albertauyeung" title="Github" rel="me">
+            <span class="inline-svg">
+
+    
+
+
+    
+    
+    
+    
+    
+
+    <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-brand-github"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" /></svg>
+
+
+</span>
+
+            </a>
+        </li>
+    
+
+    
+        <li>
+            <a href="https://www.linkedin.com/in/albert-au-yeung/" title="Linkedin" rel="me">
+            <span class="inline-svg">
+
+    
+
+
+    
+    
+    
+    
+    
+
+    <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-brand-linkedin"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z" /><path d="M8 11l0 5" /><path d="M8 8l0 .01" /><path d="M12 16l0 -5" /><path d="M16 16v-3a2 2 0 0 0 -4 0" /></svg>
+
+
+</span>
+
+            </a>
+        </li>
+    
+
+
+
+
+
+
+    <li>
+            <a href="/index.xml" title="RSS" rel="me">
+            <span class="inline-svg">
+
+    
+
+
+    
+    
+    
+    
+    
+
+    <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-rss"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 19m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><path d="M4 4a16 16 0 0 1 16 16" /><path d="M4 11a9 9 0 0 1 9 9" /></svg>
+
+
+</span>
+
+            </a>
+        </li>
+    
+
+</ul>
+
+    </div>
+    <div class="header-top-right">
+
+    </div>
+</div>
+
+
+    <nav class="noselect">
+        
+        
+        <a class="" href="https://ayeung.dev/" title="">Home</a>
+        
+        <a class="" href="https://ayeung.dev/about/" title="">About</a>
+        
+        <a class="" href="https://ayeung.dev/tags/" title="">Tags</a>
+        
+        <a class="" href="https://ayeung.dev/quotes/" title="">Quotes</a>
+        
+        <a class="" href="https://ayeung.dev/posts/" title="">Archive</a>
+        
+    </nav>
+
+
+
+<script>
+  MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$','$$'], ['\\[', '\\]']],
+      processEscapes: true,
+      processEnvironments: true
+    },
+    options: {
+      skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+    }
+  };
+
+  window.addEventListener('load', (event) => {
+      document.querySelectorAll("mjx-container").forEach(function(x){
+        x.parentElement.classList += 'has-jax'})
+    });
+
+</script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+
+
+
+
+            
+        </header>
+        <main id="main" tabindex="-1">
+            
+    
+
+    <article class="post h-entry">
+        <div class="post-header">
+            <header>
+                <h1 class="p-name post-title">🧩 Determining if a 15 Puzzle is solvable</h1>
+                
+
+            </header>
+            
+
+
+
+<div class="post-info noselect">
+    
+        <div class="post-date dt-published">
+            <time datetime="2025-02-23">2025-02-23</time>
+            
+        </div>
+    
+
+    <a class="post-hidden-url u-url" href="/2025/02/23/15-puzzble-solvability.html">/2025/02/23/15-puzzble-solvability.html</a>
+    <a href="https://ayeung.dev/" class="p-name p-author post-hidden-author h-card" rel="me">map[location:Dublin, Ireland name:Albert Au Yeung]</a>
+
+
+    <div class="post-taxonomies">
+        
+        
+            <ul class="post-tags">
+                
+                    
+                    <li><a href="/tags/python/">#python</a></li>
+                
+                    
+                    <li><a href="/tags/game/">#game</a></li>
+                
+                    
+                    <li><a href="/tags/puzzle/">#puzzle</a></li>
+                
+            </ul>
+        
+        
+    </div>
+</div>
+
+        </div>
+        
+
+  
+  
+    
+  
+
+
+
+
+
+
+<script>
+  var toc = document.querySelector(".toc");
+  if (toc) {
+    toc.addEventListener("click", function () {
+      if (event.target.tagName !== "A") {
+        event.preventDefault();
+        if (this.open) {
+          this.open = false;
+          this.classList.remove("expanded");
+        } else {
+          this.open = true;
+          this.classList.add("expanded");
+        }
+      }
+    });
+  }
+</script>
+
+        <div class="content e-content">
+            <p>I recently became interested in how we can programmatically solve the 15 puzzle. The 15 puzzle is a sliding puzzle that consists of a 4 x 4 board of tiles numbered from 1 to 15, with one empty space. The tiles are shuffled and the goal is to slide the tiles around until they are in order, i.e. the numbered tiles will run from 1 to 15 starting from the top left corner from left to right and top to bottom, with the empty space at the bottom right corner.</p>
+<pre tabindex="0"><code># A shuffled 15 puzzle
+┌───┬───┬───┬───┐
+│ 2 │ 8 │ 3 │ 4 │
+├───┼───┼───┼───┤
+│ 1 │ 6 │   │ 7 │
+├───┼───┼───┼───┤
+│ 5 │ 9 │ 11│ 12│   
+├───┼───┼───┼───┤
+│ 13│ 10│ 15│ 14│
+└───┴───┴───┴───┘
+
+
+# The target state of the 15 puzzle
+┌───┬───┬───┬───┐
+│ 1 │ 2 │ 3 │ 4 │
+├───┼───┼───┼───┤
+│ 5 │ 6 │ 7 │ 8 │
+├───┼───┼───┼───┤
+│ 9 │ 10│ 11│ 12│   
+├───┼───┼───┼───┤
+│ 13│ 14│ 15│   │
+└───┴───┴───┴───┘
+</code></pre><h2 id="solvability-of-the-15-puzzle" >
+<div>
+    <a href="#solvability-of-the-15-puzzle">
+        #
+    </a>
+    Solvability of the 15 puzzle
+</div>
+</h2>
+<p>It is interesting to note that not all configurations of the 15 puzzle are solvable. In other words, give a certain arrangement of the numbered tiles on the board, it may not be possible to arrange the tiles in order by only sliding them around. It turns out that out of the <code>16! = 20,922,789,888,000</code> (about 21 trillion) possible configurations, only <strong>half of them</strong> are solvable.</p>
+<p>Writing a program to determine whether a certain configuration is solvable is easy. Ask ChatGPT about it and it will give you a snippet that works out of the box. But here let&rsquo;s take a look at the details and try to understand how it works.</p>
+<h3 id="permutations" >
+<div>
+    <a href="#permutations">
+        ##
+    </a>
+    Permutations
+</div>
+</h3>
+<p>Mathematically, the 15 puzzle can be represented as a permutation of the numbers from 1 to 15 (or 16 if we include the blank space). A <a href="https://en.wikipedia.org/wiki/Permutation">permutation</a> is an arrangement of objects in a specific order. For example, the permutation <code>(2, 1, 3)</code> represents a specific arrangement of the numbers 1, 2, and 3.</p>
+<p>Given a set of elements (e.g. 1, 2, 3), a permutation can be changed into another permutation by a sequence of swapping pairs of elements (called <strong>transpositions</strong>). For example: we can change the permutation <code>(1, 2, 3)</code> into <code>(2, 1, 3)</code> by swapping the first two elements, i.e. performing a transposition of 1 and 2. Hence, to solve the 15 puzzle, we need to find a sequence of transpositions that will transform the initial permutation into the target permutation (with some restrictions of course, because we cannot simply exchange any two tiles).</p>
+<h3 id="parity-of-permutations" >
+<div>
+    <a href="#parity-of-permutations">
+        ##
+    </a>
+    Parity of Permutations
+</div>
+</h3>
+<p>When moving from one permutation to another, it either involves an <strong>even</strong> or <strong>odd</strong> number of transpositions. This is called the <a href="https://en.wikipedia.org/wiki/Parity_of_a_permutation">parity of a permutation</a>. For example:</p>
+<ul>
+<li>From <code>(1, 2, 3)</code> to <code>(2, 1, 3)</code> requires one transposition (swapping 1 and 2) &ndash;&gt; <strong>odd</strong> parity</li>
+<li>From <code>(1, 2, 3)</code> to <code>(3, 2, 1)</code> requires two transpositions (swapping 1 and 3, then 2 and 3). &ndash;&gt; <strong>even</strong> parity</li>
+</ul>
+<p>Although there can be multiple sequence of transpositions that can transform one permutation to another, the parity of the number of transpositions will be the same. For example, from <code>(1, 2, 3)</code> to <code>(3, 2, 1)</code> we can swap 1 and 3 first, then 2 and 3, or we can swap 2 and 3 first, then 1 and 3.</p>
+<h3 id="inversions" >
+<div>
+    <a href="#inversions">
+        ##
+    </a>
+    Inversions
+</div>
+</h3>
+<p>It turns out that this concept of parity of permutations is crucial in determining whether a given configuration of the 15 puzzle is solvable or not. But before going back to the 15 puzzle, let&rsquo;s talk about the concept of <strong>inversions</strong>.</p>
+<p>Let&rsquo;s say we have an ordering of the set of elements involved in a permutation. In the case of the 15 puzzle, we can order the numbers from 1 to 16 (including the blank space) in ascending order (which is also the target state of the puzzle). We would like to know if a certain permutation (arrangement of the numbers) is of even or odd parity. This is equivalent to asking the question of whether we need an even or odd number of transpositions to move from the initial permutation to the target permutation.</p>
+<p>If the number of elements is small, or the permutation is not too different from the target permutation, it would be relatively easy to tell. For example:</p>
+<pre tabindex="0"><code>Given  : ( 1, 2, 3, 4, 5)
+Target : ( 2, 1, 5, 4, 3)
+</code></pre><p>In this case, we can see that we need to swap 1 and 2, and 3 and 5. This requires two transpositions, which is an even number. Hence, the permutation is of even parity.</p>
+<p>However, if the number of elements is large, or the permutation is very different from the target permutation, it would be difficult to tell just by looking at it. It turns out that we can rely on the concept of <a href="https://en.wikipedia.org/wiki/Inversion_(discrete_mathematics)">inversions</a> to determine the parity of a permutation. An inversion is a pair of elements <code>(i, j)</code> such that <code>i &lt; j</code> but <code>i</code> appears after <code>j</code> in the permutation. For example, in the permutation <code>(2, 4, 1, 3)</code> the pair <code>(2, 1)</code> and <code>(4, 1)</code> are inversions.</p>
+<p>The number of inversions in a permutation is directly related to the parity of the permutation. If the number of inversions is even, the permutation is of even parity. If the number of inversions is odd, the permutation is of odd parity.</p>
+<p>Programmatically, the number of inversions in a permutation can be calculated by iterating over all pairs of elements and counting the number of inversions:</p>
+<div class="highlight"><pre tabindex="0" style="color:#d8dee9;background-color:#2e3440;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">def</span> <span style="color:#88c0d0">count_inversions</span><span style="color:#eceff4">(</span>arr<span style="color:#eceff4">):</span>
+</span></span><span style="display:flex;"><span>    inversions <span style="color:#81a1c1">=</span> <span style="color:#b48ead">0</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#81a1c1;font-weight:bold">for</span> i <span style="color:#81a1c1;font-weight:bold">in</span> <span style="color:#81a1c1">range</span><span style="color:#eceff4">(</span><span style="color:#81a1c1">len</span><span style="color:#eceff4">(</span>arr<span style="color:#eceff4">)):</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#81a1c1;font-weight:bold">for</span> j <span style="color:#81a1c1;font-weight:bold">in</span> <span style="color:#81a1c1">range</span><span style="color:#eceff4">(</span>i <span style="color:#81a1c1">+</span> <span style="color:#b48ead">1</span><span style="color:#eceff4">,</span> <span style="color:#81a1c1">len</span><span style="color:#eceff4">(</span>arr<span style="color:#eceff4">)):</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#81a1c1;font-weight:bold">if</span> arr<span style="color:#eceff4">[</span>i<span style="color:#eceff4">]</span> <span style="color:#81a1c1">&gt;</span> arr<span style="color:#eceff4">[</span>j<span style="color:#eceff4">]:</span>
+</span></span><span style="display:flex;"><span>                inversions <span style="color:#81a1c1">+=</span> <span style="color:#b48ead">1</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#81a1c1;font-weight:bold">return</span> inversions
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>arr <span style="color:#81a1c1">=</span> <span style="color:#eceff4">[</span><span style="color:#b48ead">2</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">4</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">1</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">3</span><span style="color:#eceff4">]</span>
+</span></span><span style="display:flex;"><span><span style="color:#81a1c1">print</span><span style="color:#eceff4">(</span>count_inversions<span style="color:#eceff4">(</span>arr<span style="color:#eceff4">))</span>
+</span></span><span style="display:flex;"><span><span style="color:#616e87;font-style:italic"># Output: 3  (because there are two inversions: (2, 1), (4, 1), (4, 3))</span>
+</span></span></code></pre></div><h3 id="parity-and-solvability-of-the-15-puzzle" >
+<div>
+    <a href="#parity-and-solvability-of-the-15-puzzle">
+        ##
+    </a>
+    Parity and Solvability of the 15 Puzzle
+</div>
+</h3>
+<p>So, how does the concept of parity and inversion help us determine if a given configuration of the 15 puzzle is solvable? As mentioned above, solving the 15 puzzle is equivalent to transforming the initial permutation into the target permutation. It turns out that the number of inversions in the initial permutation is crucial.</p>
+<p>To understand how parity or the number of inversions helps us determine solvability, let&rsquo;s consider the following board.</p>
+<pre tabindex="0"><code>Current state:
+┌───┬───┬───┬───┐
+│ 2 │ 8 │ 3 │ 4 │
+├───┼───┼───┼───┤
+│ 1 │ 6 │ 14│ 5 │
+├───┼───┼───┼───┤
+│ 7 │ 9 │ 11│ 12│
+├───┼───┼───┼───┤
+│ 13│ 10│ 15│   │
+└───┴───┴───┴───┘
+</code></pre><p>In order to convert this board into the target state, we need to swap tiles around. However, we can only do so by sliding tiles into the empty space or, in other words, by &ldquo;moving&rdquo; the empty space around.</p>
+<p>Note that in the end the empty space should still be at the bottom right corner of the board. We can easily see that in order for the empty space to move around and finally get back to the bottom right corner, the number of swapping happened must be <strong>even</strong>. Hence, assuming that after a number of moves we finally get to the target state, we will always have an even number of moves. This is true for any configuration of the board with the empty space at the bottom right corner.</p>
+<p>What this analysis follows is that: for all configuration of the board with the empty space at the bottom right corner, the permutation of the numbers must be of <strong>even parity</strong>. This is because these configurations are all created by starting from the target state in which the empty space is also at the bottom right corner.</p>
+<p>Consider the following configuration of the board:</p>
+<pre tabindex="0"><code>┌───┬───┬───┬───┐
+│ 1 │ 2 │ 3 │ 4 │
+├───┼───┼───┼───┤
+│ 5 │ 6 │ 7 │ 8 │
+├───┼───┼───┼───┤
+│ 9 │ 10│ 11│ 12│   
+├───┼───┼───┼───┤
+│ 13│ 15│ 14│   │
+└───┴───┴───┴───┘
+</code></pre><p>in which only the tiles <code>14</code> and <code>15</code> are swapped. In this case, the parity of this permutation is 1, which is odd. Thus, this is an unsolvable configuration, as it is not possible to reach this configuration from the target state by simply sliding the tiles around.</p>
+<p>This would become obvious if we consider a 2 x 2 board instead of a 4 x 4 board. For example, the following is a configuration with odd parity (since the number of inversions is 1):</p>
+<pre tabindex="0"><code>┌───┬───┐
+│ 2 │ 1 │
+├───┼───┤
+│ 3 │   │
+└───┴───┘
+</code></pre><p>We can easily see that there&rsquo;s no way to solve this puzzle by sliding the tiles around.</p>
+<h3 id="distance-of-the-empty-space-from-the-bottom-right-corner" >
+<div>
+    <a href="#distance-of-the-empty-space-from-the-bottom-right-corner">
+        ##
+    </a>
+    Distance of the Empty Space from the Bottom Right Corner
+</div>
+</h3>
+<p>But wait, what happen when the empty space is NOT at the bottom right corner? This is actually a trivial extension to the problem above. This is because given any configuration, we can always &ldquo;move&rdquo; the empty space to the bottom right corner by sliding the tiles around.</p>
+<p>To determine if any configuration is solvable, we can do one of the following:</p>
+<ol>
+<li>Move the empty space to the bottom right corner, and then check whether the parity of the permutation of the numbers is even.</li>
+<li>Check whether the sum of the following two numbers is even:
+<ul>
+<li>The number of inversions in the permutation of the numbers</li>
+<li>The number of moves required to move the empty space to the bottom right corner</li>
+</ul>
+</li>
+</ol>
+<p>The second method is more efficient because it avoids the need to actually move the empty space around. The number of moves required to move the empty space to the bottom right corner can be known by checking the <a href="https://en.wikipedia.org/wiki/Taxicab_geometry">Manhattan distance</a> (or taxicab distance) of the empty space from the bottom right corner.</p>
+<h3 id="summing-up" >
+<div>
+    <a href="#summing-up">
+        ##
+    </a>
+    Summing Up
+</div>
+</h3>
+<p>Given the above discussions, we can now write a function to determine whether a given configuration of the 15 puzzle is solvable or not. The function will take a list of numbers representing the configuration of the board, and return <code>True</code> if the configuration is solvable, and <code>False</code> otherwise.</p>
+<div class="highlight"><pre tabindex="0" style="color:#d8dee9;background-color:#2e3440;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">def</span> <span style="color:#88c0d0">is_solvable</span><span style="color:#eceff4">(</span>board<span style="color:#eceff4">):</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a3be8c">&#34;&#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#a3be8c">    Assuming `board` is a list of 16 numbers
+</span></span></span><span style="display:flex;"><span><span style="color:#a3be8c">    representing the configuration of the 15 puzzle board.
+</span></span></span><span style="display:flex;"><span><span style="color:#a3be8c">    &#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#616e87;font-style:italic"># Count the number of inversions</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#81a1c1;font-weight:bold">def</span> <span style="color:#88c0d0">count_inversions</span><span style="color:#eceff4">(</span>arr<span style="color:#eceff4">):</span>
+</span></span><span style="display:flex;"><span>        inversions <span style="color:#81a1c1">=</span> <span style="color:#b48ead">0</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#81a1c1;font-weight:bold">for</span> i <span style="color:#81a1c1;font-weight:bold">in</span> <span style="color:#81a1c1">range</span><span style="color:#eceff4">(</span><span style="color:#81a1c1">len</span><span style="color:#eceff4">(</span>arr<span style="color:#eceff4">)):</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#81a1c1;font-weight:bold">for</span> j <span style="color:#81a1c1;font-weight:bold">in</span> <span style="color:#81a1c1">range</span><span style="color:#eceff4">(</span>i <span style="color:#81a1c1">+</span> <span style="color:#b48ead">1</span><span style="color:#eceff4">,</span> <span style="color:#81a1c1">len</span><span style="color:#eceff4">(</span>arr<span style="color:#eceff4">)):</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#81a1c1;font-weight:bold">if</span> arr<span style="color:#eceff4">[</span>i<span style="color:#eceff4">]</span> <span style="color:#81a1c1">&gt;</span> arr<span style="color:#eceff4">[</span>j<span style="color:#eceff4">]:</span>
+</span></span><span style="display:flex;"><span>                    inversions <span style="color:#81a1c1">+=</span> <span style="color:#b48ead">1</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#81a1c1;font-weight:bold">return</span> inversions
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#616e87;font-style:italic"># Get the Manhattan distance of the empty space from the bottom right corner</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#81a1c1;font-weight:bold">def</span> <span style="color:#88c0d0">manhattan_distance</span><span style="color:#eceff4">(</span>board<span style="color:#eceff4">,</span> empty_space_num<span style="color:#81a1c1">=</span><span style="color:#b48ead">16</span><span style="color:#eceff4">):</span>
+</span></span><span style="display:flex;"><span>        empty_space_index <span style="color:#81a1c1">=</span> board<span style="color:#81a1c1">.</span>index<span style="color:#eceff4">(</span>empty_space_num<span style="color:#eceff4">)</span>
+</span></span><span style="display:flex;"><span>        empty_space_row <span style="color:#81a1c1">=</span> empty_space_index <span style="color:#81a1c1">//</span> <span style="color:#b48ead">4</span>
+</span></span><span style="display:flex;"><span>        empty_space_col <span style="color:#81a1c1">=</span> empty_space_index <span style="color:#81a1c1">%</span> <span style="color:#b48ead">4</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#81a1c1;font-weight:bold">return</span> <span style="color:#b48ead">3</span> <span style="color:#81a1c1">-</span> empty_space_row <span style="color:#81a1c1">+</span> <span style="color:#b48ead">3</span> <span style="color:#81a1c1">-</span> empty_space_col
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    num_inversions <span style="color:#81a1c1">=</span> count_inversions<span style="color:#eceff4">(</span>board<span style="color:#eceff4">)</span>
+</span></span><span style="display:flex;"><span>    distance <span style="color:#81a1c1">=</span> manhattan_distance<span style="color:#eceff4">(</span>board<span style="color:#eceff4">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#616e87;font-style:italic"># Check if the sum of the number of inversions and the distance is even</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#81a1c1;font-weight:bold">return</span> <span style="color:#eceff4">(</span>num_inversions <span style="color:#81a1c1">+</span> distance<span style="color:#eceff4">)</span> <span style="color:#81a1c1">%</span> <span style="color:#b48ead">2</span> <span style="color:#81a1c1">==</span> <span style="color:#b48ead">0</span>
+</span></span></code></pre></div><p>Examples:</p>
+<div class="highlight"><pre tabindex="0" style="color:#d8dee9;background-color:#2e3440;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#616e87;font-style:italic"># Solvable</span>
+</span></span><span style="display:flex;"><span>board <span style="color:#81a1c1">=</span> <span style="color:#eceff4">[</span>
+</span></span><span style="display:flex;"><span>     <span style="color:#b48ead">1</span><span style="color:#eceff4">,</span>  <span style="color:#b48ead">2</span><span style="color:#eceff4">,</span>  <span style="color:#b48ead">3</span><span style="color:#eceff4">,</span>  <span style="color:#b48ead">4</span><span style="color:#eceff4">,</span>
+</span></span><span style="display:flex;"><span>     <span style="color:#b48ead">5</span><span style="color:#eceff4">,</span>  <span style="color:#b48ead">6</span><span style="color:#eceff4">,</span>  <span style="color:#b48ead">7</span><span style="color:#eceff4">,</span>  <span style="color:#b48ead">8</span><span style="color:#eceff4">,</span>
+</span></span><span style="display:flex;"><span>     <span style="color:#b48ead">9</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">10</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">16</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">11</span><span style="color:#eceff4">,</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#b48ead">13</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">14</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">15</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">12</span><span style="color:#eceff4">,</span>
+</span></span><span style="display:flex;"><span><span style="color:#eceff4">]</span>
+</span></span><span style="display:flex;"><span><span style="color:#81a1c1">print</span><span style="color:#eceff4">(</span>is_solvable<span style="color:#eceff4">(</span>board<span style="color:#eceff4">))</span>  <span style="color:#616e87;font-style:italic"># Output: True</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#616e87;font-style:italic"># Unsolvable</span>
+</span></span><span style="display:flex;"><span>board <span style="color:#81a1c1">=</span> <span style="color:#eceff4">[</span>
+</span></span><span style="display:flex;"><span>     <span style="color:#b48ead">1</span><span style="color:#eceff4">,</span>  <span style="color:#b48ead">2</span><span style="color:#eceff4">,</span>  <span style="color:#b48ead">3</span><span style="color:#eceff4">,</span>  <span style="color:#b48ead">4</span><span style="color:#eceff4">,</span>
+</span></span><span style="display:flex;"><span>     <span style="color:#b48ead">5</span><span style="color:#eceff4">,</span>  <span style="color:#b48ead">6</span><span style="color:#eceff4">,</span>  <span style="color:#b48ead">7</span><span style="color:#eceff4">,</span>  <span style="color:#b48ead">8</span><span style="color:#eceff4">,</span>
+</span></span><span style="display:flex;"><span>     <span style="color:#b48ead">9</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">10</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">11</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">12</span><span style="color:#eceff4">,</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#b48ead">13</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">15</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">14</span><span style="color:#eceff4">,</span> <span style="color:#b48ead">16</span><span style="color:#eceff4">,</span>
+</span></span><span style="display:flex;"><span><span style="color:#eceff4">]</span>
+</span></span><span style="display:flex;"><span><span style="color:#81a1c1">print</span><span style="color:#eceff4">(</span>is_solvable<span style="color:#eceff4">(</span>board<span style="color:#eceff4">))</span>  <span style="color:#616e87;font-style:italic"># Output: False</span>
+</span></span></code></pre></div><p>We can also generalize this to any size of the board, not just the 4 x 4 board, or even to different requirements (e.g. the empty space needs to be at the top left corner in the target state). But this should give you a good idea of how to determine the solvability of the 15 puzzle.</p>
+<h2 id="whats-next" >
+<div>
+    <a href="#whats-next">
+        #
+    </a>
+    What&rsquo;s Next?
+</div>
+</h2>
+<p>Determining whether a given configuration of the 15 puzzle is solvable is the first step in solving the puzzle programmatically. The next step would be to implement an algorithm to find the sequence of moves that will transform the initial configuration into the target configuration. Two algorithms are commonly used: the <a href="https://en.wikipedia.org/wiki/A*_search_algorithm">A* search algorithm</a> and the <a href="https://en.wikipedia.org/wiki/Iterative_deepening_A*">IDA* algorithm</a>. I will try to cover these in another post.</p>
+<h2 id="references" >
+<div>
+    <a href="#references">
+        #
+    </a>
+    References
+</div>
+</h2>
+<ul>
+<li><a href="https://www.jstor.org/stable/2369492">Notes on the &ldquo;15&rdquo; Puzzle</a> by Johnson and Story, 1879 in <em>American Journal of Mathematics</em></li>
+<li><a href="https://mohamedrezk122.github.io/fifteen-puzzle">The Fifteen Puzzle</a> by Mohamed El Shorbagy</li>
+<li><a href="https://mathworld.wolfram.com/15Puzzle.html">15 Puzzle &ndash; from Wolfram MathWorld</a></li>
+</ul>
+        </div>
+
+    </article>
+
+    
+    
+
+    
+        
+        
+            <h3 class="read-next-title noselect">Read next</h3>
+            <ul class="read-next-posts noselect">
+                
+                <li><a href="/2020/08/17/pyenv-jupyter.html">🪐 pyenv, virtualenv and using them with Jupyter</a></li>
+                
+                <li><a href="/2020/06/19/bert-tokenization.html">🤖 Mastering BERT Tokenization and Encoding</a></li>
+                
+                <li><a href="/2020/06/15/python-trie.html">🌟 Implementing Trie in Python</a></li>
+                
+            </ul>
+        
+    
+
+    
+
+    
+        
+
+
+
+
+
+
+
+
+
+    
+
+    
+
+    
+
+    
+
+        </main>
+        
+            <footer class="common-footer noselect">
+    
+    
+
+    <div class="common-footer-bottom">
+        
+
+        <div style="display: flex; align-items: center; gap:8px">
+            ©  Albert Au Yeung,  2025
+            
+        </div>
+        <div style="display:flex;align-items: center">
+            
+            
+            
+            
+            
+            
+        </div>
+        <div>
+            Powered by <a target="_blank" rel="noopener noreferrer" href="https://gohugo.io/">Hugo</a>, theme <a target="_blank" rel="noopener noreferrer" href="https://github.com/Junyi-99/hugo-theme-anubis2">Anubis2</a>.<br>
+            
+
+        </div>
+    </div>
+
+    <p class="h-card vcard">
+
+    <a href=https://ayeung.dev/ class="p-name u-url url fn" rel="me">map[location:Dublin, Ireland name:Albert Au Yeung]</a>
+
+    
+
+    
+</p>
+
+</footer>
+
+        
+    </div>
+</body>
+</html>

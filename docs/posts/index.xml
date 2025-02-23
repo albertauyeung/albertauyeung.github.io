@@ -13,10 +13,241 @@
     
 
     
-    <lastBuildDate>Wed, 15 Jan 2025 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 23 Feb 2025 00:00:00 +0000</lastBuildDate>
     
     <atom:link href="/posts/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>🧩 Determining if a 15 Puzzle is solvable</title>
+      <link>/2025/02/23/15-puzzble-solvability.html</link>
+      <pubDate>Sun, 23 Feb 2025 00:00:00 +0000</pubDate>
+      
+      <guid>/2025/02/23/15-puzzble-solvability.html</guid>
+      <description>&lt;p&gt;I recently became interested in how we can programmatically solve the 15 puzzle. The 15 puzzle is a sliding puzzle that consists of a 4 x 4 board of tiles numbered from 1 to 15, with one empty space. The tiles are shuffled and the goal is to slide the tiles around until they are in order, i.e. the numbered tiles will run from 1 to 15 starting from the top left corner from left to right and top to bottom, with the empty space at the bottom right corner.&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;# A shuffled 15 puzzle
+┌───┬───┬───┬───┐
+│ 2 │ 8 │ 3 │ 4 │
+├───┼───┼───┼───┤
+│ 1 │ 6 │   │ 7 │
+├───┼───┼───┼───┤
+│ 5 │ 9 │ 11│ 12│   
+├───┼───┼───┼───┤
+│ 13│ 10│ 15│ 14│
+└───┴───┴───┴───┘
+
+
+# The target state of the 15 puzzle
+┌───┬───┬───┬───┐
+│ 1 │ 2 │ 3 │ 4 │
+├───┼───┼───┼───┤
+│ 5 │ 6 │ 7 │ 8 │
+├───┼───┼───┼───┤
+│ 9 │ 10│ 11│ 12│   
+├───┼───┼───┼───┤
+│ 13│ 14│ 15│   │
+└───┴───┴───┴───┘
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;solvability-of-the-15-puzzle&#34; &gt;
+&lt;div&gt;
+    &lt;a href=&#34;#solvability-of-the-15-puzzle&#34;&gt;
+        #
+    &lt;/a&gt;
+    Solvability of the 15 puzzle
+&lt;/div&gt;
+&lt;/h2&gt;
+&lt;p&gt;It is interesting to note that not all configurations of the 15 puzzle are solvable. In other words, give a certain arrangement of the numbered tiles on the board, it may not be possible to arrange the tiles in order by only sliding them around. It turns out that out of the &lt;code&gt;16! = 20,922,789,888,000&lt;/code&gt; (about 21 trillion) possible configurations, only &lt;strong&gt;half of them&lt;/strong&gt; are solvable.&lt;/p&gt;
+&lt;p&gt;Writing a program to determine whether a certain configuration is solvable is easy. Ask ChatGPT about it and it will give you a snippet that works out of the box. But here let&amp;rsquo;s take a look at the details and try to understand how it works.&lt;/p&gt;
+&lt;h3 id=&#34;permutations&#34; &gt;
+&lt;div&gt;
+    &lt;a href=&#34;#permutations&#34;&gt;
+        ##
+    &lt;/a&gt;
+    Permutations
+&lt;/div&gt;
+&lt;/h3&gt;
+&lt;p&gt;Mathematically, the 15 puzzle can be represented as a permutation of the numbers from 1 to 15 (or 16 if we include the blank space). A &lt;a href=&#34;https://en.wikipedia.org/wiki/Permutation&#34;&gt;permutation&lt;/a&gt; is an arrangement of objects in a specific order. For example, the permutation &lt;code&gt;(2, 1, 3)&lt;/code&gt; represents a specific arrangement of the numbers 1, 2, and 3.&lt;/p&gt;
+&lt;p&gt;Given a set of elements (e.g. 1, 2, 3), a permutation can be changed into another permutation by a sequence of swapping pairs of elements (called &lt;strong&gt;transpositions&lt;/strong&gt;). For example: we can change the permutation &lt;code&gt;(1, 2, 3)&lt;/code&gt; into &lt;code&gt;(2, 1, 3)&lt;/code&gt; by swapping the first two elements, i.e. performing a transposition of 1 and 2. Hence, to solve the 15 puzzle, we need to find a sequence of transpositions that will transform the initial permutation into the target permutation (with some restrictions of course, because we cannot simply exchange any two tiles).&lt;/p&gt;
+&lt;h3 id=&#34;parity-of-permutations&#34; &gt;
+&lt;div&gt;
+    &lt;a href=&#34;#parity-of-permutations&#34;&gt;
+        ##
+    &lt;/a&gt;
+    Parity of Permutations
+&lt;/div&gt;
+&lt;/h3&gt;
+&lt;p&gt;When moving from one permutation to another, it either involves an &lt;strong&gt;even&lt;/strong&gt; or &lt;strong&gt;odd&lt;/strong&gt; number of transpositions. This is called the &lt;a href=&#34;https://en.wikipedia.org/wiki/Parity_of_a_permutation&#34;&gt;parity of a permutation&lt;/a&gt;. For example:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;From &lt;code&gt;(1, 2, 3)&lt;/code&gt; to &lt;code&gt;(2, 1, 3)&lt;/code&gt; requires one transposition (swapping 1 and 2) &amp;ndash;&amp;gt; &lt;strong&gt;odd&lt;/strong&gt; parity&lt;/li&gt;
+&lt;li&gt;From &lt;code&gt;(1, 2, 3)&lt;/code&gt; to &lt;code&gt;(3, 2, 1)&lt;/code&gt; requires two transpositions (swapping 1 and 3, then 2 and 3). &amp;ndash;&amp;gt; &lt;strong&gt;even&lt;/strong&gt; parity&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Although there can be multiple sequence of transpositions that can transform one permutation to another, the parity of the number of transpositions will be the same. For example, from &lt;code&gt;(1, 2, 3)&lt;/code&gt; to &lt;code&gt;(3, 2, 1)&lt;/code&gt; we can swap 1 and 3 first, then 2 and 3, or we can swap 2 and 3 first, then 1 and 3.&lt;/p&gt;
+&lt;h3 id=&#34;inversions&#34; &gt;
+&lt;div&gt;
+    &lt;a href=&#34;#inversions&#34;&gt;
+        ##
+    &lt;/a&gt;
+    Inversions
+&lt;/div&gt;
+&lt;/h3&gt;
+&lt;p&gt;It turns out that this concept of parity of permutations is crucial in determining whether a given configuration of the 15 puzzle is solvable or not. But before going back to the 15 puzzle, let&amp;rsquo;s talk about the concept of &lt;strong&gt;inversions&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;Let&amp;rsquo;s say we have an ordering of the set of elements involved in a permutation. In the case of the 15 puzzle, we can order the numbers from 1 to 16 (including the blank space) in ascending order (which is also the target state of the puzzle). We would like to know if a certain permutation (arrangement of the numbers) is of even or odd parity. This is equivalent to asking the question of whether we need an even or odd number of transpositions to move from the initial permutation to the target permutation.&lt;/p&gt;
+&lt;p&gt;If the number of elements is small, or the permutation is not too different from the target permutation, it would be relatively easy to tell. For example:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;Given  : ( 1, 2, 3, 4, 5)
+Target : ( 2, 1, 5, 4, 3)
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;In this case, we can see that we need to swap 1 and 2, and 3 and 5. This requires two transpositions, which is an even number. Hence, the permutation is of even parity.&lt;/p&gt;
+&lt;p&gt;However, if the number of elements is large, or the permutation is very different from the target permutation, it would be difficult to tell just by looking at it. It turns out that we can rely on the concept of &lt;a href=&#34;https://en.wikipedia.org/wiki/Inversion_(discrete_mathematics)&#34;&gt;inversions&lt;/a&gt; to determine the parity of a permutation. An inversion is a pair of elements &lt;code&gt;(i, j)&lt;/code&gt; such that &lt;code&gt;i &amp;lt; j&lt;/code&gt; but &lt;code&gt;i&lt;/code&gt; appears after &lt;code&gt;j&lt;/code&gt; in the permutation. For example, in the permutation &lt;code&gt;(2, 4, 1, 3)&lt;/code&gt; the pair &lt;code&gt;(2, 1)&lt;/code&gt; and &lt;code&gt;(4, 1)&lt;/code&gt; are inversions.&lt;/p&gt;
+&lt;p&gt;The number of inversions in a permutation is directly related to the parity of the permutation. If the number of inversions is even, the permutation is of even parity. If the number of inversions is odd, the permutation is of odd parity.&lt;/p&gt;
+&lt;p&gt;Programmatically, the number of inversions in a permutation can be calculated by iterating over all pairs of elements and counting the number of inversions:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#d8dee9;background-color:#2e3440;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#81a1c1;font-weight:bold&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#88c0d0&#34;&gt;count_inversions&lt;/span&gt;&lt;span style=&#34;color:#eceff4&#34;&gt;(&lt;/span&gt;arr&lt;span style=&#34;color:#eceff4&#34;&gt;):&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    inversions &lt;span style=&#34;color:#81a1c1&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#b48ead&#34;&gt;0&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#81a1c1;font-weight:bold&#34;&gt;for&lt;/span&gt; i &lt;span style=&#34;color:#81a1c1;font-weight:bold&#34;&gt;in&lt;/span&gt; &lt;span style=&#34;color:#81a1c1&#34;&gt;range&lt;/span&gt;&lt;span style=&#34;color:#eceff4&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#81a1c1&#34;&gt;len&lt;/span&gt;&lt;span style=&#34;color:#eceff4&#34;&gt;(&lt;/span&gt;arr&lt;span style=&#34;color:#eceff4&#34;&gt;)):&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#81a1c1;font-weight:bold&#34;&gt;for&lt;/span&gt; j &lt;span style=&#34;color:#81a1c1;font-weight:bold&#34;&gt;in&lt;/span&gt; &lt;span style=&#34;color:#81a1c1&#34;&gt;range&lt;/span&gt;&lt;span style=&#34;color:#eceff4&#34;&gt;(&lt;/span&gt;i &lt;span style=&#34;color:#81a1c1&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#b48ead&#34;&gt;1&lt;/span&gt;&lt;span style=&#34;color:#eceff4&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#81a1c1&#34;&gt;len&lt;/span&gt;&lt;span style=&#34;color:#eceff4&#34;&gt;(&lt;/span&gt;arr&lt;span style=&#34;color:#eceff4&#34;&gt;)):&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#81a1c1;font-weight:bold&#34;&gt;if&lt;/span&gt; arr&lt;span style=&#34;color:#eceff4&#34;&gt;[&lt;/span&gt;i&lt;span style=&#34;color:#eceff4&#34;&gt;]&lt;/span&gt; &lt;span style=&#34;color:#81a1c1&#34;&gt;&amp;gt;&lt;/span&gt; arr&lt;span style=&#34;color:#eceff4&#34;&gt;[&lt;/span&gt;j&lt;span style=&#34;color:#eceff4&#34;&gt;]:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;                inversions &lt;span style=&#34;color:#81a1c1&#34;&gt;+=&lt;/span&gt; &lt;span style=&#34;color:#b48ead&#34;&gt;1&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#81a1c1;font-weight:bold&#34;&gt;return&lt;/span&gt; inversions
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;arr &lt;span style=&#34;color:#81a1c1&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#eceff4&#34;&gt;[&lt;/span&gt;&lt;span style=&#34;color:#b48ead&#34;&gt;2&lt;/span&gt;&lt;span style=&#34;color:#eceff4&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#b48ead&#34;&gt;4&lt;/span&gt;&lt;span style=&#34;color:#eceff4&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#b48ead&#34;&gt;1&lt;/span&gt;&lt;span style=&#34;color:#eceff4&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#b48ead&#34;&gt;3&lt;/span&gt;&lt;span style=&#34;color:#eceff4&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#81a1c1&#34;&gt;print&lt;/span&gt;&lt;span style=&#34;color:#eceff4&#34;&gt;(&lt;/span&gt;count_inversions&lt;span style=&#34;color:#eceff4&#34;&gt;(&lt;/span&gt;arr&lt;span style=&#34;color:#eceff4&#34;&gt;))&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#616e87;font-style:italic&#34;&gt;# Output: 3  (because there are two inversions: (2, 1), (4, 1), (4, 3))&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;parity-and-solvability-of-the-15-puzzle&#34; &gt;
+&lt;div&gt;
+    &lt;a href=&#34;#parity-and-solvability-of-the-15-puzzle&#34;&gt;
+        ##
+    &lt;/a&gt;
+    Parity and Solvability of the 15 Puzzle
+&lt;/div&gt;
+&lt;/h3&gt;
+&lt;p&gt;So, how does the concept of parity and inversion help us determine if a given configuration of the 15 puzzle is solvable? As mentioned above, solving the 15 puzzle is equivalent to transforming the initial permutation into the target permutation. It turns out that the number of inversions in the initial permutation is crucial.&lt;/p&gt;
+&lt;p&gt;To understand how parity or the number of inversions helps us determine solvability, let&amp;rsquo;s consider the following board.&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;Current state:
+┌───┬───┬───┬───┐
+│ 2 │ 8 │ 3 │ 4 │
+├───┼───┼───┼───┤
+│ 1 │ 6 │ 14│ 5 │
+├───┼───┼───┼───┤
+│ 7 │ 9 │ 11│ 12│
+├───┼───┼───┼───┤
+│ 13│ 10│ 15│   │
+└───┴───┴───┴───┘
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;In order to convert this board into the target state, we need to swap tiles around. However, we can only do so by sliding tiles into the empty space or, in other words, by &amp;ldquo;moving&amp;rdquo; the empty space around.&lt;/p&gt;
+&lt;p&gt;Note that in the end the empty space should still be at the bottom right corner of the board. We can easily see that in order for the empty space to move around and finally get back to the bottom right corner, the number of swapping happened must be &lt;strong&gt;even&lt;/strong&gt;. Hence, assuming that after a number of moves we finally get to the target state, we will always have an even number of moves. This is true for any configuration of the board with the empty space at the bottom right corner.&lt;/p&gt;
+&lt;p&gt;What this analysis follows is that: for all configuration of the board with the empty space at the bottom right corner, the permutation of the numbers must be of &lt;strong&gt;even parity&lt;/strong&gt;. This is because these configurations are all created by starting from the target state in which the empty space is also at the bottom right corner.&lt;/p&gt;
+&lt;p&gt;Consider the following configuration of the board:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;┌───┬───┬───┬───┐
+│ 1 │ 2 │ 3 │ 4 │
+├───┼───┼───┼───┤
+│ 5 │ 6 │ 7 │ 8 │
+├───┼───┼───┼───┤
+│ 9 │ 10│ 11│ 12│   
+├───┼───┼───┼───┤
+│ 13│ 15│ 14│   │
+└───┴───┴───┴───┘
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;in which only the tiles &lt;code&gt;14&lt;/code&gt; and &lt;code&gt;15&lt;/code&gt; are swapped. In this case, the parity of this permutation is 1, which is odd. Thus, this is an unsolvable configuration, as it is not possible to reach this configuration from the target state by simply sliding the tiles around.&lt;/p&gt;
+&lt;p&gt;This would become obvious if we consider a 2 x 2 board instead of a 4 x 4 board. For example, the following is a configuration with odd parity (since the number of inversions is 1):&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;┌───┬───┐
+│ 2 │ 1 │
+├───┼───┤
+│ 3 │   │
+└───┴───┘
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;We can easily see that there&amp;rsquo;s no way to solve this puzzle by sliding the tiles around.&lt;/p&gt;
+&lt;h3 id=&#34;distance-of-the-empty-space-from-the-bottom-right-corner&#34; &gt;
+&lt;div&gt;
+    &lt;a href=&#34;#distance-of-the-empty-space-from-the-bottom-right-corner&#34;&gt;
+        ##
+    &lt;/a&gt;
+    Distance of the Empty Space from the Bottom Right Corner
+&lt;/div&gt;
+&lt;/h3&gt;
+&lt;p&gt;But wait, what happen when the empty space is NOT at the bottom right corner? This is actually a trivial extension to the problem above. This is because given any configuration, we can always &amp;ldquo;move&amp;rdquo; the empty space to the bottom right corner by sliding the tiles around.&lt;/p&gt;
+&lt;p&gt;To determine if any configuration is solvable, we can do one of the following:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Move the empty space to the bottom right corner, and then check whether the parity of the permutation of the numbers is even.&lt;/li&gt;
+&lt;li&gt;Check whether the sum of the following two numbers is even:
+&lt;ul&gt;
+&lt;li&gt;The number of inversions in the permutation of the numbers&lt;/li&gt;
+&lt;li&gt;The number of moves required to move the empty space to the bottom right corner&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;The second method is more efficient because it avoids the need to actually move the empty space around. The number of moves required to move the empty space to the bottom right corner can be known by checking the &lt;a href=&#34;https://en.wikipedia.org/wiki/Taxicab_geometry&#34;&gt;Manhattan distance&lt;/a&gt; (or taxicab distance) of the empty space from the bottom right corner.&lt;/p&gt;
+&lt;h3 id=&#34;summing-up&#34; &gt;
+&lt;div&gt;
+    &lt;a href=&#34;#summing-up&#34;&gt;
+        ##
+    &lt;/a&gt;
+    Summing Up
+&lt;/div&gt;
+&lt;/h3&gt;
+&lt;p&gt;Given the above discussions, we can now write a function to determine whether a given configuration of the 15 puzzle is solvable or not. The function will take a list of numbers representing the configuration of the board, and return &lt;code&gt;True&lt;/code&gt; if the configuration is solvable, and &lt;code&gt;False&lt;/code&gt; otherwise.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#d8dee9;background-color:#2e3440;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#81a1c1;font-weight:bold&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#88c0d0&#34;&gt;is_solvable&lt;/span&gt;&lt;span style=&#34;color:#eceff4&#34;&gt;(&lt;/span&gt;board&lt;span style=&#34;color:#eceff4&#34;&gt;):&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#a3be8c&#34;&gt;&amp;#34;&amp;#34;&amp;#34;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a3be8c&#34;&gt;    Assuming `board` is a list of 16 numbers
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a3be8c&#34;&gt;    representing the configuration of the 15 puzzle board.
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a3be8c&#34;&gt;    &amp;#34;&amp;#34;&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#616e87;font-style:italic&#34;&gt;# Count the number of inversions&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#81a1c1;font-weight:bold&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#88c0d0&#34;&gt;count_inversions&lt;/span&gt;&lt;span style=&#34;color:#eceff4&#34;&gt;(&lt;/span&gt;arr&lt;span style=&#34;color:#eceff4&#34;&gt;):&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        inversions &lt;span style=&#34;color:#81a1c1&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#b48ead&#34;&gt;0&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#81a1c1;font-weight:bold&#34;&gt;for&lt;/span&gt; i &lt;span style=&#34;color:#81a1c1;font-weight:bold&#34;&gt;in&lt;/span&gt; &lt;span style=&#34;color:#81a1c1&#34;&gt;range&lt;/span&gt;&lt;span style=&#34;color:#eceff4&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#81a1c1&#34;&gt;len&lt;/span&gt;&lt;span style=&#34;color:#eceff4&#34;&gt;(&lt;/span&gt;arr&lt;span style=&#34;color:#eceff4&#34;&gt;)):&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#81a1c1;font-weight:bold&#34;&gt;for&lt;/span&gt; j &lt;span style=&#34;color:#81a1c1;font-weight:bold&#34;&gt;in&lt;/span&gt; &lt;span style=&#34;color:#81a1c1&#34;&gt;range&lt;/span&gt;&lt;span style=&#34;color:#eceff4&#34;&gt;(&lt;/span&gt;i &lt;span style=&#34;color:#81a1c1&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#b48ead&#34;&gt;1&lt;/span&gt;&lt;span style=&#34;color:#eceff4&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#81a1c1&#34;&gt;len&lt;/span&gt;&lt;span style=&#34;color:#eceff4&#34;&gt;(&lt;/span&gt;arr&lt;span style=&#34;color:#eceff4&#34;&gt;)):&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;                &lt;span style=&#34;color:#81a1c1;font-weight:bold&#34;&gt;if&lt;/span&gt; arr&lt;span style=&#34;color:#eceff4&#34;&gt;[&lt;/span&gt;i&lt;span style=&#34;color:#eceff4&#34;&gt;]&lt;/span&gt; &lt;span style=&#34;color:#81a1c1&#34;&gt;&amp;gt;&lt;/span&gt; arr&lt;span style=&#34;color:#eceff4&#34;&gt;[&lt;/span&gt;j&lt;span style=&#34;color:#eceff4&#34;&gt;]:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;                    inversions &lt;span style=&#34;color:#81a1c1&#34;&gt;+=&lt;/span&gt; &lt;span style=&#34;color:#b48ead&#34;&gt;1&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#81a1c1;font-weight:bold&#34;&gt;return&lt;/span&gt; inversions
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#616e87;font-style:italic&#34;&gt;# Get the Manhattan distance of the empty space from the bottom right corner&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#81a1c1;font-weight:bold&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#88c0d0&#34;&gt;manhattan_distance&lt;/span&gt;&lt;span style=&#34;color:#eceff4&#34;&gt;(&lt;/span&gt;board&lt;span style=&#34;color:#eceff4&#34;&gt;,&lt;/span&gt; empty_space_num&lt;span style=&#34;color:#81a1c1&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#b48ead&#34;&gt;16&lt;/span&gt;&lt;span style=&#34;color:#eceff4&#34;&gt;):&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        empty_space_index &lt;span style=&#34;color:#81a1c1&#34;&gt;=&lt;/span&gt; board&lt;span style=&#34;color:#81a1c1&#34;&gt;.&lt;/span&gt;index&lt;span style=&#34;color:#eceff4&#34;&gt;(&lt;/span&gt;empty_space_num&lt;span style=&#34;color:#eceff4&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        empty_space_row &lt;span style=&#34;color:#81a1c1&#34;&gt;=&lt;/span&gt; empty_space_index &lt;span style=&#34;color:#81a1c1&#34;&gt;//&lt;/span&gt; &lt;span style=&#34;color:#b48ead&#34;&gt;4&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        empty_space_col &lt;span style=&#34;color:#81a1c1&#34;&gt;=&lt;/span&gt; empty_space_index &lt;span style=&#34;color:#81a1c1&#34;&gt;%&lt;/span&gt; &lt;span style=&#34;color:#b48ead&#34;&gt;4&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#81a1c1;font-weight:bold&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#b48ead&#34;&gt;3&lt;/span&gt; &lt;span style=&#34;color:#81a1c1&#34;&gt;-&lt;/span&gt; empty_space_row &lt;span style=&#34;color:#81a1c1&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#b48ead&#34;&gt;3&lt;/span&gt; &lt;span style=&#34;color:#81a1c1&#34;&gt;-&lt;/span&gt; empty_space_col
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    num_inversions &lt;span style=&#34;color:#81a1c1&#34;&gt;=&lt;/span&gt; count_inversions&lt;span style=&#34;color:#eceff4&#34;&gt;(&lt;/span&gt;board&lt;span style=&#34;color:#eceff4&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    distance &lt;span style=&#34;color:#81a1c1&#34;&gt;=&lt;/span&gt; manhattan_distance&lt;span style=&#34;color:#eceff4&#34;&gt;(&lt;/span&gt;board&lt;span style=&#34;color:#eceff4&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#616e87;font-style:italic&#34;&gt;# Check if the sum of the number of inversions and the distance is even&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#81a1c1;font-weight:bold&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#eceff4&#34;&gt;(&lt;/span&gt;num_inversions &lt;span style=&#34;color:#81a1c1&#34;&gt;+&lt;/span&gt; distance&lt;span style=&#34;color:#eceff4&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#81a1c1&#34;&gt;%&lt;/span&gt; &lt;span style=&#34;color:#b48ead&#34;&gt;2&lt;/span&gt; &lt;span style=&#34;color:#81a1c1&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#b48ead&#34;&gt;0&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Examples:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#d8dee9;background-color:#2e3440;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#616e87;font-style:italic&#34;&gt;# Solvable&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;board &lt;span style=&#34;color:#81a1c1&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#eceff4&#34;&gt;[&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;     &lt;span style=&#34;color:#b48ead&#34;&gt;1&lt;/span&gt;&lt;span style=&#34;color:#eceff4&#34;&gt;,&lt;/span&gt;  &lt;span style=&#34;color:#b48ead&#34;&gt;2&lt;/span&gt;&lt;span style=&#34;color:#eceff4&#34;&gt;,&lt;/span&gt;  &lt;span style=&#34;color:#b48ead&#34;&gt;3&lt;/span&gt;&lt;span style=&#34;color:#eceff4&#34;&gt;,&lt;/span&gt;  &lt;span style=&#34;color:#b48ead&#34;&gt;4&lt;/span&gt;&lt;span style=&#34;color:#eceff4&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;     &lt;span style=&#34;color:#b48ead&#34;&gt;5&lt;/span&gt;&lt;span style=&#34;color:#eceff4&#34;&gt;,&lt;/span&gt;  &lt;span style=&#34;color:#b48ead&#34;&gt;6&lt;/span&gt;&lt;span style=&#34;color:#eceff4&#34;&gt;,&lt;/span&gt;  &lt;span style=&#34;color:#b48ead&#34;&gt;7&lt;/span&gt;&lt;span style=&#34;color:#eceff4&#34;&gt;,&lt;/span&gt;  &lt;span style=&#34;color:#b48ead&#34;&gt;8&lt;/span&gt;&lt;span style=&#34;color:#eceff4&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;     &lt;span style=&#34;color:#b48ead&#34;&gt;9&lt;/span&gt;&lt;span style=&#34;color:#eceff4&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#b48ead&#34;&gt;10&lt;/span&gt;&lt;span style=&#34;color:#eceff4&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#b48ead&#34;&gt;16&lt;/span&gt;&lt;span style=&#34;color:#eceff4&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#b48ead&#34;&gt;11&lt;/span&gt;&lt;span style=&#34;color:#eceff4&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#b48ead&#34;&gt;13&lt;/span&gt;&lt;span style=&#34;color:#eceff4&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#b48ead&#34;&gt;14&lt;/span&gt;&lt;span style=&#34;color:#eceff4&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#b48ead&#34;&gt;15&lt;/span&gt;&lt;span style=&#34;color:#eceff4&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#b48ead&#34;&gt;12&lt;/span&gt;&lt;span style=&#34;color:#eceff4&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#eceff4&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#81a1c1&#34;&gt;print&lt;/span&gt;&lt;span style=&#34;color:#eceff4&#34;&gt;(&lt;/span&gt;is_solvable&lt;span style=&#34;color:#eceff4&#34;&gt;(&lt;/span&gt;board&lt;span style=&#34;color:#eceff4&#34;&gt;))&lt;/span&gt;  &lt;span style=&#34;color:#616e87;font-style:italic&#34;&gt;# Output: True&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#616e87;font-style:italic&#34;&gt;# Unsolvable&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;board &lt;span style=&#34;color:#81a1c1&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#eceff4&#34;&gt;[&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;     &lt;span style=&#34;color:#b48ead&#34;&gt;1&lt;/span&gt;&lt;span style=&#34;color:#eceff4&#34;&gt;,&lt;/span&gt;  &lt;span style=&#34;color:#b48ead&#34;&gt;2&lt;/span&gt;&lt;span style=&#34;color:#eceff4&#34;&gt;,&lt;/span&gt;  &lt;span style=&#34;color:#b48ead&#34;&gt;3&lt;/span&gt;&lt;span style=&#34;color:#eceff4&#34;&gt;,&lt;/span&gt;  &lt;span style=&#34;color:#b48ead&#34;&gt;4&lt;/span&gt;&lt;span style=&#34;color:#eceff4&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;     &lt;span style=&#34;color:#b48ead&#34;&gt;5&lt;/span&gt;&lt;span style=&#34;color:#eceff4&#34;&gt;,&lt;/span&gt;  &lt;span style=&#34;color:#b48ead&#34;&gt;6&lt;/span&gt;&lt;span style=&#34;color:#eceff4&#34;&gt;,&lt;/span&gt;  &lt;span style=&#34;color:#b48ead&#34;&gt;7&lt;/span&gt;&lt;span style=&#34;color:#eceff4&#34;&gt;,&lt;/span&gt;  &lt;span style=&#34;color:#b48ead&#34;&gt;8&lt;/span&gt;&lt;span style=&#34;color:#eceff4&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;     &lt;span style=&#34;color:#b48ead&#34;&gt;9&lt;/span&gt;&lt;span style=&#34;color:#eceff4&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#b48ead&#34;&gt;10&lt;/span&gt;&lt;span style=&#34;color:#eceff4&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#b48ead&#34;&gt;11&lt;/span&gt;&lt;span style=&#34;color:#eceff4&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#b48ead&#34;&gt;12&lt;/span&gt;&lt;span style=&#34;color:#eceff4&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#b48ead&#34;&gt;13&lt;/span&gt;&lt;span style=&#34;color:#eceff4&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#b48ead&#34;&gt;15&lt;/span&gt;&lt;span style=&#34;color:#eceff4&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#b48ead&#34;&gt;14&lt;/span&gt;&lt;span style=&#34;color:#eceff4&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#b48ead&#34;&gt;16&lt;/span&gt;&lt;span style=&#34;color:#eceff4&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#eceff4&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#81a1c1&#34;&gt;print&lt;/span&gt;&lt;span style=&#34;color:#eceff4&#34;&gt;(&lt;/span&gt;is_solvable&lt;span style=&#34;color:#eceff4&#34;&gt;(&lt;/span&gt;board&lt;span style=&#34;color:#eceff4&#34;&gt;))&lt;/span&gt;  &lt;span style=&#34;color:#616e87;font-style:italic&#34;&gt;# Output: False&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;We can also generalize this to any size of the board, not just the 4 x 4 board, or even to different requirements (e.g. the empty space needs to be at the top left corner in the target state). But this should give you a good idea of how to determine the solvability of the 15 puzzle.&lt;/p&gt;
+&lt;h2 id=&#34;whats-next&#34; &gt;
+&lt;div&gt;
+    &lt;a href=&#34;#whats-next&#34;&gt;
+        #
+    &lt;/a&gt;
+    What&amp;rsquo;s Next?
+&lt;/div&gt;
+&lt;/h2&gt;
+&lt;p&gt;Determining whether a given configuration of the 15 puzzle is solvable is the first step in solving the puzzle programmatically. The next step would be to implement an algorithm to find the sequence of moves that will transform the initial configuration into the target configuration. Two algorithms are commonly used: the &lt;a href=&#34;https://en.wikipedia.org/wiki/A*_search_algorithm&#34;&gt;A* search algorithm&lt;/a&gt; and the &lt;a href=&#34;https://en.wikipedia.org/wiki/Iterative_deepening_A*&#34;&gt;IDA* algorithm&lt;/a&gt;. I will try to cover these in another post.&lt;/p&gt;
+&lt;h2 id=&#34;references&#34; &gt;
+&lt;div&gt;
+    &lt;a href=&#34;#references&#34;&gt;
+        #
+    &lt;/a&gt;
+    References
+&lt;/div&gt;
+&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.jstor.org/stable/2369492&#34;&gt;Notes on the &amp;ldquo;15&amp;rdquo; Puzzle&lt;/a&gt; by Johnson and Story, 1879 in &lt;em&gt;American Journal of Mathematics&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://mohamedrezk122.github.io/fifteen-puzzle&#34;&gt;The Fifteen Puzzle&lt;/a&gt; by Mohamed El Shorbagy&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://mathworld.wolfram.com/15Puzzle.html&#34;&gt;15 Puzzle &amp;ndash; from Wolfram MathWorld&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
     
     <item>
       <title>📝 Heynote: Scratchpad for Developers</title>
