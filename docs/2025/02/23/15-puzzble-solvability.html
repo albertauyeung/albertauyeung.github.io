@@ -656,7 +656,7 @@ Target : ( 2, 1, 5, 4, 3)
 </div>
 </h3>
 <p>Given the above discussions, we can now write a function to determine whether a given configuration of the 15 puzzle is solvable or not. The function will take a list of numbers representing the configuration of the board, and return <code>True</code> if the configuration is solvable, and <code>False</code> otherwise.</p>
-<div class="highlight"><pre tabindex="0" style="color:#d8dee9;background-color:#2e3440;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">def</span> <span style="color:#88c0d0">is_solvable</span><span style="color:#eceff4">(</span>board<span style="color:#eceff4">):</span>
+<div class="highlight"><pre tabindex="0" style="color:#d8dee9;background-color:#2e3440;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">def</span> <span style="color:#88c0d0">is_solvable</span><span style="color:#eceff4">(</span>board<span style="color:#eceff4">,</span> empty_space_num<span style="color:#81a1c1">=</span><span style="color:#b48ead">16</span><span style="color:#eceff4">):</span>
 </span></span><span style="display:flex;"><span>    <span style="color:#a3be8c">&#34;&#34;&#34;
 </span></span></span><span style="display:flex;"><span><span style="color:#a3be8c">    Assuming `board` is a list of 16 numbers
 </span></span></span><span style="display:flex;"><span><span style="color:#a3be8c">    representing the configuration of the 15 puzzle board.
@@ -672,7 +672,7 @@ Target : ( 2, 1, 5, 4, 3)
 </span></span><span style="display:flex;"><span>        <span style="color:#81a1c1;font-weight:bold">return</span> inversions
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>    <span style="color:#616e87;font-style:italic"># Get the Manhattan distance of the empty space from the bottom right corner</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#81a1c1;font-weight:bold">def</span> <span style="color:#88c0d0">manhattan_distance</span><span style="color:#eceff4">(</span>board<span style="color:#eceff4">,</span> empty_space_num<span style="color:#81a1c1">=</span><span style="color:#b48ead">16</span><span style="color:#eceff4">):</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#81a1c1;font-weight:bold">def</span> <span style="color:#88c0d0">manhattan_distance</span><span style="color:#eceff4">(</span>board<span style="color:#eceff4">):</span>
 </span></span><span style="display:flex;"><span>        empty_space_index <span style="color:#81a1c1">=</span> board<span style="color:#81a1c1">.</span>index<span style="color:#eceff4">(</span>empty_space_num<span style="color:#eceff4">)</span>
 </span></span><span style="display:flex;"><span>        empty_space_row <span style="color:#81a1c1">=</span> empty_space_index <span style="color:#81a1c1">//</span> <span style="color:#b48ead">4</span>
 </span></span><span style="display:flex;"><span>        empty_space_col <span style="color:#81a1c1">=</span> empty_space_index <span style="color:#81a1c1">%</span> <span style="color:#b48ead">4</span>

@@ -164,7 +164,7 @@ The second method is more efficient because it avoids the need to actually move 
 Given the above discussions, we can now write a function to determine whether a given configuration of the 15 puzzle is solvable or not. The function will take a list of numbers representing the configuration of the board, and return `True` if the configuration is solvable, and `False` otherwise.
 
 ```python
-def is_solvable(board):
+def is_solvable(board, empty_space_num=16):
     """
     Assuming `board` is a list of 16 numbers
     representing the configuration of the 15 puzzle board.
@@ -180,7 +180,7 @@ def is_solvable(board):
         return inversions
 
     # Get the Manhattan distance of the empty space from the bottom right corner
-    def manhattan_distance(board, empty_space_num=16):
+    def manhattan_distance(board):
         empty_space_index = board.index(empty_space_num)
         empty_space_row = empty_space_index // 4
         empty_space_col = empty_space_index % 4
