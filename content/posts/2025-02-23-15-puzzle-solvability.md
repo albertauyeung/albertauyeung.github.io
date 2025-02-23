@@ -72,7 +72,7 @@ Target : ( 2, 1, 5, 4, 3)
 ```
 In this case, we can see that we need to swap 1 and 2, and 3 and 5. This requires two transpositions, which is an even number. Hence, the permutation is of even parity.
 
-However, if the number of elements is large, or the permutation is very different from the target permutation, it would be difficult to tell just by looking at it. It turns out that we can rely on the concept of [inversions](https://en.wikipedia.org/wiki/Inversion_(discrete_mathematics)) to determine the parity of a permutation. An inversion is a pair of elements `(i, j)` such that `i < j` but `i` appears after `j` in the permutation. For example, in the permutation `(2, 4, 1, 3)` the pair `(2, 1)` and `(4, 1)` are inversions.
+However, if the number of elements is large, or the permutation is very different from the target permutation, it would be difficult to tell just by looking at it. It turns out that we can rely on the concept of [inversions](https://en.wikipedia.org/wiki/Inversion_(discrete_mathematics)) to determine the parity of a permutation. An inversion is a pair of elements `(i, j)` such that `i < j` but `i` appears after `j` in the permutation. For example, in the permutation `(2, 4, 1, 3)` the pair `(2, 1)`, `(4, 1)` and `(4, 3)` are inversions.
 
 The number of inversions in a permutation is directly related to the parity of the permutation. If the number of inversions is even, the permutation is of even parity. If the number of inversions is odd, the permutation is of odd parity.
 
