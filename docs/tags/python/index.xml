@@ -55,7 +55,7 @@
     Solvability of the 15 puzzle
 &lt;/div&gt;
 &lt;/h2&gt;
-&lt;p&gt;It is interesting to note that not all configurations of the 15 puzzle are solvable. In other words, give a certain arrangement of the numbered tiles on the board, it may not be possible to arrange the tiles in order by only sliding them around. It turns out that out of the &lt;code&gt;16! = 20,922,789,888,000&lt;/code&gt; (about 21 trillion) possible configurations, only &lt;strong&gt;half of them&lt;/strong&gt; are solvable.&lt;/p&gt;
+&lt;p&gt;It is interesting to note that not all configurations of the 15 puzzle are solvable. In other words, given a certain arrangement of the numbered tiles on the board, it may not be possible to arrange the tiles in order by only sliding them around. It turns out that out of the &lt;code&gt;16! = 20,922,789,888,000&lt;/code&gt; (about 21 trillion) possible configurations, only &lt;strong&gt;half of them&lt;/strong&gt; are solvable.&lt;/p&gt;
 &lt;p&gt;Writing a program to determine whether a certain configuration is solvable is easy. Ask ChatGPT about it and it will give you a snippet that works out of the box. But here let&amp;rsquo;s take a look at the details and try to understand how it works.&lt;/p&gt;
 &lt;h3 id=&#34;permutations&#34; &gt;
 &lt;div&gt;

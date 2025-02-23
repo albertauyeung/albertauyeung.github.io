@@ -55,7 +55,7 @@
     Solvability of the 15 puzzle
 &lt;/div&gt;
 &lt;/h2&gt;
-&lt;p&gt;It is interesting to note that not all configurations of the 15 puzzle are solvable. In other words, give a certain arrangement of the numbered tiles on the board, it may not be possible to arrange the tiles in order by only sliding them around. It turns out that out of the &lt;code&gt;16! = 20,922,789,888,000&lt;/code&gt; (about 21 trillion) possible configurations, only &lt;strong&gt;half of them&lt;/strong&gt; are solvable.&lt;/p&gt;
+&lt;p&gt;It is interesting to note that not all configurations of the 15 puzzle are solvable. In other words, given a certain arrangement of the numbered tiles on the board, it may not be possible to arrange the tiles in order by only sliding them around. It turns out that out of the &lt;code&gt;16! = 20,922,789,888,000&lt;/code&gt; (about 21 trillion) possible configurations, only &lt;strong&gt;half of them&lt;/strong&gt; are solvable.&lt;/p&gt;
 &lt;p&gt;Writing a program to determine whether a certain configuration is solvable is easy. Ask ChatGPT about it and it will give you a snippet that works out of the box. But here let&amp;rsquo;s take a look at the details and try to understand how it works.&lt;/p&gt;
 &lt;h3 id=&#34;permutations&#34; &gt;
 &lt;div&gt;
@@ -2020,7 +2020,7 @@ $\hat{r}_{ij} = b + bu_i + bd_j + \sum_{k=1}^k{p_{ik} q_{kj}}$
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/about/</guid>
-      <description>&lt;p&gt;A Hong Konger 🇭🇰 currently living in Dublin 🇮🇪. I am a Senior Principal ML Engineer at &lt;a href=&#34;https://www.analog.com/&#34;&gt;Analog Devices (ADI)&lt;/a&gt;. I previously worked at &lt;a href=&#34;https://www.linkedin.com&#34;&gt;LinkedIn&lt;/a&gt;, &lt;a href=&#34;https://www.wisers.ai&#34;&gt;Wisers AI Lab&lt;/a&gt;, Huawei&amp;rsquo;s &lt;a href=&#34;http://www.noahlab.com.hk/&#34;&gt;Noah&amp;rsquo;s Ark Lab&lt;/a&gt;, &lt;a href=&#34;http://www.astri.org/&#34;&gt;ASTRI&lt;/a&gt;, and &lt;a href=&#34;http://www.kecl.ntt.co.jp/rps/english/index_e.html&#34;&gt;NTT Communication Science Laboratories&lt;/a&gt;.&lt;/p&gt;
+      <description>&lt;p&gt;My name is Albert Au Yeung (歐陽靖民 in traditional Chinese), a Hong Konger 🇭🇰 currently living in Dublin 🇮🇪. I am a Senior Principal ML Engineer at &lt;a href=&#34;https://www.analog.com/&#34;&gt;Analog Devices (ADI)&lt;/a&gt;. I previously worked at &lt;a href=&#34;https://www.linkedin.com&#34;&gt;LinkedIn&lt;/a&gt;, &lt;a href=&#34;https://www.wisers.ai&#34;&gt;Wisers AI Lab&lt;/a&gt;, Huawei&amp;rsquo;s &lt;a href=&#34;http://www.noahlab.com.hk/&#34;&gt;Noah&amp;rsquo;s Ark Lab&lt;/a&gt;, &lt;a href=&#34;http://www.astri.org/&#34;&gt;ASTRI&lt;/a&gt;, and &lt;a href=&#34;http://www.kecl.ntt.co.jp/rps/english/index_e.html&#34;&gt;NTT Communication Science Laboratories&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;I received my PhD in Computer Science at the &lt;a href=&#34;http://www.soton.ac.uk&#34;&gt;University of Southampton&lt;/a&gt; (U.K. 🇬🇧), under the supervision of &lt;a href=&#34;https://www.jesus.ox.ac.uk/about-jesus-college/our-community/people/nigel-shadbolt/&#34;&gt;Prof. Nigel Shadbolt&lt;/a&gt; and &lt;a href=&#34;hhttps://www.southampton.ac.uk/people/5wy7k7/doctor-nicholas-gibbins&#34;&gt;Dr. Nicholas Gibbins&lt;/a&gt;. I obtained both my M.Phil (Computer Science) and B.Eng (Information Engineering) degrees at the &lt;a href=&#34;http://www.cuhk.edu.hk&#34;&gt;Chinese University of Hong Kong&lt;/a&gt;.&lt;/p&gt;
 </description>
     </item>

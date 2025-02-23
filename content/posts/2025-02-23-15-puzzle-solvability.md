@@ -40,7 +40,7 @@ I recently became interested in how we can programmatically solve the 15 puzzle.
 
 ## Solvability of the 15 puzzle
 
-It is interesting to note that not all configurations of the 15 puzzle are solvable. In other words, give a certain arrangement of the numbered tiles on the board, it may not be possible to arrange the tiles in order by only sliding them around. It turns out that out of the `16! = 20,922,789,888,000` (about 21 trillion) possible configurations, only **half of them** are solvable.
+It is interesting to note that not all configurations of the 15 puzzle are solvable. In other words, given a certain arrangement of the numbered tiles on the board, it may not be possible to arrange the tiles in order by only sliding them around. It turns out that out of the `16! = 20,922,789,888,000` (about 21 trillion) possible configurations, only **half of them** are solvable.
 
 Writing a program to determine whether a certain configuration is solvable is easy. Ask ChatGPT about it and it will give you a snippet that works out of the box. But here let's take a look at the details and try to understand how it works.
 
