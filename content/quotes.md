@@ -2,7 +2,7 @@
 title: Quotes
 ---
 
-Below are some of my favourite quotes collected over the years.
+Some of my favourite quotes collected over the years.
 
 {{< quotes
     quote="The first principle is that you must not fool yourself and you are the easiest person to fool."
