@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Albert Au Yeung</title>
+  <meta name="description" content="Personal homepage of Albert Au Yeung — projects, websites, and web apps." />
+  <meta name="author" content="Albert Au Yeung" />
+
+  <meta property="og:title" content="Albert Au Yeung" />
+  <meta property="og:description" content="Personal homepage of Albert Au Yeung — projects, websites, and web apps." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://ayeung.dev/" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <div class="container">
+    <header class="site-header">
+      <div class="site-identity">
+        <a href="/" class="site-name">Albert Au Yeung</a>
+        <p class="site-tagline">A software engineer from Hong Kong living in Dublin, Ireland.</p>
+      </div>
+      <div class="social-links">
+        <a href="https://github.com/albertauyeung" aria-label="GitHub" rel="me noopener" target="_blank">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M12 .5C5.65.5.5 5.65.5 12.04c0 5.1 3.29 9.42 7.86 10.95.57.1.78-.25.78-.55 0-.27-.01-1-.02-1.96-3.2.7-3.87-1.54-3.87-1.54-.52-1.33-1.28-1.69-1.28-1.69-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.2 1.77 1.2 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.27.73-1.56-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.18-3.1-.12-.29-.51-1.46.11-3.04 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.79 0c2.21-1.49 3.18-1.18 3.18-1.18.62 1.58.23 2.75.11 3.04.74.81 1.18 1.84 1.18 3.1 0 4.42-2.69 5.39-5.25 5.68.41.36.78 1.07.78 2.16 0 1.56-.01 2.82-.01 3.2 0 .31.21.67.79.55 4.56-1.53 7.85-5.85 7.85-10.95C23.5 5.65 18.35.5 12 .5Z"/>
+          </svg>
+        </a>
+        <a href="https://www.linkedin.com/in/albert-au-yeung/" aria-label="LinkedIn" rel="me noopener" target="_blank">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.13 1.45-2.13 2.94v5.67H9.37V9h3.41v1.56h.05c.47-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12ZM7.12 20.45H3.56V9h3.56v11.45ZM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45C23.21 24 24 23.23 24 22.28V1.72C24 .77 23.21 0 22.22 0Z"/>
+          </svg>
+        </a>
+      </div>
+    </header>
+
+    <section aria-labelledby="projects-heading">
+      <h2 id="projects-heading">Projects</h2>
+      <div class="projects">
+
+        <a class="project" href="https://scoilscout.ie" target="_blank" rel="noopener">
+          <img class="project-image" src="/images/scoil-scout.png" alt="Screenshot of Scoil Scout" loading="lazy" />
+          <div class="project-body">
+            <h3 class="project-title">Scoil Scout</h3>
+            <p class="project-description">A school finder for Irish parents. Search and filter ~4,000 primary and post-primary schools by county, patronage, language, DEIS status, and more &mdash; all in one place.</p>
+            <span class="project-link">scoilscout.ie</span>
+          </div>
+        </a>
+
+        <a class="project" href="https://naionrascout.ie" target="_blank" rel="noopener">
+          <img class="project-image" src="/images/naionra-scout.png" alt="Screenshot of Naíonra Scout" loading="lazy" />
+          <div class="project-body">
+            <h3 class="project-title">Na&iacute;onra Scout</h3>
+            <p class="project-description">Ireland&rsquo;s childcare finder. Covers every Tusla-registered cr&egrave;che, preschool, childminder, and after-school club &mdash; about 4,000 services across the country.</p>
+            <span class="project-link">naionrascout.ie</span>
+          </div>
+        </a>
+
+        <a class="project" href="https://ayeung.dev/ireland-by-the-numbers/" target="_blank" rel="noopener">
+          <img class="project-image" src="/images/ireland-by-the-numbers.png" alt="Screenshot of Ireland by the Numbers" loading="lazy" />
+          <div class="project-body">
+            <h3 class="project-title">Ireland by the Numbers</h3>
+            <p class="project-description">A small web app that turns Irish open data into something you can read on the bus &mdash; daily facts, story-led explainers, and a chart explorer that talks directly to the CSO PxStat API.</p>
+            <span class="project-link">ayeung.dev/ireland-by-the-numbers</span>
+          </div>
+        </a>
+
+        <a class="project" href="https://ayeung.dev/learn-chinese/" target="_blank" rel="noopener">
+          <img class="project-image" src="/images/learn-chinese.png" alt="Screenshot of Learn Chinese" loading="lazy" />
+          <div class="project-body">
+            <h3 class="project-title">Learn Chinese</h3>
+            <p class="project-description">An interactive web app for kids to learn Traditional Chinese through 60 themed lessons, with vocabulary, sentences, short stories, and quizzes &mdash; in both Cantonese and Mandarin.</p>
+            <span class="project-link">ayeung.dev/learn-chinese</span>
+          </div>
+        </a>
+
+        <a class="project" href="https://ayeung.dev/hex-game/" target="_blank" rel="noopener">
+          <img class="project-image" src="/images/hex-game.png" alt="Screenshot of Hex Game" loading="lazy" />
+          <div class="project-body">
+            <h3 class="project-title">Hex Game</h3>
+            <p class="project-description">A two-player connection game where each side races to build an unbroken chain of stones across the board. Best played on a tablet or computer.</p>
+            <span class="project-link">ayeung.dev/hex-game</span>
+          </div>
+        </a>
+
+        <a class="project" href="https://ayeung.dev/100-cities-for-kids/" target="_blank" rel="noopener">
+          <img class="project-image" src="/images/100-cities.png" alt="Screenshot of 100 Cities for Kids" loading="lazy" />
+          <div class="project-body">
+            <h3 class="project-title">100 Cities for Kids</h3>
+            <p class="project-description">A friendly tour of 100 cities around the world for kids &mdash; covering geography, language, food, culture, famous people, and fun facts about each place.</p>
+            <span class="project-link">ayeung.dev/100-cities-for-kids</span>
+          </div>
+        </a>
+
+        <a class="project" href="https://hexaflexagon-generator-517239745630.europe-west1.run.app/" target="_blank" rel="noopener">
+          <img class="project-image" src="/images/hexaflexagon.png" alt="Screenshot of Hexaflexagon Generator" loading="lazy" />
+          <div class="project-body">
+            <h3 class="project-title">Hexaflexagon Generator</h3>
+            <p class="project-description">Upload three images and the app generates a printable template you can cut out and fold into your very own hexaflexagon.</p>
+            <span class="project-link">hexaflexagon-generator</span>
+          </div>
+        </a>
+
+      </div>
+    </section>
+
+    <footer class="site-footer">
+      <span>&copy; Albert Au Yeung</span>
+      <span>Made in Dublin, Ireland</span>
+    </footer>
+  </div>
+</body>
+</html>
