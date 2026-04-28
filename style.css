@@ -9,7 +9,7 @@
   --shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 4px 12px rgba(0, 0, 0, 0.04);
   --shadow-hover: 0 4px 8px rgba(0, 0, 0, 0.06), 0 16px 32px rgba(0, 0, 0, 0.06);
   --radius: 8px;
-  --serif: "Fraunces", "Iowan Old Style", "Apple Garamond", Georgia, "Times New Roman", serif;
+  --serif: "Instrument Serif", "Iowan Old Style", Georgia, "Times New Roman", serif;
   --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
@@ -70,12 +70,11 @@ body {
 
 .site-name {
   font-family: var(--serif);
-  font-weight: 500;
-  font-size: 1.25rem;
-  letter-spacing: -0.01em;
+  font-weight: 400;
+  font-size: 1.4rem;
+  letter-spacing: -0.005em;
   color: var(--text);
   text-decoration: none;
-  font-variation-settings: "opsz" 24;
 }
 
 .site-name:hover { color: var(--accent-hover); }
@@ -83,10 +82,9 @@ body {
 .site-tagline {
   font-family: var(--serif);
   font-style: italic;
-  font-size: 0.95rem;
+  font-size: 1rem;
   color: var(--text-muted);
   margin: 0;
-  font-variation-settings: "opsz" 14;
 }
 
 .social-links {
@@ -118,11 +116,10 @@ section { margin-bottom: 4rem; }
 
 section h2 {
   font-family: var(--serif);
-  font-weight: 500;
-  font-size: 1.5rem;
+  font-weight: 400;
+  font-size: 1.75rem;
   letter-spacing: -0.01em;
   margin: 0 0 2rem;
-  font-variation-settings: "opsz" 36;
 }
 
 /* Project grid */
@@ -176,11 +173,10 @@ section h2 {
 
 .project-title {
   font-family: var(--serif);
-  font-weight: 500;
-  font-size: 1.2rem;
-  letter-spacing: -0.01em;
+  font-weight: 400;
+  font-size: 1.4rem;
+  letter-spacing: -0.005em;
   margin: 0 0 0.5rem;
-  font-variation-settings: "opsz" 24;
 }
 
 .project-description {
