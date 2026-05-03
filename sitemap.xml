@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  <url>
+    <loc>https://ayeung.dev/</loc>
+    <lastmod>2026-05-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://ayeung.dev/images/og-image.png</image:loc>
+      <image:title>Albert Au Yeung</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://ayeung.dev/images/birds-in-ireland.png</image:loc>
+      <image:title>Birds in Ireland</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://ayeung.dev/images/scoil-scout.png</image:loc>
+      <image:title>Scoil Scout</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://ayeung.dev/images/naionra-scout.png</image:loc>
+      <image:title>Naíonra Scout</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://ayeung.dev/images/ireland-by-the-numbers.png</image:loc>
+      <image:title>Ireland by the Numbers</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://ayeung.dev/images/learn-chinese.png</image:loc>
+      <image:title>Learn Chinese</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://ayeung.dev/images/hex-game.png</image:loc>
+      <image:title>Hex Game</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://ayeung.dev/images/100-cities.png</image:loc>
+      <image:title>100 Cities for Kids</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://ayeung.dev/images/hexaflexagon.png</image:loc>
+      <image:title>Hexaflexagon Generator</image:title>
+    </image:image>
+  </url>
+</urlset>
