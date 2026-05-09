@@ -3,12 +3,16 @@
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
     <loc>https://ayeung.dev/</loc>
-    <lastmod>2026-05-03</lastmod>
+    <lastmod>2026-05-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
     <image:image>
       <image:loc>https://ayeung.dev/images/og-image.png</image:loc>
       <image:title>Albert Au Yeung</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://ayeung.dev/images/flowers-in-ireland.png</image:loc>
+      <image:title>Flowers in Ireland</image:title>
     </image:image>
     <image:image>
       <image:loc>https://ayeung.dev/images/birds-in-ireland.png</image:loc>
